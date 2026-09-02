@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, KeyRound, ArrowRight, RotateCw, CheckCircle2, AlertCircle, ShieldCheck } from 'lucide-react';
+import {
+  Phone,
+  KeyRound,
+  ArrowRight,
+  RotateCw,
+  CheckCircle2,
+  AlertCircle,
+  ShieldCheck
+} from 'lucide-react';
+import VoiceSpeakerBtn from './VoiceSpeakerBtn';
 import { translations } from '../languages';
 import '../styles/Registration.css';
 
@@ -9,7 +18,7 @@ const API_BASE = process.env.REACT_APP_API || 'http://localhost:5000/api';
 
 function FarmerLogin({ onLoginSuccess, onSwitchToRegister, language = 'en' }) {
   const t = translations[language] || translations.en;
-  
+
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
   const [step, setStep] = useState(1); // 1: Enter Phone, 2: Enter OTP
@@ -54,7 +63,6 @@ function FarmerLogin({ onLoginSuccess, onSwitchToRegister, language = 'en' }) {
       const msg = err.response?.data?.message || 'Failed to send OTP. Please check your number.';
       setError(msg);
       if (err.response?.status === 404) {
-        // Not registered
         setTimeout(() => {
           if (onSwitchToRegister) onSwitchToRegister(cleanPhone);
         }, 2200);
@@ -78,7 +86,8 @@ function FarmerLogin({ onLoginSuccess, onSwitchToRegister, language = 'en' }) {
     try {
       const response = await axios.post(`${API_BASE}/auth/verify-otp`, {
         phone: phone.trim(),
-        otp: cleanOtp
+        otp: cleanOtp,
+        purpose: 'farmer'
       });
 
       if (response.data.success && response.data.farmerId) {
@@ -105,7 +114,19 @@ function FarmerLogin({ onLoginSuccess, onSwitchToRegister, language = 'en' }) {
             <ShieldCheck size={18} />
             <span>{t.otpVerification}</span>
           </div>
-          <h2>{t.login}</h2>
+          <div className="title-with-speaker">
+            <h2>{t.login}</h2>
+            <VoiceSpeakerBtn
+              text={
+                step === 1
+                  ? t.speakMobilePrompt
+                  : t.speakOtpPrompt
+              }
+              language={language}
+              label="Listen instructions"
+              size={18}
+            />
+          </div>
           <p className="subtitle">{t.tagline}</p>
         </div>
 
@@ -145,9 +166,16 @@ function FarmerLogin({ onLoginSuccess, onSwitchToRegister, language = 'en' }) {
               className="form-body"
             >
               <div className="form-group">
-                <label>
-                  <Phone size={16} /> {t.enterMobile} *
-                </label>
+                <div className="label-row-with-voice">
+                  <label>
+                    <Phone size={16} /> {t.enterMobile} *
+                  </label>
+                  <VoiceSpeakerBtn
+                    text={t.speakMobilePrompt}
+                    language={language}
+                    size={14}
+                  />
+                </div>
                 <div className="input-with-prefix">
                   <span className="prefix">+91</span>
                   <input
@@ -160,6 +188,9 @@ function FarmerLogin({ onLoginSuccess, onSwitchToRegister, language = 'en' }) {
                     required
                   />
                 </div>
+                <span className="field-hint">
+                  Demo Registered Farmer: <strong>9876543210</strong>
+                </span>
               </div>
 
               <button
@@ -198,9 +229,16 @@ function FarmerLogin({ onLoginSuccess, onSwitchToRegister, language = 'en' }) {
               </div>
 
               <div className="form-group">
-                <label>
-                  <KeyRound size={16} /> {t.enterOtp} *
-                </label>
+                <div className="label-row-with-voice">
+                  <label>
+                    <KeyRound size={16} /> {t.enterOtp} *
+                  </label>
+                  <VoiceSpeakerBtn
+                    text={t.speakOtpPrompt}
+                    language={language}
+                    size={14}
+                  />
+                </div>
                 <input
                   type="text"
                   maxLength={6}

@@ -14,23 +14,54 @@ import {
   Scale,
   ShieldCheck,
   AlertCircle,
-  Tag
+  Phone,
+  KeyRound,
+  RotateCw,
+  LogOut,
+  Landmark,
+  Info
 } from 'lucide-react';
 import { translations } from '../languages';
 import '../styles/AdminPanel.css';
 
 const API_BASE = process.env.REACT_APP_API || 'http://localhost:5000/api';
 
+const MSP_RATES = {
+  'Paddy (Common)': 2300,
+  'Paddy (Grade A)': 2320,
+  'Wheat': 2275,
+  'Cotton': 7121,
+  'Maize': 2090,
+  'Soyabean': 4892,
+  'Pulses': 8682
+};
+
 function AdminPanel({ language = 'en' }) {
   // eslint-disable-next-line no-unused-vars
   const t = translations[language] || translations.en;
 
+  // Authentication State for Procurement Center Admin (Mobile + OTP)
+  const [adminUser, setAdminUser] = useState(
+    JSON.parse(localStorage.getItem('procurementAdmin') || 'null')
+  );
+  const [authPhone, setAuthPhone] = useState('');
+  const [authOtp, setAuthOtp] = useState('');
+  const [authStep, setAuthStep] = useState(1); // 1: Phone, 2: OTP
+  const [authLoading, setAuthLoading] = useState(false);
+  const [authError, setAuthError] = useState('');
+  const [demoOtp, setDemoOtp] = useState(null);
+  const [resendTimer, setResendTimer] = useState(0);
+
+  // Portal State
   const [centers, setCenters] = useState([]);
-  const [selectedCenterCode, setSelectedCenterCode] = useState('');
-  const [activeTab, setActiveTab] = useState('stats'); // 'stats' | 'slots' | 'farmers' | 'payments' | 'newCenter'
+  const [selectedCenterCode, setSelectedCenterCode] = useState(
+    adminUser?.centerCode || ''
+  );
+  const [activeTab, setActiveTab] = useState('stats'); // 'stats' | 'slots' | 'farmers' | 'payments'
   const [stats, setStats] = useState(null);
   const [slots, setSlots] = useState([]);
   const [farmersQueue, setFarmersQueue] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false);
   const [actionSuccess, setActionSuccess] = useState('');
   const [actionError, setActionError] = useState('');
@@ -43,18 +74,6 @@ function AdminPanel({ language = 'en' }) {
     capacity: 30
   });
 
-  // Create Center Form State
-  const [newCenterForm, setNewCenterForm] = useState({
-    centerCode: '',
-    name: '',
-    district: '',
-    state: 'Telangana',
-    adminName: '',
-    adminPhone: '',
-    totalCapacityTonnes: 500,
-    acceptedCrops: ['Paddy (Common)', 'Wheat', 'Cotton', 'Maize']
-  });
-
   // Verify Farmer Modal State
   const [verifyingBooking, setVerifyingBooking] = useState(null);
   const [verifyForm, setVerifyForm] = useState({
@@ -63,20 +82,18 @@ function AdminPanel({ language = 'en' }) {
     crop: 'Paddy (Common)'
   });
 
-  const allAvailableCrops = [
-    'Paddy (Common)',
-    'Paddy (Grade A)',
-    'Wheat',
-    'Cotton',
-    'Maize',
-    'Soyabean',
-    'Pulses'
-  ];
+  useEffect(() => {
+    let interval = null;
+    if (resendTimer > 0) {
+      interval = setInterval(() => setResendTimer((prev) => prev - 1), 1000);
+    }
+    return () => clearInterval(interval);
+  }, [resendTimer]);
 
   useEffect(() => {
     fetchCenters();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [adminUser]);
 
   useEffect(() => {
     if (selectedCenterCode) {
@@ -89,8 +106,10 @@ function AdminPanel({ language = 'en' }) {
     try {
       const res = await axios.get(`${API_BASE}/admin/centers`);
       setCenters(res.data || []);
-      if (res.data && res.data.length > 0 && !selectedCenterCode) {
-        setSelectedCenterCode(res.data[0].centerCode);
+      if (res.data && res.data.length > 0) {
+        if (!selectedCenterCode) {
+          setSelectedCenterCode(adminUser?.centerCode || res.data[0].centerCode);
+        }
       }
     } catch (err) {
       console.error('Error fetching centers:', err);
@@ -109,6 +128,8 @@ function AdminPanel({ language = 'en' }) {
       } else if (activeTab === 'farmers' || activeTab === 'payments') {
         const res = await axios.get(`${API_BASE}/admin/centers/${code}/farmers`);
         setFarmersQueue(res.data || []);
+        const statsRes = await axios.get(`${API_BASE}/admin/centers/${code}/stats`);
+        setStats(statsRes.data);
       }
     } catch (err) {
       console.error('Error loading center data:', err);
@@ -117,40 +138,82 @@ function AdminPanel({ language = 'en' }) {
     }
   };
 
-  const handleCreateCenter = async (e) => {
-    e.preventDefault();
-    setActionError('');
-    setActionSuccess('');
+  // Auth Handlers (Mobile + OTP)
+  const handleSendAdminOtp = async (e) => {
+    if (e) e.preventDefault();
+    setAuthError('');
 
-    if (!newCenterForm.centerCode || !newCenterForm.name || !newCenterForm.district) {
-      setActionError('Center Code, Name, and District are required');
+    const cleanPhone = authPhone.trim();
+    if (!cleanPhone || cleanPhone.length < 10) {
+      setAuthError('Please enter a valid 10-digit mobile number');
       return;
     }
 
+    setAuthLoading(true);
     try {
-      const res = await axios.post(`${API_BASE}/admin/centers/create`, newCenterForm);
+      const res = await axios.post(`${API_BASE}/auth/send-otp`, {
+        phone: cleanPhone,
+        purpose: 'admin_login'
+      });
+
       if (res.data.success) {
-        setActionSuccess(res.data.message);
-        await fetchCenters();
-        setSelectedCenterCode(newCenterForm.centerCode.toUpperCase());
-        setActiveTab('stats');
-        setNewCenterForm({
-          centerCode: '',
-          name: '',
-          district: '',
-          state: 'Telangana',
-          adminName: '',
-          adminPhone: '',
-          totalCapacityTonnes: 500,
-          acceptedCrops: ['Paddy (Common)', 'Wheat', 'Cotton', 'Maize']
-        });
-        setTimeout(() => setActionSuccess(''), 4000);
+        setAuthStep(2);
+        setDemoOtp(res.data.otp);
+        setResendTimer(30);
       }
     } catch (err) {
-      setActionError(err.response?.data?.message || 'Failed to create procurement center');
+      setAuthError(err.response?.data?.message || 'Failed to send OTP to Admin mobile number.');
+    } finally {
+      setAuthLoading(false);
     }
   };
 
+  const handleVerifyAdminOtp = async (e) => {
+    if (e) e.preventDefault();
+    setAuthError('');
+
+    const cleanOtp = authOtp.trim();
+    if (!cleanOtp || cleanOtp.length < 4) {
+      setAuthError('Please enter the 6-digit OTP');
+      return;
+    }
+
+    setAuthLoading(true);
+    try {
+      const res = await axios.post(`${API_BASE}/auth/verify-otp`, {
+        phone: authPhone.trim(),
+        otp: cleanOtp,
+        purpose: 'admin'
+      });
+
+      if (res.data.success) {
+        const adminData = res.data.admin || {
+          phone: authPhone.trim(),
+          name: res.data.center?.adminName || 'Procurement Admin',
+          centerCode: res.data.centerCode || 'CENT-PAT-01'
+        };
+        setAdminUser(adminData);
+        setSelectedCenterCode(adminData.centerCode || 'CENT-PAT-01');
+        localStorage.setItem('procurementAdmin', JSON.stringify(adminData));
+      } else {
+        setAuthError(res.data.message || 'OTP verification failed.');
+      }
+    } catch (err) {
+      setAuthError(err.response?.data?.message || 'Invalid or expired OTP code.');
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleAdminLogout = () => {
+    setAdminUser(null);
+    localStorage.removeItem('procurementAdmin');
+    setAuthStep(1);
+    setAuthPhone('');
+    setAuthOtp('');
+  };
+
+  // Slot Management
   const handleReleaseSlot = async (e) => {
     e.preventDefault();
     setActionError('');
@@ -186,6 +249,7 @@ function AdminPanel({ language = 'en' }) {
     }
   };
 
+  // Grain Weighing & Verification
   const handleVerifyFarmer = async (e) => {
     e.preventDefault();
     if (!verifyingBooking) return;
@@ -207,7 +271,8 @@ function AdminPanel({ language = 'en' }) {
     }
   };
 
-  const handleApprovePayment = async (booking) => {
+  // Payment Sanction to Farmer (By Procurement Admin)
+  const handleSanctionPaymentToFarmer = async (booking) => {
     try {
       const res = await axios.post(`${API_BASE}/admin/procurement/pay`, {
         bookingId: booking._id,
@@ -217,63 +282,175 @@ function AdminPanel({ language = 'en' }) {
       if (res.data.success) {
         setActionSuccess(res.data.message);
         loadCenterData(selectedCenterCode);
-        setTimeout(() => setActionSuccess(''), 4000);
+        setTimeout(() => setActionSuccess(''), 5000);
       }
     } catch (err) {
-      alert('Payment disbursement failed: ' + err.message);
-    }
-  };
-
-  const handleToggleCrop = async (cropName) => {
-    const center = centers.find((c) => c.centerCode === selectedCenterCode);
-    if (!center) return;
-
-    let updatedCrops;
-    if (center.acceptedCrops.includes(cropName)) {
-      if (center.acceptedCrops.length === 1) {
-        alert('A center must accept at least one crop.');
-        return;
-      }
-      updatedCrops = center.acceptedCrops.filter((c) => c !== cropName);
-    } else {
-      updatedCrops = [...center.acceptedCrops, cropName];
-    }
-
-    try {
-      const res = await axios.put(`${API_BASE}/admin/centers/${selectedCenterCode}/crops`, {
-        acceptedCrops: updatedCrops
-      });
-
-      if (res.data.success) {
-        setCenters(centers.map((c) => (c.centerCode === selectedCenterCode ? res.data.center : c)));
-        loadCenterData(selectedCenterCode);
-      }
-    } catch (err) {
-      alert('Failed to update accepted crops');
+      alert('Payment sanction failed: ' + (err.response?.data?.message || err.message));
     }
   };
 
   const currentCenter = centers.find((c) => c.centerCode === selectedCenterCode);
 
+  // ==========================================================
+  // VIEW 1: AUTHENTICATION WINDOW (MOBILE + OTP) FOR ADMIN
+  // ==========================================================
+  if (!adminUser) {
+    return (
+      <div className="admin-portal-wrapper">
+        <div className="admin-auth-card">
+          <div className="admin-auth-header">
+            <div className="admin-auth-badge">
+              <Building2 size={24} />
+            </div>
+            <h2>🏢 Procurement Centre Admin Login</h2>
+            <p>Access your Mandi Operations Portal with Mobile Number & OTP</p>
+          </div>
+
+          {authError && (
+            <div className="admin-alert alert-error">
+              <AlertCircle size={18} />
+              <span>{authError}</span>
+            </div>
+          )}
+
+          {demoOtp && authStep === 2 && (
+            <div className="admin-alert alert-info">
+              <CheckCircle2 size={18} />
+              <div>
+                <strong>Centre Admin Login OTP: </strong>
+                <span className="otp-pill">{demoOtp}</span>
+              </div>
+            </div>
+          )}
+
+          <AnimatePresence mode="wait">
+            {authStep === 1 ? (
+              <motion.form
+                key="admin-step1"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                onSubmit={handleSendAdminOtp}
+                className="admin-login-form"
+              >
+                <div className="form-group">
+                  <label>
+                    <Phone size={15} /> Registered Admin Mobile Number *
+                  </label>
+                  <div className="input-with-prefix">
+                    <span className="prefix">+91</span>
+                    <input
+                      type="tel"
+                      maxLength={10}
+                      placeholder="e.g. 9848012345"
+                      value={authPhone}
+                      onChange={(e) => setAuthPhone(e.target.value.replace(/\D/g, ''))}
+                      autoFocus
+                      required
+                    />
+                  </div>
+                  <span className="field-hint">
+                    Demo Mandi Incharge Phones: <strong>9848012345</strong> or <strong>9849056789</strong>
+                  </span>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={authLoading || authPhone.length < 10}
+                  className="admin-submit-btn"
+                >
+                  {authLoading ? 'Sending OTP...' : 'Send Login OTP →'}
+                </button>
+              </motion.form>
+            ) : (
+              <motion.form
+                key="admin-step2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                onSubmit={handleVerifyAdminOtp}
+                className="admin-login-form"
+              >
+                <div className="phone-verified-badge">
+                  <span>OTP sent to: <strong>+91 {authPhone}</strong></span>
+                  <button
+                    type="button"
+                    onClick={() => { setAuthStep(1); setAuthOtp(''); }}
+                    className="edit-phone-link"
+                  >
+                    Change
+                  </button>
+                </div>
+
+                <div className="form-group">
+                  <label>
+                    <KeyRound size={15} /> Enter 6-digit Admin OTP *
+                  </label>
+                  <input
+                    type="text"
+                    maxLength={6}
+                    placeholder="• • • • • •"
+                    value={authOtp}
+                    onChange={(e) => setAuthOtp(e.target.value.replace(/\D/g, ''))}
+                    className="otp-input-field"
+                    autoFocus
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={authLoading || authOtp.length < 4}
+                  className="admin-submit-btn"
+                >
+                  {authLoading ? 'Verifying...' : 'Verify & Enter Centre Dashboard'}
+                </button>
+
+                <div className="resend-row">
+                  {resendTimer > 0 ? (
+                    <span>Resend in {resendTimer}s</span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleSendAdminOtp}
+                      className="resend-link"
+                    >
+                      <RotateCw size={14} /> Resend OTP
+                    </button>
+                  )}
+                </div>
+              </motion.form>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    );
+  }
+
+  // ==========================================================
+  // VIEW 2: FULL PROCUREMENT CENTRE ADMIN DASHBOARD
+  // ==========================================================
   return (
     <div className="admin-portal-wrapper">
-      {/* Header & Center Code Switcher */}
+      {/* Top Banner & Active Center Switcher */}
       <div className="admin-top-banner">
         <div className="admin-title-area">
           <div className="admin-badge">
             <ShieldCheck size={18} />
-            <span>Mandi Admin Authority</span>
+            <span>Procurement Centre Admin Authority</span>
           </div>
-          <h2>🏢 Procurement Center Control Portal</h2>
-          <p>Manage Centre Slots, Live Farmer Queue, Grain Quality Testing & DBT Settlements</p>
+          <h2>🏢 {currentCenter?.name || 'APMC Procurement Center'}</h2>
+          <div className="admin-meta-info">
+            <span>👤 Incharge: <strong>{adminUser.name || currentCenter?.adminName}</strong></span>
+            <span>📱 +91 {adminUser.phone}</span>
+            <span>📍 {currentCenter?.mandal} Mandal ({currentCenter?.district})</span>
+          </div>
         </div>
 
-        {/* Center Selector Dropdown */}
-        <div className="center-selector-box">
-          <label>
-            <Building2 size={16} /> Active Procurement Center:
-          </label>
-          <div className="center-select-row">
+        <div className="top-right-controls">
+          {/* Active Center Dropdown */}
+          <div className="center-selector-box">
+            <label>
+              <Building2 size={16} /> Selected Center:
+            </label>
             <select
               value={selectedCenterCode}
               onChange={(e) => setSelectedCenterCode(e.target.value)}
@@ -285,19 +462,28 @@ function AdminPanel({ language = 'en' }) {
                 </option>
               ))}
             </select>
-            <button
-              type="button"
-              onClick={() => setActiveTab('newCenter')}
-              className="add-center-btn"
-              title="Add New Procurement Center"
-            >
-              <PlusCircle size={16} /> Add Center
-            </button>
           </div>
+
+          <button
+            type="button"
+            onClick={handleAdminLogout}
+            className="admin-logout-btn"
+            title="Logout"
+          >
+            <LogOut size={16} /> Logout
+          </button>
         </div>
       </div>
 
-      {/* Action Notifications */}
+      {/* Center Editing Restricted Notice (Requirement: ONLY Government Officer edits centers) */}
+      <div className="gov-only-notice">
+        <Info size={16} />
+        <span>
+          <strong>Procurement Center Authority Notice:</strong> Center creation, storage capacity, and location editing are managed strictly by the <strong>Superior Government Officer</strong>.
+        </span>
+      </div>
+
+      {/* Action Alerts */}
       {actionSuccess && (
         <motion.div
           initial={{ opacity: 0, y: -8 }}
@@ -320,14 +506,14 @@ function AdminPanel({ language = 'en' }) {
         </motion.div>
       )}
 
-      {/* Admin Navigation Tabs */}
+      {/* Navigation Tabs */}
       <div className="admin-nav-tabs">
         <button
           className={`tab-link ${activeTab === 'stats' ? 'active' : ''}`}
           onClick={() => setActiveTab('stats')}
         >
           <TrendingUp size={16} />
-          <span>Overview & Crop Stats</span>
+          <span>Overview & Treasury Budget</span>
         </button>
         <button
           className={`tab-link ${activeTab === 'slots' ? 'active' : ''}`}
@@ -341,19 +527,19 @@ function AdminPanel({ language = 'en' }) {
           onClick={() => setActiveTab('farmers')}
         >
           <Users size={16} />
-          <span>Farmer Arrivals & Weighing</span>
+          <span>Live Farmer Queue & Weighing</span>
         </button>
         <button
           className={`tab-link ${activeTab === 'payments' ? 'active' : ''}`}
           onClick={() => setActiveTab('payments')}
         >
           <CreditCard size={16} />
-          <span>DBT MSP Payments</span>
+          <span>Sanction Farmer Payments (DBT)</span>
         </button>
       </div>
 
       {/* ========================================================
-          TAB 1: STATS & CROP INVENTORY OVERVIEW
+          TAB 1: STATS & CENTER BUDGET OVERVIEW
       ======================================================== */}
       {activeTab === 'stats' && (
         <motion.div
@@ -361,139 +547,95 @@ function AdminPanel({ language = 'en' }) {
           animate={{ opacity: 1, y: 0 }}
           className="tab-content"
         >
-          {loading && !stats ? (
-            <div className="admin-loading">
-              <div className="spinner"></div>
-              <p>Loading center statistics...</p>
-            </div>
-          ) : (
-            <div className="stats-dashboard">
-              {/* Summary Metric Cards */}
-              <div className="metrics-summary-grid">
-                <div className="metric-card">
-                  <div className="metric-header">
-                    <span className="card-label">Total Grain Procured</span>
-                    <Package size={22} className="card-icon" />
-                  </div>
-                  <strong className="metric-number">
-                    {stats?.totalQuintalsProcured || 0} <span className="unit">Quintals</span>
-                  </strong>
-                  <span className="sub-stat">≈ {stats?.totalTonnesProcured || 0} Tonnes</span>
+          <div className="stats-dashboard">
+            {/* Metric Summary Cards */}
+            <div className="metrics-summary-grid">
+              <div className="metric-card">
+                <div className="metric-header">
+                  <span className="card-label">Sanctioned Treasury Budget</span>
+                  <Landmark size={22} className="card-icon blue" />
                 </div>
-
-                <div className="metric-card">
-                  <div className="metric-header">
-                    <span className="card-label">DBT Funds Disbursed</span>
-                    <CreditCard size={22} className="card-icon green" />
-                  </div>
-                  <strong className="metric-number text-green">
-                    ₹{(stats?.totalDisbursedINR || 0).toLocaleString('en-IN')}
-                  </strong>
-                  <span className="sub-stat">Direct Bank Transfers</span>
-                </div>
-
-                <div className="metric-card">
-                  <div className="metric-header">
-                    <span className="card-label">Farmers Served</span>
-                    <Users size={22} className="card-icon orange" />
-                  </div>
-                  <strong className="metric-number">
-                    {stats?.totalFarmersServed || 0}
-                  </strong>
-                  <span className="sub-stat">{stats?.waitingFarmers || 0} in active queue</span>
-                </div>
-
-                <div className="metric-card">
-                  <div className="metric-header">
-                    <span className="card-label">Warehouse Capacity</span>
-                    <Building2 size={22} className="card-icon" />
-                  </div>
-                  <strong className="metric-number">
-                    {currentCenter?.currentStorageTonnes || 0} / {currentCenter?.totalCapacityTonnes || 500}
-                    <span className="unit"> Tonnes</span>
-                  </strong>
-                  <div className="storage-track">
-                    <div
-                      className="storage-bar"
-                      style={{
-                        width: `${Math.min(
-                          100,
-                          Math.round(
-                            ((currentCenter?.currentStorageTonnes || 0) /
-                              (currentCenter?.totalCapacityTonnes || 500)) *
-                              100
-                          )
-                        )}%`
-                      }}
-                    />
-                  </div>
-                </div>
+                <strong className="metric-number text-primary">
+                  ₹{(stats?.allocatedBudget || currentCenter?.allocatedBudget || 0).toLocaleString('en-IN')}
+                </strong>
+                <span className="sub-stat">Sanctioned by Superior Govt Officer</span>
               </div>
 
-              {/* Crop-wise Procurement Statistics */}
-              <div className="crops-analytics-panel">
-                <div className="panel-title-bar">
-                  <h3>🌾 Crop-Wise Procurement Breakdown</h3>
-                  <span className="info-tag">Government MSP Rates Linked</span>
+              <div className="metric-card">
+                <div className="metric-header">
+                  <span className="card-label">DBT Disbursed to Farmers</span>
+                  <CreditCard size={22} className="card-icon green" />
                 </div>
+                <strong className="metric-number text-green">
+                  ₹{(stats?.totalDisbursedINR || currentCenter?.disbursedToFarmers || 0).toLocaleString('en-IN')}
+                </strong>
+                <span className="sub-stat">Sanctioned by Centre Admin</span>
+              </div>
 
-                <div className="crop-cards-grid">
-                  {stats?.cropBreakdown &&
-                    Object.entries(stats.cropBreakdown).map(([cropName, cropData]) => (
-                      <div key={cropName} className="crop-stat-card">
-                        <div className="crop-card-top">
-                          <h4>{cropName}</h4>
-                          <span className="msp-badge">
-                            MSP: ₹{cropData.mspRate}/q
-                          </span>
+              <div className="metric-card">
+                <div className="metric-header">
+                  <span className="card-label">Remaining Centre Balance</span>
+                  <ShieldCheck size={22} className="card-icon orange" />
+                </div>
+                <strong className="metric-number">
+                  ₹{(
+                    (stats?.allocatedBudget || currentCenter?.allocatedBudget || 2500000) -
+                    (stats?.totalDisbursedINR || currentCenter?.disbursedToFarmers || 0)
+                  ).toLocaleString('en-IN')}
+                </strong>
+                <span className="sub-stat">Available for Farmer Payouts</span>
+              </div>
+
+              <div className="metric-card">
+                <div className="metric-header">
+                  <span className="card-label">Grain Procured</span>
+                  <Package size={22} className="card-icon" />
+                </div>
+                <strong className="metric-number">
+                  {stats?.totalQuintalsProcured || 0} <span className="unit">Quintals</span>
+                </strong>
+                <span className="sub-stat">≈ {stats?.totalTonnesProcured || 0} Tonnes</span>
+              </div>
+            </div>
+
+            {/* Crop-wise Analytics */}
+            <div className="crops-analytics-panel">
+              <div className="panel-title-bar">
+                <h3>🌾 Crop-Wise Procurement Breakdown [{selectedCenterCode}]</h3>
+                <span className="info-tag">Government MSP Rates Linked</span>
+              </div>
+
+              <div className="crop-cards-grid">
+                {stats?.cropBreakdown &&
+                  Object.entries(stats.cropBreakdown).map(([cropName, cropData]) => (
+                    <div key={cropName} className="crop-stat-card">
+                      <div className="crop-card-top">
+                        <h4>{cropName}</h4>
+                        <span className="msp-badge">
+                          MSP: ₹{cropData.mspRate}/q
+                        </span>
+                      </div>
+                      <div className="crop-card-metrics">
+                        <div>
+                          <span className="label">Procured:</span>
+                          <strong>{cropData.procuredQuintals} Quintals</strong>
                         </div>
-                        <div className="crop-card-metrics">
-                          <div>
-                            <span className="label">Procured:</span>
-                            <strong>{cropData.procuredQuintals} Quintals</strong>
-                          </div>
-                          <div>
-                            <span className="label">Total Value:</span>
-                            <strong className="text-green">
-                              ₹{cropData.totalValue.toLocaleString('en-IN')}
-                            </strong>
-                          </div>
-                          <div>
-                            <span className="label">Batches Processed:</span>
-                            <span>{cropData.farmersCount} Farmers</span>
-                          </div>
+                        <div>
+                          <span className="label">Total Value:</span>
+                          <strong className="text-green">
+                            ₹{cropData.totalValue.toLocaleString('en-IN')}
+                          </strong>
+                        </div>
+                        <div>
+                          <span className="label">Farmers Served:</span>
+                          <span>{cropData.farmersCount} Farmers</span>
                         </div>
                       </div>
-                    ))}
-                </div>
-              </div>
-
-              {/* Accepted Crops Configuration */}
-              <div className="manage-crops-section">
-                <h3>🏷️ Manage Crops Accepted at [{selectedCenterCode}]</h3>
-                <p>Click on any crop tag to toggle buying status for this procurement center:</p>
-                <div className="crop-tags-selector">
-                  {allAvailableCrops.map((crop) => {
-                    const isAccepted = currentCenter?.acceptedCrops?.includes(crop);
-                    return (
-                      <button
-                        key={crop}
-                        type="button"
-                        onClick={() => handleToggleCrop(crop)}
-                        className={`crop-tag-pill ${isAccepted ? 'accepted' : 'inactive'}`}
-                      >
-                        <Tag size={14} />
-                        <span>{crop}</span>
-                        <span className="status-indicator">
-                          {isAccepted ? '✓ Buying' : '+ Disabled'}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
+                    </div>
+                  ))}
               </div>
             </div>
-          )}
+          </div>
         </motion.div>
       )}
 
@@ -509,9 +651,9 @@ function AdminPanel({ language = 'en' }) {
           <div className="slots-manager-layout">
             {/* Form to Release New Slot */}
             <div className="release-slot-card">
-              <h3>📅 Release New Procurement Slot</h3>
+              <h3>📅 Release Procurement Slot</h3>
               <p className="subtitle">
-                Schedule a time window for farmers at <strong>[{selectedCenterCode}] {currentCenter?.name}</strong>
+                Schedule a procurement window for farmers at <strong>[{selectedCenterCode}] {currentCenter?.name}</strong>
               </p>
 
               <form onSubmit={handleReleaseSlot} className="release-form">
@@ -558,7 +700,7 @@ function AdminPanel({ language = 'en' }) {
                   </div>
 
                   <div className="form-group">
-                    <label>Farmer Capacity (Max Farmers) *</label>
+                    <label>Farmer Capacity *</label>
                     <input
                       type="number"
                       min="5"
@@ -578,11 +720,11 @@ function AdminPanel({ language = 'en' }) {
 
             {/* List of Active Scheduled Slots */}
             <div className="active-slots-list-panel">
-              <h3>📋 Released Slots for [{selectedCenterCode}]</h3>
+              <h3>📋 Active Slots for [{selectedCenterCode}]</h3>
               {slots.length === 0 ? (
                 <div className="no-data-box">
                   <Calendar size={36} />
-                  <p>No active slots released yet for this center. Create one above!</p>
+                  <p>No active slots scheduled yet for this center. Release one above!</p>
                 </div>
               ) : (
                 <div className="slots-table-wrapper">
@@ -652,7 +794,7 @@ function AdminPanel({ language = 'en' }) {
       )}
 
       {/* ========================================================
-          TAB 3: LIVE FARMER ARRIVALS & WEIGHING
+          TAB 3: LIVE FARMER QUEUE & WEIGHING
       ======================================================== */}
       {activeTab === 'farmers' && (
         <motion.div
@@ -663,8 +805,8 @@ function AdminPanel({ language = 'en' }) {
           <div className="farmers-queue-section">
             <div className="section-header">
               <div>
-                <h3>🌾 Registered Farmer Queue & Grain Verification</h3>
-                <p>Record grain weights in Quintals, test quality grade, and approve procurement</p>
+                <h3>🌾 Live Farmer Queue & Grain Verification</h3>
+                <p>Record grain weights in Quintals, test quality grade, and approve procurement batches</p>
               </div>
               <button
                 type="button"
@@ -678,7 +820,7 @@ function AdminPanel({ language = 'en' }) {
             {farmersQueue.length === 0 ? (
               <div className="no-data-box">
                 <Users size={36} />
-                <p>No farmers currently in queue for this center.</p>
+                <p>No farmers currently in queue for this procurement center.</p>
               </div>
             ) : (
               <div className="slots-table-wrapper">
@@ -688,7 +830,7 @@ function AdminPanel({ language = 'en' }) {
                       <th>Token</th>
                       <th>Farmer Info</th>
                       <th>Slot & Crop</th>
-                      <th>Weight & MSP</th>
+                      <th>Weight & Value</th>
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
@@ -747,15 +889,15 @@ function AdminPanel({ language = 'en' }) {
                           {item.status === 'verified' && (
                             <button
                               type="button"
-                              onClick={() => handleApprovePayment(item)}
+                              onClick={() => handleSanctionPaymentToFarmer(item)}
                               className="action-btn pay-btn"
                             >
-                              <CreditCard size={14} /> Pay DBT
+                              <CreditCard size={14} /> Sanction DBT Payment
                             </button>
                           )}
                           {item.status === 'completed' && (
                             <span className="done-label">
-                              <CheckCircle2 size={16} /> Paid
+                              <CheckCircle2 size={16} /> Sanctioned & Paid
                             </span>
                           )}
                         </td>
@@ -770,7 +912,7 @@ function AdminPanel({ language = 'en' }) {
       )}
 
       {/* ========================================================
-          TAB 4: DBT PAYMENTS DISBURSEMENT
+          TAB 4: SANCTION PAYMENTS TO FARMERS (PROCUREMENT ADMIN)
       ======================================================== */}
       {activeTab === 'payments' && (
         <motion.div
@@ -781,8 +923,17 @@ function AdminPanel({ language = 'en' }) {
           <div className="payments-management-section">
             <div className="section-header">
               <div>
-                <h3>💳 Direct Benefit Transfer (DBT) MSP Settlements</h3>
-                <p>Authorize government MSP payments directly to verified farmers' bank accounts</p>
+                <h3>💳 Procurement Admin DBT Payment Sanctioning</h3>
+                <p>Sanction and disburse direct MSP payments from your Centre Treasury Budget to verified farmers</p>
+              </div>
+              <div className="budget-capsule">
+                <span>Available Centre Budget:</span>
+                <strong className="text-green">
+                  ₹{(
+                    (stats?.allocatedBudget || currentCenter?.allocatedBudget || 2500000) -
+                    (stats?.totalDisbursedINR || currentCenter?.disbursedToFarmers || 0)
+                  ).toLocaleString('en-IN')}
+                </strong>
               </div>
             </div>
 
@@ -790,12 +941,12 @@ function AdminPanel({ language = 'en' }) {
               <table className="admin-table">
                 <thead>
                   <tr>
-                    <th>Farmer</th>
+                    <th>Farmer Details</th>
                     <th>Crop & Weight</th>
                     <th>MSP Rate</th>
-                    <th>Settlement Amount</th>
+                    <th>Sanction Amount</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th>Admin Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -805,12 +956,14 @@ function AdminPanel({ language = 'en' }) {
                       <tr key={item._id}>
                         <td>
                           <strong>{item.farmer?.name}</strong>
-                          <div className="small-text">A/C: {item.farmer?.bankAccount || 'Linked Bank'}</div>
+                          <div className="small-text">A/C: {item.farmer?.bankAccount || '••••8283'}</div>
                           <div className="small-text">📱 {item.farmer?.phone}</div>
                         </td>
                         <td>
                           <strong>{item.crop}</strong>
-                          <div className="small-text">{item.quantityQuintals || 10} Quintals ({item.qualityGrade})</div>
+                          <div className="small-text">
+                            {item.quantityQuintals || 10} Quintals ({item.qualityGrade || 'Grade A'})
+                          </div>
                         </td>
                         <td>
                           ₹{item.ratePerQuintal || MSP_RATES[item.crop] || 2300}/q
@@ -822,137 +975,36 @@ function AdminPanel({ language = 'en' }) {
                         </td>
                         <td>
                           <span className={`status-chip ${item.status}`}>
-                            {item.status === 'completed' ? 'Paid to Bank' : 'Ready for Payment'}
+                            {item.status === 'completed' ? 'Sanctioned (Paid)' : 'Awaiting Admin Sanction'}
                           </span>
                         </td>
                         <td>
                           {item.status === 'verified' ? (
                             <button
                               type="button"
-                              onClick={() => handleApprovePayment(item)}
+                              onClick={() => handleSanctionPaymentToFarmer(item)}
                               className="action-btn pay-btn"
                             >
-                              <ShieldCheck size={16} /> Disburse DBT Funds
+                              <ShieldCheck size={16} /> Sanction & Pay DBT
                             </button>
                           ) : (
                             <span className="done-label">
-                              <CheckCircle2 size={16} /> DBT Completed
+                              <CheckCircle2 size={16} /> DBT Disbursed
                             </span>
                           )}
                         </td>
                       </tr>
                     ))}
+                  {farmersQueue.filter((f) => f.status === 'verified' || f.status === 'completed').length === 0 && (
+                    <tr>
+                      <td colSpan="6" className="text-center py-4 text-muted">
+                        No verified grain batches pending payment. Go to "Live Farmer Queue & Weighing" to weigh and verify farmer grain.
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
-          </div>
-        </motion.div>
-      )}
-
-      {/* ========================================================
-          TAB 5: ADD NEW PROCUREMENT CENTER
-      ======================================================== */}
-      {activeTab === 'newCenter' && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="tab-content"
-        >
-          <div className="new-center-card">
-            <h3>🏢 Register New Procurement Center</h3>
-            <p className="subtitle">Assign a unique Center Code, location, capacity, and accepted crop types</p>
-
-            <form onSubmit={handleCreateCenter} className="center-form">
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Unique Center Code * (e.g. CENT-KRN-04)</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. CENT-HYD-04"
-                    value={newCenterForm.centerCode}
-                    onChange={(e) =>
-                      setNewCenterForm({
-                        ...newCenterForm,
-                        centerCode: e.target.value.toUpperCase()
-                      })
-                    }
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>Procurement Center Name *</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Karimnagar APMC Main Mandi"
-                    value={newCenterForm.name}
-                    onChange={(e) =>
-                      setNewCenterForm({ ...newCenterForm, name: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label>District *</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Karimnagar"
-                    value={newCenterForm.district}
-                    onChange={(e) =>
-                      setNewCenterForm({ ...newCenterForm, district: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>Storage Capacity (Tonnes)</label>
-                  <input
-                    type="number"
-                    value={newCenterForm.totalCapacityTonnes}
-                    onChange={(e) =>
-                      setNewCenterForm({
-                        ...newCenterForm,
-                        totalCapacityTonnes: e.target.value
-                      })
-                    }
-                  />
-                </div>
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Mandi Officer Name</label>
-                  <input
-                    type="text"
-                    placeholder="Officer In-charge"
-                    value={newCenterForm.adminName}
-                    onChange={(e) =>
-                      setNewCenterForm({ ...newCenterForm, adminName: e.target.value })
-                    }
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>Contact Phone</label>
-                  <input
-                    type="tel"
-                    placeholder="10-digit phone"
-                    value={newCenterForm.adminPhone}
-                    onChange={(e) =>
-                      setNewCenterForm({ ...newCenterForm, adminPhone: e.target.value })
-                    }
-                  />
-                </div>
-              </div>
-
-              <button type="submit" className="submit-center-btn">
-                <PlusCircle size={18} /> Register Procurement Center
-              </button>
-            </form>
           </div>
         </motion.div>
       )}
@@ -983,7 +1035,7 @@ function AdminPanel({ language = 'en' }) {
               <div className="farmer-summary-banner">
                 <div>
                   <strong>Farmer: {verifyingBooking.farmer?.name}</strong>
-                  <div className="small-text">Phone: {verifyingBooking.farmer?.phone}</div>
+                  <div className="small-text">Phone: +91 {verifyingBooking.farmer?.phone}</div>
                 </div>
                 <div className="token-pill">Token #{verifyingBooking.queuePosition}</div>
               </div>
@@ -995,9 +1047,9 @@ function AdminPanel({ language = 'en' }) {
                     value={verifyForm.crop}
                     onChange={(e) => setVerifyForm({ ...verifyForm, crop: e.target.value })}
                   >
-                    {allAvailableCrops.map((c) => (
+                    {Object.keys(MSP_RATES).map((c) => (
                       <option key={c} value={c}>
-                        {c} (MSP: ₹{MSP_RATES[c] || 2300}/q)
+                        {c} (MSP: ₹{MSP_RATES[c]}/q)
                       </option>
                     ))}
                   </select>
@@ -1067,15 +1119,5 @@ function AdminPanel({ language = 'en' }) {
     </div>
   );
 }
-
-const MSP_RATES = {
-  'Paddy (Common)': 2300,
-  'Paddy (Grade A)': 2320,
-  'Wheat': 2275,
-  'Cotton': 7121,
-  'Maize': 2090,
-  'Soyabean': 4892,
-  'Pulses': 8682
-};
 
 export default AdminPanel;

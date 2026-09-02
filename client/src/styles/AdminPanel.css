@@ -4,6 +4,152 @@
   gap: 1.5rem;
 }
 
+/* Admin Mobile + OTP Login Card */
+.admin-auth-card {
+  max-width: 480px;
+  margin: 2rem auto;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 2.25rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+.admin-auth-header {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.admin-auth-badge {
+  display: inline-flex;
+  padding: 0.75rem;
+  background: #ecfdf5;
+  color: #059669;
+  border-radius: 50%;
+  margin-bottom: 0.75rem;
+}
+
+.admin-auth-header h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 0.35rem;
+}
+
+.admin-auth-header p {
+  color: #64748b;
+  font-size: 0.88rem;
+}
+
+.admin-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.admin-submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  background: #059669;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+}
+
+.admin-submit-btn:hover:not(:disabled) {
+  background: #047857;
+  transform: translateY(-1px);
+}
+
+.admin-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.otp-input-field {
+  width: 100%;
+  padding: 0.85rem;
+  text-align: center;
+  font-size: 1.5rem;
+  letter-spacing: 6px;
+  font-weight: 800;
+  border: 2px solid #cbd5e1;
+  border-radius: 10px;
+  outline: none;
+  color: #0f172a;
+}
+
+.otp-input-field:focus {
+  border-color: #059669;
+}
+
+.otp-pill {
+  background: #059669;
+  color: white;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.top-right-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.85rem;
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-logout-btn:hover {
+  background: #dc2626;
+  color: white;
+}
+
+.gov-only-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+}
+
+.budget-capsule {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
 .admin-top-banner {
   background: white;
   border-radius: 16px;
@@ -38,37 +184,35 @@
   margin-bottom: 0.25rem;
 }
 
-.admin-title-area p {
+.admin-meta-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.85rem;
   color: #64748b;
-  font-size: 0.9rem;
+  margin-top: 0.4rem;
 }
 
 .center-selector-box {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.3rem;
 }
 
 .center-selector-box label {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 700;
   color: #475569;
 }
 
-.center-select-row {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
 .center-dropdown {
-  padding: 0.65rem 0.9rem;
+  padding: 0.55rem 0.85rem;
   border: 1.5px solid #cbd5e1;
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #0f172a;
   outline: none;
@@ -78,25 +222,6 @@
 
 .center-dropdown:focus {
   border-color: #059669;
-}
-
-.add-center-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.65rem 0.9rem;
-  background: #059669;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.88rem;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.add-center-btn:hover {
-  background: #047857;
 }
 
 /* Nav Tabs */
@@ -164,6 +289,10 @@
   color: #059669;
 }
 
+.card-icon.blue {
+  color: #2563eb;
+}
+
 .card-icon.green {
   color: #10b981;
 }
@@ -180,6 +309,10 @@
   margin-bottom: 0.25rem;
 }
 
+.metric-number.text-primary {
+  color: #1e40af;
+}
+
 .metric-number .unit {
   font-size: 0.9rem;
   color: #64748b;
@@ -193,21 +326,6 @@
 .sub-stat {
   font-size: 0.8rem;
   color: #64748b;
-}
-
-.storage-track {
-  width: 100%;
-  height: 6px;
-  background: #e2e8f0;
-  border-radius: 9999px;
-  overflow: hidden;
-  margin-top: 0.5rem;
-}
-
-.storage-bar {
-  height: 100%;
-  background: #059669;
-  border-radius: 9999px;
 }
 
 /* Crop Analytics Panel */
@@ -288,63 +406,6 @@
   margin-right: 0.35rem;
 }
 
-/* Manage Crops Section */
-.manage-crops-section {
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 1.5rem;
-}
-
-.manage-crops-section h3 {
-  font-size: 1.1rem;
-  font-weight: 800;
-  margin-bottom: 0.25rem;
-}
-
-.manage-crops-section p {
-  color: #64748b;
-  font-size: 0.88rem;
-  margin-bottom: 1rem;
-}
-
-.crop-tags-selector {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-}
-
-.crop-tag-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.45rem 0.9rem;
-  border-radius: 9999px;
-  border: 1.5px solid #cbd5e1;
-  background: #ffffff;
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.crop-tag-pill.accepted {
-  background: #ecfdf5;
-  border-color: #10b981;
-  color: #047857;
-}
-
-.crop-tag-pill.inactive {
-  background: #f8fafc;
-  color: #94a3b8;
-}
-
-.status-indicator {
-  font-size: 0.75rem;
-  font-weight: 800;
-  opacity: 0.9;
-}
-
 /* Slots Manager Layout */
 .slots-manager-layout {
   display: grid;
@@ -354,7 +415,6 @@
 
 .release-slot-card,
 .active-slots-list-panel,
-.new-center-card,
 .farmers-queue-section,
 .payments-management-section {
   background: white;
@@ -365,7 +425,6 @@
 }
 
 .release-form,
-.center-form,
 .modal-form {
   display: flex;
   flex-direction: column;
@@ -381,8 +440,6 @@
 
 .release-slot-card input,
 .release-slot-card select,
-.center-form input,
-.center-form select,
 .modal-form input,
 .modal-form select {
   padding: 0.65rem 0.85rem;
@@ -394,13 +451,11 @@
   width: 100%;
 }
 
-.release-slot-card input:focus,
-.center-form input:focus {
+.release-slot-card input:focus {
   border-color: #059669;
 }
 
-.release-btn,
-.submit-center-btn {
+.release-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -415,8 +470,7 @@
   cursor: pointer;
 }
 
-.release-btn:hover,
-.submit-center-btn:hover {
+.release-btn:hover {
   background: #047857;
 }
 

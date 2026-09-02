@@ -2,7 +2,18 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { motion } from 'framer-motion';
-import { User, Phone, CreditCard, MapPin, Building, Sparkles, AlertCircle, CheckCircle2, ArrowRight } from 'lucide-react';
+import {
+  User,
+  Phone,
+  CreditCard,
+  MapPin,
+  Building,
+  Sparkles,
+  AlertCircle,
+  CheckCircle2,
+  ArrowRight
+} from 'lucide-react';
+import VoiceSpeakerBtn from './VoiceSpeakerBtn';
 import { translations } from '../languages';
 import '../styles/Registration.css';
 
@@ -11,7 +22,7 @@ const API_BASE = process.env.REACT_APP_API || 'http://localhost:5000/api';
 function FarmerRegistration({ onRegistrationSuccess, onSwitchToLogin, language = 'en' }) {
   const t = translations[language] || translations.en;
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
-  
+
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -34,7 +45,6 @@ function FarmerRegistration({ onRegistrationSuccess, onSwitchToLogin, language =
       const msg = error.response?.data?.message || 'Registration failed. Please check your details.';
       setErrorMessage(msg);
       if (error.response?.data?.alreadyRegistered) {
-        // Offer quick switch to login
         setTimeout(() => {
           if (onSwitchToLogin) onSwitchToLogin(data.phone);
         }, 2500);
@@ -56,7 +66,21 @@ function FarmerRegistration({ onRegistrationSuccess, onSwitchToLogin, language =
             <Sparkles size={18} />
             <span>Kisan DBT Portal</span>
           </div>
-          <h2>{t.register}</h2>
+          <div className="title-with-speaker">
+            <h2>{t.register}</h2>
+            <VoiceSpeakerBtn
+              text={
+                language === 'te'
+                  ? 'రైతు నమోదు ఫారమ్. దయచేసి మీ పేరు, 10 అంకెల మొబైల్ నంబర్, గ్రామం మరియు బ్యాంక్ ఖాతా వివరాలను నమోదు చేయండి.'
+                  : language === 'hi'
+                  ? 'किसान पंजीकरण फॉर्म। कृपया अपना नाम, मोबाइल नंबर, गाँव और बैंक खाता दर्ज करें।'
+                  : 'Farmer registration form. Please enter your name, mobile number, address, and bank details.'
+              }
+              language={language}
+              label="Listen form instructions"
+              size={18}
+            />
+          </div>
           <p className="subtitle">{t.tagline}</p>
         </div>
 
@@ -88,9 +112,16 @@ function FarmerRegistration({ onRegistrationSuccess, onSwitchToLogin, language =
             <div className="form-grid">
               {/* Full Name */}
               <div className="form-group">
-                <label>
-                  <User size={16} /> {t.fullName} *
-                </label>
+                <div className="label-row-with-voice">
+                  <label>
+                    <User size={16} /> {t.fullName} *
+                  </label>
+                  <VoiceSpeakerBtn
+                    text={t.speakNamePrompt}
+                    language={language}
+                    size={14}
+                  />
+                </div>
                 <input
                   {...register('name', { required: 'Name is required' })}
                   placeholder="e.g. Ramesh Kumar"
@@ -99,11 +130,18 @@ function FarmerRegistration({ onRegistrationSuccess, onSwitchToLogin, language =
                 {errors.name && <span className="field-error">{errors.name.message}</span>}
               </div>
 
-              {/* Phone */}
+              {/* Mobile Phone */}
               <div className="form-group">
-                <label>
-                  <Phone size={16} /> {t.phone} *
-                </label>
+                <div className="label-row-with-voice">
+                  <label>
+                    <Phone size={16} /> {t.phone} *
+                  </label>
+                  <VoiceSpeakerBtn
+                    text={t.speakMobilePrompt}
+                    language={language}
+                    size={14}
+                  />
+                </div>
                 <div className="input-with-prefix">
                   <span className="prefix">+91</span>
                   <input
@@ -122,27 +160,41 @@ function FarmerRegistration({ onRegistrationSuccess, onSwitchToLogin, language =
             </div>
 
             <div className="form-grid">
-              {/* Aadhar */}
+              {/* Aadhaar Number */}
               <div className="form-group">
-                <label>
-                  <CreditCard size={16} /> {t.aadhar}
-                </label>
+                <div className="label-row-with-voice">
+                  <label>
+                    <CreditCard size={16} /> {t.aadhar}
+                  </label>
+                  <VoiceSpeakerBtn
+                    text={t.speakAadharPrompt}
+                    language={language}
+                    size={14}
+                  />
+                </div>
                 <input
                   {...register('aadhar')}
                   maxLength={16}
-                  placeholder="12-digit Aadhar (Optional)"
+                  placeholder="12-digit Aadhaar (Optional)"
                   className="form-input"
                 />
               </div>
 
               {/* Address */}
               <div className="form-group">
-                <label>
-                  <MapPin size={16} /> {t.address} *
-                </label>
+                <div className="label-row-with-voice">
+                  <label>
+                    <MapPin size={16} /> {t.address} *
+                  </label>
+                  <VoiceSpeakerBtn
+                    text={t.speakAddressPrompt}
+                    language={language}
+                    size={14}
+                  />
+                </div>
                 <input
                   {...register('address', { required: 'Village / District address is required' })}
-                  placeholder="Village, Taluka, District"
+                  placeholder="Village, Mandal, District"
                   className="form-input"
                 />
                 {errors.address && <span className="field-error">{errors.address.message}</span>}
@@ -152,9 +204,16 @@ function FarmerRegistration({ onRegistrationSuccess, onSwitchToLogin, language =
             <div className="form-grid">
               {/* Bank Account */}
               <div className="form-group">
-                <label>
-                  <Building size={16} /> {t.bankAccount}
-                </label>
+                <div className="label-row-with-voice">
+                  <label>
+                    <Building size={16} /> {t.bankAccount}
+                  </label>
+                  <VoiceSpeakerBtn
+                    text={t.speakBankPrompt}
+                    language={language}
+                    size={14}
+                  />
+                </div>
                 <input
                   {...register('bankAccount')}
                   placeholder="For direct MSP payment"
@@ -164,9 +223,16 @@ function FarmerRegistration({ onRegistrationSuccess, onSwitchToLogin, language =
 
               {/* UPI */}
               <div className="form-group">
-                <label>
-                  <CreditCard size={16} /> {t.upi}
-                </label>
+                <div className="label-row-with-voice">
+                  <label>
+                    <CreditCard size={16} /> {t.upi}
+                  </label>
+                  <VoiceSpeakerBtn
+                    text={t.speakUpiPrompt}
+                    language={language}
+                    size={14}
+                  />
+                </div>
                 <input
                   {...register('upi')}
                   placeholder="farmer@upi (Optional)"

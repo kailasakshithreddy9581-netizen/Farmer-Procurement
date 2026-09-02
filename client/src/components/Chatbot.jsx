@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send, Mic, MicOff, Volume2, VolumeX, Sparkles } from 'lucide-react';
 import { translations, languagesList, chatbotResponses, getChatbotReply } from '../languages';
+import { speakText, stopSpeech } from '../utils/speech';
 import '../styles/Chatbot.css';
 
 function Chatbot({ language = 'en' }) {
@@ -15,7 +16,7 @@ function Chatbot({ language = 'en' }) {
   const [isListening, setIsListening] = useState(false);
   const [voiceEnabled, setVoiceEnabled] = useState(true);
   const [listeningStatus, setListeningStatus] = useState('');
-  
+
   const messagesEndRef = useRef(null);
   const recognitionRef = useRef(null);
 
@@ -40,27 +41,10 @@ function Chatbot({ language = 'en' }) {
     }
   }, [messages, isOpen]);
 
-  // Text to Speech (TTS)
-  const speakText = (text) => {
-    if (!voiceEnabled || !('speechSynthesis' in window)) return;
-    try {
-      window.speechSynthesis.cancel(); // cancel any previous utterance
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = speechCode;
-      utterance.rate = 0.95;
-      utterance.pitch = 1.0;
-
-      // Try to find native regional voice if available
-      const voices = window.speechSynthesis.getVoices();
-      const matchedVoice = voices.find((v) => v.lang === speechCode || v.lang.startsWith(language));
-      if (matchedVoice) {
-        utterance.voice = matchedVoice;
-      }
-
-      window.speechSynthesis.speak(utterance);
-    } catch (err) {
-      console.warn('Speech synthesis error:', err);
-    }
+  // Text to Speech
+  const playSpeech = (text) => {
+    if (!voiceEnabled) return;
+    speakText(text, language);
   };
 
   // Voice Recognition (STT)
@@ -88,7 +72,7 @@ function Chatbot({ language = 'en' }) {
 
       recognition.onstart = () => {
         setIsListening(true);
-        setListeningStatus(t.voiceListening || 'Listening...');
+        setListeningStatus(t.voiceListening || 'Listening... Speak now');
       };
 
       recognition.onresult = (event) => {
@@ -131,7 +115,9 @@ function Chatbot({ language = 'en' }) {
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
+    // Get precise reply with strict guardrail
     const replyText = getChatbotReply(query, language);
+
     const botMessage = {
       id: 'bot-' + Date.now(),
       type: 'bot',
@@ -141,15 +127,16 @@ function Chatbot({ language = 'en' }) {
 
     setMessages((prev) => [...prev, userMessage, botMessage]);
     setInput('');
-    speakText(replyText);
+    playSpeech(replyText);
   };
 
   const quickPrompts = [
-    { label: '🌾 MSP Rates', query: 'MSP price rates' },
-    { label: '📅 Book Slot', query: 'How to book a slot?' },
-    { label: '📊 Queue Token', query: 'Check queue status and wait time' },
-    { label: '💳 Payment', query: 'Payment and DBT process' },
-    { label: '📞 Helpline', query: 'Kisan helpline number' }
+    { label: '🌾 MSP Rates', query: 'What are the MSP price rates for crops?' },
+    { label: '📅 Book Slot', query: 'How to book a slot at procurement center?' },
+    { label: '📊 Queue Token', query: 'Check live queue status and waiting time' },
+    { label: '💳 Payment & DBT', query: 'How does payment and DBT work?' },
+    { label: '📞 Toll-Free IVR', query: 'How to book slot by telephone call without smartphone?' },
+    { label: '📄 Documents', query: 'What documents are required at mandi center?' }
   ];
 
   return (
@@ -160,7 +147,7 @@ function Chatbot({ language = 'en' }) {
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.92 }}
-        aria-label="Toggle AI Assistant"
+        aria-label="Toggle Krishi AI Assistant"
       >
         <MessageSquare size={26} />
         {!isOpen && <span className="fab-badge">AI</span>}
@@ -194,7 +181,7 @@ function Chatbot({ language = 'en' }) {
                 <button
                   type="button"
                   onClick={() => {
-                    if (voiceEnabled) window.speechSynthesis?.cancel();
+                    if (voiceEnabled) stopSpeech();
                     setVoiceEnabled(!voiceEnabled);
                   }}
                   className={`icon-btn ${voiceEnabled ? 'active' : 'muted'}`}
@@ -204,7 +191,10 @@ function Chatbot({ language = 'en' }) {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => {
+                    stopSpeech();
+                    setIsOpen(false);
+                  }}
                   className="icon-btn close-btn"
                   title="Close"
                 >
@@ -235,14 +225,26 @@ function Chatbot({ language = 'en' }) {
                 >
                   <div className={`message-bubble ${msg.type}`}>
                     <p>{msg.text}</p>
-                    <span className="message-timestamp">{msg.time}</span>
+                    <div className="bubble-footer">
+                      <span className="message-timestamp">{msg.time}</span>
+                      {msg.type === 'bot' && (
+                        <button
+                          type="button"
+                          onClick={() => playSpeech(msg.text)}
+                          className="listen-again-btn"
+                          title="Listen again"
+                        >
+                          <Volume2 size={13} />
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Listening Banner */}
+            {/* Listening Status Banner */}
             {isListening && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
@@ -261,13 +263,13 @@ function Chatbot({ language = 'en' }) {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                placeholder={t.chatPlaceholder || 'Ask anything or use voice...'}
+                placeholder={t.chatPlaceholder || 'Ask about centers, slots, queue, payments, MSP...'}
               />
               <button
                 type="button"
                 onClick={toggleListening}
                 className={`voice-record-btn ${isListening ? 'recording' : ''}`}
-                title="Voice Input"
+                title="Voice Input (Speak)"
               >
                 {isListening ? <MicOff size={18} /> : <Mic size={18} />}
               </button>

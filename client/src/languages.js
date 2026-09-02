@@ -1,7 +1,7 @@
 export const languagesList = [
   { code: 'en', name: 'English', nativeName: 'English', speechCode: 'en-IN', flag: '🇬🇧' },
-  { code: 'hi', name: 'Hindi', nativeName: 'हिन्दी', speechCode: 'hi-IN', flag: '🇮🇳' },
   { code: 'te', name: 'Telugu', nativeName: 'తెలుగు', speechCode: 'te-IN', flag: '🇮🇳' },
+  { code: 'hi', name: 'Hindi', nativeName: 'हिन्दी', speechCode: 'hi-IN', flag: '🇮🇳' },
   { code: 'ta', name: 'Tamil', nativeName: 'தமிழ்', speechCode: 'ta-IN', flag: '🇮🇳' },
   { code: 'kn', name: 'Kannada', nativeName: 'ಕನ್ನಡ', speechCode: 'kn-IN', flag: '🇮🇳' },
   { code: 'ml', name: 'Malayalam', nativeName: 'മലയാളം', speechCode: 'ml-IN', flag: '🇮🇳' },
@@ -48,8 +48,8 @@ export const translations = {
     enterMobile: "Enter 10-digit Mobile Number",
     phoneRequired: "Please enter a valid 10-digit mobile number",
     fillAllFields: "Please fill all required fields",
-    chatbotTitle: "🌾 Krishi Sahayak (Multilingual AI)",
-    chatPlaceholder: "Ask about slots, queue, payment, MSP or speak...",
+    chatbotTitle: "🌾 Krishi Sahayak (Procurement AI)",
+    chatPlaceholder: "Ask about centers, slots, queue tokens, payments, MSP...",
     voiceListening: "Listening... Speak now",
     voiceNotSupported: "Voice recognition is not supported in this browser",
     center: "Procurement Center",
@@ -64,8 +64,8 @@ export const translations = {
     estimatedWait: "Estimated Wait Time",
     amount: "Procurement Amount (₹)",
     transactionId: "Transaction ID",
-    paid: "Paid to Bank",
-    unpaid: "Payment Processing",
+    paid: "Paid to Bank (DBT Completed)",
+    unpaid: "Awaiting Admin Sanction",
     adminPanel: "Admin Panel",
     createSlot: "Create New Procurement Slot",
     allSlots: "All Scheduled Slots",
@@ -74,70 +74,22 @@ export const translations = {
     bookedSuccessfully: "Slot booked successfully!",
     loginSuccess: "Logged in successfully!",
     regSuccess: "Registered successfully! Welcome to the hub.",
-    liveQueueUpdates: "Live Real-Time Queue Updates Connected"
-  },
-  hi: {
-    title: "🌾 किसान खरीद एवं टोकन हब",
-    tagline: "पारदर्शी फसल खरीद और रीयल-टाइम कतार ट्रैकिंग",
-    register: "किसान पंजीकरण",
-    login: "मोबाइल नंबर से लॉगिन",
-    sendOtp: "ओटीपी भेजें",
-    sendingOtp: "ओटीपी भेजा जा रहा है...",
-    verifyOtp: "ओटीपी सत्यापित करें और लॉगिन करें",
-    verifyingOtp: "सत्यापन हो रहा है...",
-    enterOtp: "6 अंकों का ओटीपी दर्ज करें",
-    resendOtp: "ओटीपी पुनः भेजें",
-    otpSentTo: "ओटीपी इस नंबर पर भेजा गया:",
-    demoOtpBadge: "परीक्षण हेतु ओटीपी:",
-    bookSlot: "स्लॉट बुक करें",
-    queueStatus: "कतार स्थिति",
-    payment: "भुगतान एवं एमएसपी",
-    logout: "लॉगआउट",
-    fullName: "पूरा नाम",
-    phone: "मोबाइल नंबर",
-    aadhar: "आधार / पहचान पत्र नंबर",
-    address: "गाँव / जिला का पता",
-    bankAccount: "बैंक खाता संख्या",
-    upi: "यूपीआई आईडी (वैकल्पिक)",
-    registerBtn: "पंजीकरण करें और आगे बढ़ें",
-    welcome: "स्वागत है",
-    selectSlot: "खरीद स्लॉट चुनें",
-    queuePosition: "आपका टोकन नंबर",
-    payNow: "भुगतान प्राप्त करें",
-    help: "कृषि सहायक (AI)",
-    alreadyRegistered: "पहले से पंजीकृत हैं? यहाँ लॉगिन करें",
-    newFarmer: "नए किसान? यहाँ पंजीकरण करें",
-    otpVerification: "मोबाइल ओटीपी सत्यापन",
-    enterMobile: "10 अंकों का मोबाइल नंबर दर्ज करें",
-    phoneRequired: "कृपया सही 10 अंकों का मोबाइल नंबर दर्ज करें",
-    fillAllFields: "कृपया सभी आवश्यक विवरण भरें",
-    chatbotTitle: "🌾 कृषि सहायक (AI वाणी सहायक)",
-    chatPlaceholder: "स्लॉट, कतार, भुगतान या एमएसपी के बारे में पूछें...",
-    voiceListening: "सुन रहा हूँ... बोलिए",
-    voiceNotSupported: "इस ब्राउज़र में ध्वनि पहचान समर्थित नहीं है",
-    center: "खरीद केंद्र",
-    date: "दिनांक",
-    time: "समय स्लॉट",
-    capacity: "क्षमता",
-    status: "स्थिति",
-    confirmed: "स्वीकृत",
-    pending: "प्रतीक्षारत",
-    completed: "पूर्ण",
-    totalInQueue: "कतार में कुल किसान",
-    estimatedWait: "अनुमानित प्रतीक्षा समय",
-    amount: "खरीद राशि (₹)",
-    transactionId: "लेनदेन संख्या",
-    paid: "बैंक में स्थानांतरित",
-    unpaid: "प्रक्रियाधीन",
-    adminPanel: "व्यवस्थापक पैनल",
-    createSlot: "नया खरीद स्लॉट जोड़ें",
-    allSlots: "उपलब्ध स्लॉट",
-    noSlots: "वर्तमान में कोई स्लॉट उपलब्ध नहीं है।",
-    noBookings: "अभी तक कोई स्लॉट बुक नहीं किया गया है।",
-    bookedSuccessfully: "स्लॉट सफलतापूर्वक बुक हो गया!",
-    loginSuccess: "सफलतापूर्वक लॉगिन हो गया!",
-    regSuccess: "पंजीकरण सफल! किसान हब में आपका स्वागत है।",
-    liveQueueUpdates: "रीयल-टाइम कतार अपडेट चालू है"
+    liveQueueUpdates: "Live Real-Time Queue Updates Connected",
+    // Illiterate Voice Prompts
+    listenVoice: "Listen Audio",
+    speakMobilePrompt: "Please enter your 10 digit mobile number.",
+    speakOtpPrompt: "Please enter the 6 digit OTP received on your mobile phone.",
+    speakNamePrompt: "Please enter your full name as in your bank passbook.",
+    speakAadharPrompt: "Please enter your 12 digit Aadhaar number.",
+    speakAddressPrompt: "Please enter your village, mandal, and district address.",
+    speakBankPrompt: "Please enter your bank account number for direct MSP money transfer.",
+    speakUpiPrompt: "You can enter your UPI ID if you have one.",
+    // Non-smartphone IVR telephone booking
+    ivrTollFree: "📞 Dial-in IVR Slot Booking (No Smartphone Required)",
+    ivrSubtitle: "Farmers without a smartphone can book procurement slots by dialing our toll-free number 1800-890-2026",
+    dialNow: "Dial IVR Number (1800-890-2026)",
+    // Strict Guardrail Notice
+    strictUnrelatedNotice: "This question is not related to crop procurement. Please ask only queries regarding procurement centers, slot booking, live queue tokens, MSP rates, and farmer payments."
   },
   te: {
     title: "🌾 రైతు ధాన్య సేకరణ కేంద్రం",
@@ -174,8 +126,8 @@ export const translations = {
     enterMobile: "10 అంకెల మొబైల్ నంబర్ నమోదు చేయండి",
     phoneRequired: "దయచేసి సరైన 10 అంకెల మొబైల్ నంబర్ నమోదు చేయండి",
     fillAllFields: "దయచేసి అవసరమైన అన్ని వివరాలను పూరించండి",
-    chatbotTitle: "🌾 కృషి సహాయక్ (AI వాయిస్ అసిస్టెంట్)",
-    chatPlaceholder: "స్లాట్, క్యూ, చెల్లింపు లేదా మద్దతు ధర గురించి అడగండి...",
+    chatbotTitle: "🌾 కృషి సహాయక్ (ధాన్య సేకరణ AI)",
+    chatPlaceholder: "కేంద్రాలు, స్లాట్, క్యూ, చెల్లింపు లేదా మద్దతు ధర గురించి అడగండి...",
     voiceListening: "వింటున్నాను... మాట్లాడండి",
     voiceNotSupported: "ఈ బ్రౌజర్‌లో వాయిస్ రికగ్నిషన్ అందుబాటులో లేదు",
     center: "సేకరణ కేంద్రం",
@@ -190,8 +142,8 @@ export const translations = {
     estimatedWait: "వేచి ఉండే సమయం",
     amount: "చెల్లింపు మొత్తం (₹)",
     transactionId: "లావాదేవీ ID",
-    paid: "బ్యాంకుకు జమ అయింది",
-    unpaid: "ప్రక్రియలో ఉంది",
+    paid: "బ్యాంకుకు జమ అయింది (DBT పూర్తయింది)",
+    unpaid: "అడ్మిన్ మంజూరు కోసం వేచి ఉంది",
     adminPanel: "అడ్మిన్ ప్యానెల్",
     createSlot: "కొత్త సేకరణ స్లాట్ జోడించండి",
     allSlots: "అందుబాటులో ఉన్న స్లాట్లు",
@@ -200,7 +152,100 @@ export const translations = {
     bookedSuccessfully: "స్లాట్ విజయవంతంగా బుక్ చేయబడింది!",
     loginSuccess: "లాగిన్ విజయవంతమైంది!",
     regSuccess: "నమోదు పూర్తయింది! రైతు హబ్‌కు స్వాగతం.",
-    liveQueueUpdates: "లైవ్ క్యూ అప్‌డేట్‌లు అందుబాటులో ఉన్నాయి"
+    liveQueueUpdates: "లైవ్ క్యూ అప్‌డేట్‌లు అందుబాటులో ఉన్నాయి",
+    // Illiterate Voice Prompts
+    listenVoice: "వాయిస్ వినండి",
+    speakMobilePrompt: "దయచేసి మీ 10 అంకెల మొబైల్ నంబర్‌ను ఇక్కడ నమోదు చేయండి.",
+    speakOtpPrompt: "మీ మొబైల్‌కు వచ్చిన 6 అంకెల ఓటీపీని ఇక్కడ నమోదు చేయండి.",
+    speakNamePrompt: "దయచేసి మీ బ్యాంక్ పాస్‌బుక్‌లో ఉన్నట్లు పూర్తి పేరు నమోదు చేయండి.",
+    speakAadharPrompt: "దయచేసి మీ 12 అంకెల ఆధార్ నంబర్‌ను నమోదు చేయండి.",
+    speakAddressPrompt: "దయచేసి మీ గ్రామం, మండలం మరియు జిల్లా చిరునామా నమోదు చేయండి.",
+    speakBankPrompt: "నేరుగా బ్యాంకు ఖాతాలో డబ్బులు జమ కావడానికి మీ బ్యాంక్ అకౌంట్ నంబర్ నమోదు చేయండి.",
+    speakUpiPrompt: "మీకు యూపీఐ ఉంటే ఇక్కడ నమోదు చేయవచ్చు.",
+    // Non-smartphone IVR telephone booking
+    ivrTollFree: "📞 ఫోన్ కాల్ ద్వారా స్లాట్ బుకింగ్ (స్మార్ట్‌ఫోన్ లేని రైతుల కోసం)",
+    ivrSubtitle: "స్మార్ట్‌ఫోన్ లేని రైతులు టోల్‌ఫ్రీ నంబర్ 1800-890-2026 కు ఫోన్ కాల్ చేసి సులభంగా స్లాట్ బుక్ చేసుకోవచ్చు",
+    dialNow: "టోల్‌ఫ్రీ నంబర్‌కు కాల్ చేయండి (1800-890-2026)",
+    // Strict Guardrail Notice
+    strictUnrelatedNotice: "ఈ ప్రశ్న ధాన్య సేకరణకు సంబంధించినది కాదు. దయచేసి సేకరణ కేంద్రాలు, స్లాట్ బుకింగ్, క్యూ టోకెన్లు, మద్దతు ధర (MSP) మరియు రైతు చెల్లింపుల గురించి మాత్రమే అడగండి."
+  },
+  hi: {
+    title: "🌾 किसान खरीद एवं टोकन हब",
+    tagline: "पारदर्शी फसल खरीद और रीयल-टाइम कतार ट्रैकिंग",
+    register: "किसान पंजीकरण",
+    login: "मोबाइल नंबर से लॉगिन",
+    sendOtp: "ओटीपी भेजें",
+    sendingOtp: "ओटीपी भेजा जा रहा है...",
+    verifyOtp: "ओटीपी सत्यापित करें और लॉगिन करें",
+    verifyingOtp: "सत्यापन हो रहा है...",
+    enterOtp: "6 अंकों का ओटीपी दर्ज करें",
+    resendOtp: "ओटीपी पुनः भेजें",
+    otpSentTo: "ओटीपी इस नंबर पर भेजा गया:",
+    demoOtpBadge: "परीक्षण हेतु ओटीपी:",
+    bookSlot: "स्लॉट बुक करें",
+    queueStatus: "कतार स्थिति",
+    payment: "भुगतान एवं एमएसपी",
+    logout: "लॉगआउट",
+    fullName: "पूरा नाम",
+    phone: "मोबाइल नंबर",
+    aadhar: "आधार / पहचान पत्र नंबर",
+    address: "गाँव / जिला का पता",
+    bankAccount: "बैंक खाता संख्या",
+    upi: "यूपीआई आईडी (वैकल्पिक)",
+    registerBtn: "पंजीकरण करें और आगे बढ़ें",
+    welcome: "स्वागत है",
+    selectSlot: "खरीद स्लॉट चुनें",
+    queuePosition: "आपका टोकन नंबर",
+    payNow: "भुगतान प्राप्त करें",
+    help: "कृषि सहायक (AI)",
+    alreadyRegistered: "पहले से पंजीकृत हैं? यहाँ लॉगिन करें",
+    newFarmer: "नए किसान? यहाँ पंजीकरण करें",
+    otpVerification: "मोबाइल ओटीपी सत्यापन",
+    enterMobile: "10 अंकों का मोबाइल नंबर दर्ज करें",
+    phoneRequired: "कृपया सही 10 अंकों का मोबाइल नंबर दर्ज करें",
+    fillAllFields: "कृपया सभी आवश्यक विवरण भरें",
+    chatbotTitle: "🌾 कृषि सहायक (फसल खरीद AI)",
+    chatPlaceholder: "खरीद केंद्र, स्लॉट, कतार, भुगतान या एमएसपी के बारे में पूछें...",
+    voiceListening: "सुन रहा हूँ... बोलिए",
+    voiceNotSupported: "इस ब्राउज़र में ध्वनि पहचान समर्थित नहीं है",
+    center: "खरीद केंद्र",
+    date: "दिनांक",
+    time: "समय स्लॉट",
+    capacity: "क्षमता",
+    status: "स्थिति",
+    confirmed: "स्वीकृत",
+    pending: "प्रतीक्षारत",
+    completed: "पूर्ण",
+    totalInQueue: "कतार में कुल किसान",
+    estimatedWait: "अनुमानित प्रतीक्षा समय",
+    amount: "खरीद राशि (₹)",
+    transactionId: "लेनदेन संख्या",
+    paid: "बैंक में स्थानांतरित (डीबीटी पूर्ण)",
+    unpaid: "अधिकारी स्वीकृति प्रतीक्षारत",
+    adminPanel: "व्यवस्थापक पैनल",
+    createSlot: "नया खरीद स्लॉट जोड़ें",
+    allSlots: "उपलब्ध स्लॉट",
+    noSlots: "वर्तमान में कोई स्लॉट उपलब्ध नहीं है।",
+    noBookings: "अभी तक कोई स्लॉट बुक नहीं किया गया है।",
+    bookedSuccessfully: "स्लॉट सफलतापूर्वक बुक हो गया!",
+    loginSuccess: "सफलतापूर्वक लॉगिन हो गया!",
+    regSuccess: "पंजीकरण सफल! किसान हब में आपका स्वागत है।",
+    liveQueueUpdates: "रीयल-टाइम कतार अपडेट चालू है",
+    // Illiterate Voice Prompts
+    listenVoice: "आवाज़ सुनें",
+    speakMobilePrompt: "कृपया अपना 10 अंकों का मोबाइल नंबर दर्ज करें।",
+    speakOtpPrompt: "कृपया अपने मोबाइल पर आया 6 अंकों का ओटीपी दर्ज करें।",
+    speakNamePrompt: "कृपया अपना पूरा नाम बैंक पासबुक के अनुसार दर्ज करें।",
+    speakAadharPrompt: "कृपया अपना 12 अंकों का आधार नंबर दर्ज करें।",
+    speakAddressPrompt: "कृपया अपना गाँव, ब्लॉक और जिले का पता दर्ज करें।",
+    speakBankPrompt: "एमएसपी राशि सीधे खाते में पाने के लिए अपना बैंक खाता संख्या दर्ज करें।",
+    speakUpiPrompt: "यदि आपके पास यूपीआई आईडी है तो दर्ज करें।",
+    // Non-smartphone IVR telephone booking
+    ivrTollFree: "📞 फोन कॉल से स्लॉट बुकिंग (बिना स्मार्टफोन वाले किसानों के लिए)",
+    ivrSubtitle: "जिन किसानों के पास स्मार्टफोन नहीं है, वे टोल-फ्री नंबर 1800-890-2026 पर कॉल करके स्लॉट बुक कर सकते हैं",
+    dialNow: "टोल-फ्री नंबर पर कॉल करें (1800-890-2026)",
+    // Strict Guardrail Notice
+    strictUnrelatedNotice: "यह प्रश्न फसल खरीद से संबंधित नहीं है। कृपया केवल खरीद केंद्र, स्लॉट बुकिंग, कतार टोकन, एमएसपी दर और किसान भुगतान से संबंधित प्रश्न ही पूछें।"
   },
   ta: {
     title: "🌾 விவசாயி கொள்முதல் மையம்",
@@ -253,7 +298,7 @@ export const translations = {
     estimatedWait: "எதிர்பார்க்கப்படும் நேரம்",
     amount: "தொகை (₹)",
     transactionId: "பரிவர்த்தனை எண்",
-    paid: "வங்கியில் செலுத்தப்பட்டது",
+    paid: "வங்கியில் செலுத்தப்பட்டது (DBT)",
     unpaid: "செயல்பாட்டில் உள்ளது",
     adminPanel: "நிர்வாக குழு",
     createSlot: "புதிய இடத்தை உருவாக்கு",
@@ -263,7 +308,19 @@ export const translations = {
     bookedSuccessfully: "இடம் முன்பதிவு செய்யப்பட்டது!",
     loginSuccess: "உள்நுழைவு வெற்றிகரமானது!",
     regSuccess: "பதிவு வெற்றிகரமானது!",
-    liveQueueUpdates: "நேரலை வரிசை இணைப்பு செயலில் உள்ளது"
+    liveQueueUpdates: "நேரலை வரிசை இணைப்பு செயலில் உள்ளது",
+    listenVoice: "குரலைக் கேளுங்கள்",
+    speakMobilePrompt: "உங்கள் 10 இலக்க மொபைல் எண்ணை உள்ளிடவும்.",
+    speakOtpPrompt: "உங்கள் மொபைலுக்கு வந்த 6 இலக்க OTP ஐ உள்ளிடவும்.",
+    speakNamePrompt: "உங்கள் முழுப் பெயரை உள்ளிடவும்.",
+    speakAadharPrompt: "உங்கள் 12 இலக்க ஆதார் எண்ணை உள்ளிடவும்.",
+    speakAddressPrompt: "உங்கள் முகவரியை உள்ளிடவும்.",
+    speakBankPrompt: "வங்கி கணக்கு எண்ணை உள்ளிடவும்.",
+    speakUpiPrompt: "UPI ஐடியை உள்ளிடவும்.",
+    ivrTollFree: "📞 தொலைபேசி மூலம் முன்பதிவு",
+    ivrSubtitle: "ஸ்மார்ட்போன் இல்லாத விவசாயிகள் 1800-890-2026 என்ற எண்ணை அழைத்து முன்பதிவு செய்யலாம்",
+    dialNow: "அழைக்கவும் (1800-890-2026)",
+    strictUnrelatedNotice: "இந்த கேள்வி தானிய கொள்முதலுடன் தொடர்புடையது அல்ல. கொள்முதல் மையம், முன்பதிவு, வரிசை டோக்கன், MSP விலை மற்றும் பணம் செலுத்துதல் பற்றிய கேள்விகளை மட்டும் கேட்கவும்."
   },
   kn: {
     title: "🌾 ರೈತ ಧಾನ್ಯ ಖರೀದಿ ಕೇಂದ್ರ",
@@ -316,7 +373,7 @@ export const translations = {
     estimatedWait: "ಅಂದಾಜು ಕಾಯುವ ಸಮಯ",
     amount: "ಮೊತ್ತ (₹)",
     transactionId: "ವಹಿವಾಟು ಐಡಿ",
-    paid: "ಬ್ಯಾಂಕ್‌ಗೆ ಪಾವತಿಸಲಾಗಿದೆ",
+    paid: "ಬ್ಯಾಂಕ್‌ಗೆ ಪಾವತಿಸಲಾಗಿದೆ (DBT)",
     unpaid: "ಪ್ರಕ್ರಿಯೆಯಲ್ಲಿದೆ",
     adminPanel: "ನಿರ್ವಾಹಕ ಫಲಕ",
     createSlot: "ಹೊಸ ಸ್ಲಾಟ್ ರಚಿಸಿ",
@@ -326,7 +383,19 @@ export const translations = {
     bookedSuccessfully: "ಸ್ಲಾಟ್ ಯಶಸ್ವಿಯಾಗಿ ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ!",
     loginSuccess: "ಲಾಗಿನ್ ಯಶಸ್ವಿಯಾಗಿದೆ!",
     regSuccess: "ನೋಂದಣಿ ಯಶಸ್ವಿಯಾಗಿದೆ!",
-    liveQueueUpdates: "ಲೈವ್ ಸರದಿ ಸಾಲು ನವೀಕರಣ ಸಕ್ರಿಯವಾಗಿದೆ"
+    liveQueueUpdates: "ಲೈವ್ ಸರದಿ ಸಾಲು ನವೀಕರಣ ಸಕ್ರಿಯವಾಗಿದೆ",
+    listenVoice: "ಧ್ವನಿ ಆಲಿಸಿ",
+    speakMobilePrompt: "ದಯವಿಟ್ಟು ನಿಮ್ಮ 10 ಅಂಕಿಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ.",
+    speakOtpPrompt: "ನಿಮ್ಮ ಮೊಬೈಲ್‌ಗೆ ಬಂದ 6 ಅಂಕಿಯ OTP ನಮೂದಿಸಿ.",
+    speakNamePrompt: "ನಿಮ್ಮ ಪೂರ್ಣ ಹೆಸರನ್ನು ನಮೂದಿಸಿ.",
+    speakAadharPrompt: "ನಿಮ್ಮ 12 ಅಂಕಿಯ ಆಧಾರ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ.",
+    speakAddressPrompt: "ನಿಮ್ಮ ಗ್ರಾಮ ಮತ್ತು ಜಿಲ್ಲೆಯ ವಿಳಾಸ ನಮೂದಿಸಿ.",
+    speakBankPrompt: "ನೇರ ಪಾವತಿಗಾಗಿ ಬ್ಯಾಂಕ್ ಖಾತೆ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ.",
+    speakUpiPrompt: "UPI ಐಡಿ ನಮೂದಿಸಿ.",
+    ivrTollFree: "📞 ಫೋನ್ ಕರೆ ಮೂಲಕ ಸ್ಲಾಟ್ ಬುಕಿಂಗ್",
+    ivrSubtitle: "ಸ್ಮಾರ್ಟ್‌ಫೋನ್ ಇಲ್ಲದ ರೈತರು 1800-890-2026 ಕರೆ ಮಾಡಿ ಸ್ಲಾಟ್ ಬುಕ್ ಮಾಡಬಹುದು",
+    dialNow: "ಕರೆ ಮಾಡಿ (1800-890-2026)",
+    strictUnrelatedNotice: "ಈ ಪ್ರಶ್ನೆಯು ಧಾನ್ಯ ಖರೀದಿಗೆ ಸಂಬಂಧಿಸಿಲ್ಲ. ದಯವಿಟ್ಟು ಖರೀದಿ ಕೇಂದ್ರ, ಸ್ಲಾಟ್ ಬುಕಿಂಗ್, ಸರದಿ ಟೋಕನ್, ಬೆಂಬಲ ಬೆಲೆ (MSP) ಮತ್ತು ಪಾವತಿಗಳ ಬಗ್ಗೆ ಮಾತ್ರ ಕೇಳಿ."
   },
   ml: {
     title: "🌾 കർഷക സംഭരണ കേന്ദ്രം",
@@ -379,7 +448,7 @@ export const translations = {
     estimatedWait: "പ്രതീക്ഷിക്കുന്ന സമയം",
     amount: "തുക (₹)",
     transactionId: "ഇടപാട് നമ്പർ",
-    paid: "ബാങ്കിലേക്ക് നൽകി",
+    paid: "ബാങ്കിലേക്ക് നൽകി (DBT)",
     unpaid: "നടപടിക്രമത്തിലാണ്",
     adminPanel: "അഡ്മിൻ പാനൽ",
     createSlot: "പുതിയ സ്ലാറ്റ് ചേർക്കുക",
@@ -389,7 +458,19 @@ export const translations = {
     bookedSuccessfully: "സ്ലാറ്റ് ബുക്ക് ചെയ്തു!",
     loginSuccess: "ലോഗിൻ വിജയകരം!",
     regSuccess: "രജിസ്ട്രേഷൻ വിജയകരം!",
-    liveQueueUpdates: "ലൈവ് ക്യൂ അപ്‌ഡേറ്റുകൾ സജീവമാണ്"
+    liveQueueUpdates: "ലൈവ് ക്യൂ അപ്‌ഡേറ്റുകൾ സജീവമാണ്",
+    listenVoice: "ശബ്ദം കേൾക്കുക",
+    speakMobilePrompt: "മൊബൈൽ നമ്പർ നൽകുക.",
+    speakOtpPrompt: "OTP നൽകുക.",
+    speakNamePrompt: "മുഴുവൻ പേര് നൽകുക.",
+    speakAadharPrompt: "ആധാർ നമ്പർ നൽകുക.",
+    speakAddressPrompt: "വിലാസം നൽകുക.",
+    speakBankPrompt: "ബാങ്ക് അക്കൗണ്ട് നമ്പർ നൽകുക.",
+    speakUpiPrompt: "UPI ഐഡി നൽകുക.",
+    ivrTollFree: "📞 ഫോൺ കോൾ വഴി ബുക്കിംഗ്",
+    ivrSubtitle: "സ്മാർട്ട്ഫോൺ ഇല്ലാത്ത കർഷകർക്ക് 1800-890-2026 ലേക്ക് വിളിക്കാം",
+    dialNow: "വിളിക്കുക (1800-890-2026)",
+    strictUnrelatedNotice: "ഈ ചോദ്യം ധാന്യ സംഭരണവുമായി ബന്ധപ്പെട്ടതല്ല. സംഭരണ കേന്ദ്രങ്ങൾ, സ്ലാറ്റ് ബുക്കിംഗ്, ക്യൂ ടോക്കൺ, താങ്ങുവില, പേയ്‌മെന്റ് എന്നിവയെക്കുറിച്ച് മാത്രം ചോദിക്കുക."
   },
   mr: {
     title: "🌾 शेतकरी धान्य खरेदी केंद्र",
@@ -442,7 +523,7 @@ export const translations = {
     estimatedWait: "अंदाजे वेळ",
     amount: "रक्कम (₹)",
     transactionId: "व्यवहार आयडी",
-    paid: "बँकेत जमा झाले",
+    paid: "बँकेत जमा झाले (DBT)",
     unpaid: "प्रक्रिया सुरू आहे",
     adminPanel: "प्रशासक पॅनेल",
     createSlot: "नवीन स्लॉट जोडा",
@@ -452,7 +533,19 @@ export const translations = {
     bookedSuccessfully: "स्लॉट यशस्वीरित्या बुक झाला!",
     loginSuccess: "लॉगिन यशस्वी!",
     regSuccess: "नोंदणी यशस्वी!",
-    liveQueueUpdates: "थेट रांग अपडेट्स सुरू आहेत"
+    liveQueueUpdates: "थेट रांग अपडेट्स सुरू आहेत",
+    listenVoice: "आवाज ऐका",
+    speakMobilePrompt: "कृपया १० अंकी मोबाईल नंबर टाका.",
+    speakOtpPrompt: "कृपया ६ अंकी OTP टाका.",
+    speakNamePrompt: "कृपया पूर्ण नाव टाका.",
+    speakAadharPrompt: "कृपया आधार क्रमांक टाका.",
+    speakAddressPrompt: "कृपया पत्ता टाका.",
+    speakBankPrompt: "कृपया बँक खाते क्रमांक टाका.",
+    speakUpiPrompt: "UPI आयडी टाका.",
+    ivrTollFree: "📞 फोन कॉलने स्लॉट बुकिंग",
+    ivrSubtitle: "स्मार्टफोन नसलेले शेतकरी १८००-८९०-२०२६ वर कॉल करून स्लॉट बुक करू शकतात",
+    dialNow: "कॉल करा (१८००-८९०-२०२६)",
+    strictUnrelatedNotice: "हा प्रश्न धान्य खरेदीशी संबंधित नाही. कृपया खरेदी केंद्र, स्लॉट बुकिंग, रांग टोकन, हमीभाव आणि पेमेंट संबंधीच प्रश्न विचारा."
   },
   bn: {
     title: "🌾 কৃষক শস্য ক্রয় কেন্দ্র",
@@ -505,7 +598,7 @@ export const translations = {
     estimatedWait: "আনুমানিক অপেক্ষার সময়",
     amount: "পরিমাণ (₹)",
     transactionId: "লেনদেন আইডি",
-    paid: "ব্যাঙ্কে জমা হয়েছে",
+    paid: "ব্যাঙ্কে জমা হয়েছে (DBT)",
     unpaid: "প্রক্রিয়াধীন",
     adminPanel: "অ্যাডমিন প্যানেল",
     createSlot: "নতুন স্লট তৈরি করুন",
@@ -515,7 +608,19 @@ export const translations = {
     bookedSuccessfully: "স্লট সফলভাবে বুক হয়েছে!",
     loginSuccess: "লগইন সফল হয়েছে!",
     regSuccess: "নিবন্ধন সফল হয়েছে!",
-    liveQueueUpdates: "লাইভ সারি আপডেট সংযুক্ত"
+    liveQueueUpdates: "লাইভ সারি আপডেট সংযুক্ত",
+    listenVoice: "ভয়েস শুনুন",
+    speakMobilePrompt: "আপনার ১০ সংখ্যার মোবাইল নম্বর দিন।",
+    speakOtpPrompt: "আপনার ৬ সংখ্যার OTP দিন।",
+    speakNamePrompt: "আপনার সম্পূর্ণ নাম লিখুন।",
+    speakAadharPrompt: "আপনার আধার নম্বর দিন।",
+    speakAddressPrompt: "আপনার ঠিকানা দিন।",
+    speakBankPrompt: "আপনার ব্যাঙ্ক অ্যাকাউন্ট নম্বর দিন।",
+    speakUpiPrompt: "UPI আইডি দিন।",
+    ivrTollFree: "📞 ফোন কলের মাধ্যমে স্লট বুকিং",
+    ivrSubtitle: "স্মার্টফোন ছাড়া কৃষকরা ১৮০০-৮৯০-২০২৬ নম্বরে কল করে স্লট বুক করতে পারেন",
+    dialNow: "কল করুন (১৮০০-৮৯০-২০২৬)",
+    strictUnrelatedNotice: "এই প্রশ্নটি শস্য ক্রয়ের সাথে সম্পর্কিত নয়। অনুগ্রহ করে শুধুমাত্র সংগ্রহ কেন্দ্র, স্লট বুকিং, কিউ টোকেন, সহায়ক মূল্য (MSP) এবং পেমেন্ট সংক্রান্ত প্রশ্ন জিজ্ঞাসা করুন।"
   },
   gu: {
     title: "🌾 ખેડૂત ખરીદ કેન્દ્ર",
@@ -568,7 +673,7 @@ export const translations = {
     estimatedWait: "અંદાજિત રાહ જોવાનો સમય",
     amount: "રકમ (₹)",
     transactionId: "ટ્રાન્ઝેક્શન આઈડી",
-    paid: "બેંકમાં જમા થઈ ગયું",
+    paid: "બેંકમાં જમા થઈ ગયું (DBT)",
     unpaid: "પ્રક્રિયામાં છે",
     adminPanel: "એડમિન પેનલ",
     createSlot: "નવો સ્લોટ ઉમેરો",
@@ -578,7 +683,19 @@ export const translations = {
     bookedSuccessfully: "સ્લોટ સફળતાપૂર્વક બુક થયો!",
     loginSuccess: "લોગિન સફળ થયું!",
     regSuccess: "નોંધણી સફળ થઈ!",
-    liveQueueUpdates: "લાઈવ લાઈન અપડેટ્સ ચાલુ છે"
+    liveQueueUpdates: "લાઈવ લાઈન અપડેટ્સ ચાલુ છે",
+    listenVoice: "અવાજ સાંભળો",
+    speakMobilePrompt: "કૃપા કરીને ૧૦ અંકનો મોબાઇલ નંબર નાખો.",
+    speakOtpPrompt: "કૃપા કરીને ૬ અંકનો OTP નાખો.",
+    speakNamePrompt: "પૂરું નામ દાખલ કરો.",
+    speakAadharPrompt: "આધાર નંબર દાખલ કરો.",
+    speakAddressPrompt: "સરનામું દાખલ કરો.",
+    speakBankPrompt: "બેંક ખાતા નંબર દાખલ કરો.",
+    speakUpiPrompt: "UPI આઈડી દાખલ કરો.",
+    ivrTollFree: "📞 ફોન કોલ દ્વારા સ્લોટ બુકિંગ",
+    ivrSubtitle: "સ્માર્ટફોન વગરના ખેડૂતો ૧૮૦૦-૮૯૦-૨૦૨૬ પર કોલ કરીને સ્લોટ બુક કરી શકે છે",
+    dialNow: "કોલ કરો (૧૮૦૦-૮૯૦-૨૦૨૬)",
+    strictUnrelatedNotice: "આ પ્રશ્ન અનાજ ખરીદી સાથે સંબંધિત નથી. કૃપા કરીને માત્ર ખરીદ કેન્દ્ર, સ્લોટ બુકિંગ, લાઇન ટોકન, ટેકાના ભાવ (MSP) અને ચુકવણી અંગેના પ્રશ્નો પૂછો."
   },
   pa: {
     title: "🌾 ਕਿਸਾਨ ਖ਼ਰੀਦ ਕੇਂਦਰ",
@@ -631,7 +748,7 @@ export const translations = {
     estimatedWait: "ਅੰਦਾਜ਼ਨ ਉਡੀਕ ਸਮਾਂ",
     amount: "ਰਕਮ (₹)",
     transactionId: "ਲੈਣ-ਦੇਣ ਨੰਬਰ",
-    paid: "ਬੈਂਕ ਵਿੱਚ ਜਮ੍ਹਾ ਹੋ ਗਿਆ",
+    paid: "ਬੈਂਕ ਵਿੱਚ ਜਮ੍ਹਾ ਹੋ ਗਿਆ (DBT)",
     unpaid: "ਕਾਰਵਾਈ ਚੱਲ ਰਹੀ ਹੈ",
     adminPanel: "ਐਡਮਿਨ ਪੈਨਲ",
     createSlot: "ਨਵਾਂ ਸਲਾਟ ਬਣਾਓ",
@@ -641,7 +758,19 @@ export const translations = {
     bookedSuccessfully: "ਸਲਾਟ ਸਫਲਤਾਪੂਰਵਕ ਬੁੱਕ ਹੋ ਗਿਆ!",
     loginSuccess: "ਲੌਗਇਨ ਸਫਲ ਰਿਹਾ!",
     regSuccess: "ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਸਫਲ ਰਹੀ!",
-    liveQueueUpdates: "ਲਾਈਵ ਕਤਾਰ ਅੱਪਡੇਟ ਚਾਲੂ ਹੈ"
+    liveQueueUpdates: "ਲਾਈਵ ਕਤਾਰ ਅੱਪਡੇਟ ਚਾਲੂ ਹੈ",
+    listenVoice: "ਆਵਾਜ਼ ਸੁਣੋ",
+    speakMobilePrompt: "ਕਿਰਪਾ ਕਰਕੇ 10 ਅੰਕਾਂ ਦਾ ਮੋਬਾਈਲ ਨੰਬਰ ਭਰੋ।",
+    speakOtpPrompt: "ਕਿਰਪਾ ਕਰਕੇ 6 ਅੰਕਾਂ ਦਾ OTP ਭਰੋ।",
+    speakNamePrompt: "ਪੂਰਾ ਨਾਮ ਭਰੋ।",
+    speakAadharPrompt: "ਆਧਾਰ ਨੰਬਰ ਭਰੋ।",
+    speakAddressPrompt: "ਪਤਾ ਭਰੋ।",
+    speakBankPrompt: "ਬੈਂਕ ਖਾਤਾ ਨੰਬਰ ਭਰੋ।",
+    speakUpiPrompt: "UPI ਆਈਡੀ ਭਰੋ।",
+    ivrTollFree: "📞 ਫ਼ੋਨ ਕਾਲ ਰਾਹੀਂ ਸਲਾਟ ਬੁਕਿੰਗ",
+    ivrSubtitle: "ਸਮਾਰਟਫ਼ੋਨ ਤੋਂ ਬਿਨਾਂ ਕਿਸਾਨ 1800-890-2026 'ਤੇ ਕਾਲ ਕਰਕੇ ਸਲਾਟ ਬੁੱਕ ਕਰ ਸਕਦੇ ਹਨ",
+    dialNow: "ਕਾਲ ਕਰੋ (1800-890-2026)",
+    strictUnrelatedNotice: "ਇਹ ਸਵਾਲ ਫ਼ਸਲ ਖ਼ਰੀਦ ਨਾਲ ਸੰਬੰਧਿਤ ਨਹੀਂ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਸਿਰਫ਼ ਖ਼ਰੀਦ ਕੇਂਦਰ, ਸਲਾਟ ਬੁਕਿੰਗ, ਕਤਾਰ ਟੋਕਨ, ਐਮਐਸਪੀ ਅਤੇ ਭੁਗਤਾਨ ਬਾਰੇ ਹੀ ਪੁੱਛੋ।"
   },
   or: {
     title: "🌾 କୃଷକ ଶସ୍ୟ ସଂଗ୍ରହ କେନ୍ଦ୍ର",
@@ -676,7 +805,7 @@ export const translations = {
     newFarmer: "ନୂତନ କୃଷକ? ଏଠାରେ ପଞ୍ଜୀକରଣ କରନ୍ତୁ",
     otpVerification: "ମୋବାଇଲ୍ OTP ଯାଞ୍ଚ",
     enterMobile: "୧୦ ଅଙ୍କ ବିଶିଷ୍ଟ ମୋବାଇଲ୍ ନମ୍ବର ଦିଅନ୍ତୁ",
-    phoneRequired: "ଦୟାକରି ସଠିକ୍ ମୋବାଇਲ୍ ନମ୍ବਰ ଦିଅନ୍ତୁ",
+    phoneRequired: "ଦୟାକରି ସଠିକ୍ ମୋବାଇଲ୍ ନମ୍ବର ଦିଅନ୍ତୁ",
     fillAllFields: "ଦୟାକରି ସମସ୍ତ ବିବରଣୀ ପୂରଣ କରନ୍ତୁ",
     chatbotTitle: "🌾 କୃଷି ସହାୟକ (AI ଭଏସ୍ ସହାୟକ)",
     chatPlaceholder: "ସ୍ଲଟ୍, ଧାଡ଼ି, ଦେୟ କିମ୍ବା ମୂଲ୍ୟ ବିଷୟରେ ପଚାରନ୍ତୁ...",
@@ -690,200 +819,263 @@ export const translations = {
     confirmed: "ନିଶ୍ଚିତ",
     pending: "ବକେୟା",
     completed: "ସମ୍ପୂର୍ଣ୍ଣ",
-    totalInQueue: "ଧାଡ଼ିରେ ଥିବା କୃଷକ",
-    estimatedWait: "ଆନୁମାନିକ ସମୟ",
-    amount: "ରାଶି (₹)",
-    transactionId: "କାରବାର ଆଇଡି",
-    paid: "ବ୍ୟାଙ୍କରେ ଜମା ହୋଇଛି",
-    unpaid: "ପ୍ରକ୍ରିୟା ଚାଲିଛି",
+    totalInQueue: "ଧାଡ଼ିରେ କୃଷକ",
+    estimatedWait: "ଅପେକ୍ଷା ସମୟ",
+    amount: "ପରିମାଣ (₹)",
+    transactionId: "କାରବାର ID",
+    paid: "ବ୍ୟାଙ୍କରେ ଜମା ହୋଇଛି (DBT)",
+    unpaid: "ପ୍ରକ୍ରିୟାଧୀନ",
     adminPanel: "ପ୍ରଶାସନିକ ପ୍ୟାନେଲ୍",
-    createSlot: "ନୂତନ ସ୍ଲଟ୍ ଯୋଡନ୍ତୁ",
+    createSlot: "ନୂତନ ସ୍ଲଟ୍ ଯୋଡ଼ନ୍ତୁ",
     allSlots: "ସମସ୍ତ ସ୍ଲଟ୍",
     noSlots: "କୌଣସି ସ୍ଲଟ୍ ଉପଲବ୍ଧ ନାହିଁ।",
-    noBookings: "କୌଣସି ବୁକିଂ ମିଳିନାହିଁ।",
-    bookedSuccessfully: "ସ୍ଲଟ୍ ସଫଳତାର ସହ ବୁକ୍ ହେଲା!",
+    noBookings: "କୌଣସି ବୁକିଂ ମିଳିଲା ନାହିଁ।",
+    bookedSuccessfully: "ସ୍ଲଟ୍ ସଫଳତାର ସହିତ ବୁକ୍ ହେଲା!",
     loginSuccess: "ଲଗଇନ୍ ସଫଳ ହେଲା!",
     regSuccess: "ପଞ୍ଜୀକରଣ ସଫଳ ହେଲା!",
-    liveQueueUpdates: "ଲାଇଭ୍ ଧାଡ଼ି ଅଦ୍ୟତନ ସକ୍ରିୟ ଅଛି"
+    liveQueueUpdates: "ଲାଇଭ୍ ଧାଡ଼ି ଅପଡେଟ୍ ସକ୍ରିୟ ଅଛି",
+    listenVoice: "ଭଏସ୍ ଶୁଣନ୍ତୁ",
+    speakMobilePrompt: "ଦୟାକରି ୧୦ ଅଙ୍କ ବିଶିଷ୍ଟ ମୋବାଇଲ୍ ନମ୍ବର ଦିଅନ୍ତୁ।",
+    speakOtpPrompt: "୬ ଅଙ୍କ ବିଶିଷ୍ଟ OTP ଦିଅନ୍ତୁ।",
+    speakNamePrompt: "ସମ୍ପୂର୍ଣ୍ଣ ନାମ ଦିଅନ୍ତୁ।",
+    speakAadharPrompt: "ଆଧାର ନମ୍ବର ଦିଅନ୍ତୁ।",
+    speakAddressPrompt: "ଠିକଣା ଦିଅନ୍ତୁ।",
+    speakBankPrompt: "ବ୍ୟାଙ୍କ ଖାତା ନମ୍ବର ଦିଅନ୍ତୁ।",
+    speakUpiPrompt: "UPI ଆଇଡି ଦିଅନ୍ତୁ।",
+    ivrTollFree: "📞 ଫୋନ୍ କଲ୍ ମାଧ୍ୟମରେ ସ୍ଲଟ୍ ବୁକିଂ",
+    ivrSubtitle: "ସ୍ମାର୍ଟଫୋନ୍ ନଥିବା କୃଷକମାନେ ୧୮୦୦-୮୯୦-୨୦୨୬ ରେ କଲ୍ କରି ସ୍ଲଟ୍ ବୁକ୍ କରିପାରିବେ",
+    dialNow: "କଲ୍ କରନ୍ତୁ (୧୮୦୦-୮୯୦-୨୦୨୬)",
+    strictUnrelatedNotice: "ଏହି ପ୍ରଶ୍ନଟି ଶସ୍ୟ କ୍ରୟ ସହିତ ସମ୍ପର୍କିତ ନୁହେଁ। ଦୟାକରି କେବଳ କ୍ରୟ କେନ୍ଦ୍ର, ସ୍ଲଟ୍ ବୁକିଂ, ଧାଡ଼ି ଟୋକନ୍, MSP ମୂଲ୍ୟ ଏବଂ ଦେୟ ବିଷୟରେ ପଚାରନ୍ତୁ।"
   }
 };
 
 export const chatbotResponses = {
   en: {
     greetings: [
-      "Hello Farmer Brother/Sister! I am Krishi Sahayak, your AI Assistant. How can I help you today?",
-      "Namaste! I can assist you with slot booking, live queue tokens, MSP rates, and direct DBT payments."
+      "Namaste Kisan brother! I am your dedicated Krishi Sahayak for Procurement Centers. How may I help you today?",
+      "Welcome! Ask me about Procurement Center locations, slot booking, live queue tokens, MSP rates, and DBT bank payments."
     ],
-    slotBooking: "To book a procurement slot, go to the 'Book Slot' tab, choose your preferred mandi center, date, and timing, then click 'Reserve Slot'.",
-    queue: "You can track your live queue position and token number in real time under the 'Queue Status' section.",
-    payment: "All procurement payments are transferred directly via DBT to your linked bank account or UPI ID once grain inspection is complete.",
-    registration: "New farmers can register with Name, 10-digit Phone, and Bank details. Once registered, you simply log in with your Mobile Number and OTP!",
-    msp: "Current Government MSP Rates: Paddy (Common): ₹2,300/quintal, Wheat: ₹2,275/quintal, Cotton: ₹7,121/quintal, Maize: ₹2,090/quintal.",
-    support: "Helpline: Dial 1800-180-1551 (Kisan Call Center) for 24/7 agricultural support. Procurement Mandi opens 8 AM - 6 PM."
-  },
-  hi: {
-    greetings: [
-      "नमस्ते किसान भाई/बहन! मैं कृषि सहायक हूँ। मैं आपकी क्या सहायता कर सकता हूँ?",
-      "प्रणाम! मैं स्लॉट बुकिंग, कतार टोकन, एमएसपी मूल्य और डीबीटी भुगतान में आपकी मदद कर सकता हूँ।"
-    ],
-    slotBooking: "स्लॉट बुक करने के लिए 'स्लॉट बुक करें' टैब पर जाएँ, अपनी पसंदीदा मंडी, दिनांक और समय चुनें और 'स्लॉट आरक्षित करें' पर क्लिक करें।",
-    queue: "आप 'कतार स्थिति' सेक्शन में अपना लाइव टोकन नंबर और कतार में अपनी स्थिति सीधे देख सकते हैं।",
-    payment: "अनाज तुलाई और गुणवत्ता जांच के बाद आपकी फसल की राशि सीधे आपके बैंक खाते या यूपीआई में डीबीटी द्वारा भेज दी जाती है।",
-    registration: "नए किसान अपना नाम, 10 अंकों का मोबाइल नंबर और बैंक विवरण भरकर पंजीकरण कर सकते हैं। एक बार पंजीकरण के बाद आप केवल मोबाइल नंबर व ओटीपी से लॉगिन कर सकते हैं।",
-    msp: "वर्तमान न्यूनतम समर्थन मूल्य (MSP): धान (सामान्य): ₹2,300/क्विंटल, गेहूँ: ₹2,275/क्विंटल, कपास: ₹7,121/क्विंटल, मक्का: ₹2,090/क्विंटल।",
-    support: "किसान कॉल सेंटर हेल्पलाइन: 1800-180-1551 (टोल फ्री)। खरीद केंद्र सुबह 8 बजे से शाम 6 बजे तक खुले रहते हैं।"
+    slotBooking: "To book a procurement slot, go to the 'Book Slot' tab, select your nearby center, choose date & time, and confirm. If you don't have a smartphone, dial toll-free 1800-890-2026.",
+    queue: "You can track your live queue token and estimated wait time in the 'Queue Status' tab.",
+    payment: "After grain inspection and weighing at the mandi, your payment is sanctioned by the Procurement Admin and credited directly into your linked bank account via PFMS DBT within 24-48 hours.",
+    msp: "Government Minimum Support Prices (MSP 2026): Paddy (Common): ₹2,300/q, Paddy (Grade A): ₹2,320/q, Wheat: ₹2,275/q, Cotton: ₹7,121/q, Maize: ₹2,090/q, Soyabean: ₹4,892/q, Pulses: ₹8,682/q.",
+    centers: "Procurement centers operate from 08:30 AM to 05:30 PM. Each center has grain moisture testing equipment (max 17% allowed for Paddy) and digital weighing scales.",
+    documents: "Required documents at mandi: 1) Aadhaar Card, 2) Bank Passbook, 3) Pattadar Passbook / Land Record (Rythu Bandhu ID).",
+    ivrPhone: "No smartphone? Simply call our toll-free number 1800-890-2026 from any mobile or landline phone to book your slot in your preferred language.",
+    support: "Kisan Toll-Free Helpline: 1800-180-1551 (Open 6 AM to 10 PM daily).",
+    unrelated: "This question is not related to crop procurement. Please ask only queries regarding procurement centers, slot booking, live queue tokens, MSP rates, and farmer payments."
   },
   te: {
     greetings: [
-      "నమస్కారం రైతు సోదరులారా! నేను కృషి సహాయక్ AI అసిస్టెంట్. నేను మీకు ఎలా సహాయపడగలను?",
-      "నమస్తే! స్లాట్ బుకింగ్, లైవ్ క్యూ టోకెన్, మద్దతు ధరలు మరియు బ్యాంక్ చెల్లింపుల సమాచారం నేను అందిస్తాను."
+      "నమస్కారం రైతు సోదరులారా! నేను మీ ధాన్య సేకరణ కృషి సహాయక్ AI ని. సేకరణ కేంద్రాలు, స్లాట్లు, మద్దతు ధర గురించి మీకు ఎలా సహాయపడగలను?",
+      "స్వాగతం! ధాన్య సేకరణ కేంద్రాలు, స్లాట్ బుకింగ్, క్యూ టోకెన్లు, మద్దతు ధర (MSP) మరియు బ్యాంక్ చెల్లింపుల గురించి అడగండి."
     ],
-    slotBooking: "ధాన్య సేకరణ స్లాట్ బుక్ చేయడానికి 'స్లాట్ బుక్ చేయండి' పై క్లిక్ చేసి, మీ కేంద్రం, తేదీ మరియు సమయాన్ని ఎంచుకోండి.",
-    queue: "మీ ప్రస్తుత టోకెన్ నంబర్ మరియు క్యూలో మీ స్థానాన్ని 'క్యూ స్థితి' విభాగంలో లైవ్‌గా చూడవచ్చు.",
-    payment: "ధాన్యం తూకం పూర్తయిన వెంటనే మీ రిజిస్టర్డ్ బ్యాంక్ ఖాతా లేదా UPI కి DBT ద్వారా నిధులు నేరుగా జమ చేయబడతాయి.",
-    registration: "కొత్త రైతులు పేరు, 10 అంకెల మొబైల్ నంబర్ మరియు బ్యాంక్ వివరాలతో నమోదు చేసుకోవచ్చు. ఒకసారి నమోదు చేసుకున్న తర్వాత మొబైల్ OTP ద్వారా నేరుగా లాగిన్ అవ్వవచ్చు.",
-    msp: "ప్రస్తుత మద్దతు ధరలు (MSP): వరి (సాధారణం): ₹2,300/క్వింటాల్, గోధుమ: ₹2,275/క్వింటాల్, పత్తి: ₹7,121/క్వింటాల్, మొక్కజొన్న: ₹2,090/క్వింటాల్.",
-    support: "రైతు హెల్ప్‌లైన్: 1800-180-1551 (కిసాన్ కాల్ సెంటర్). కొనుగోలు కేంద్రాలు ఉదయం 8 నుండి సాయంత్రం 6 వరకు పనిచేస్తాయి."
+    slotBooking: "సేకరణ స్లాట్ బుక్ చేయడానికి 'స్లాట్ బుక్ చేయండి' ట్యాబ్‌కు వెళ్లి కేంద్రం, తేదీ మరియు సమయాన్ని ఎంచుకోండి. స్మార్ట్‌ఫోన్ లేకపోతే 1800-890-2026 కు కాల్ చేయండి.",
+    queue: "మీ ప్రస్తుత క్యూ టోకెన్ నంబర్ మరియు ఎంత సమయం వేచి ఉండాలో 'క్యూ స్థితి' విభాగంలో ప్రత్యక్షంగా చూడవచ్చు.",
+    payment: "మండీలో ధాన్యం తూకం పూర్తయిన తర్వాత అడ్మిన్ మంజూరు చేసిన మొత్తం 24-48 గంటల్లో మీ ఆధార్ లింక్ అయిన బ్యాంక్ ఖాతాలో DBT ద్వారా జమ అవుతుంది.",
+    msp: "ప్రభుత్వ మద్దతు ధరలు (MSP 2026): వరి (సాధారణ): ₹2,300/క్వింటా, వరి (గ్రేడ్ A): ₹2,320/క్వింటా, పత్తి: ₹7,121/క్వింటా, మొక్కజొన్న: ₹2,090/క్వింటా, సోయాబీన్: ₹4,892/క్వింటా.",
+    centers: "ధాన్య సేకరణ కేంద్రాలు ఉదయం 8:30 నుండి సాయంత్రం 5:30 వరకు పనిచేస్తాయి. తేమ శాతం గరిష్టంగా 17% లోపు ఉండాలి.",
+    documents: "తీసుకురావలసిన పత్రాలు: 1) ఆధార్ కార్డు, 2) బ్యాంక్ పాస్‌బుక్, 3) పట్టాదారు పాస్‌బుక్ / రైతు బంధు ID.",
+    ivrPhone: "స్మార్ట్‌ఫోన్ లేదా? ఏ మొబైల్ లేదా ల్యాండ్‌లైన్ నుండి అయినా 1800-890-2026 టోల్‌ఫ్రీ నంబర్‌కు కాల్ చేసి మీ మాతృభాషలో స్లాట్ బుక్ చేసుకోవచ్చు.",
+    support: "రైతు టోల్‌ఫ్రీ హెల్ప్‌లైన్: 1800-180-1551 (ఉదయం 6 నుండి రాత్రి 10 వరకు).",
+    unrelated: "ఈ ప్రశ్న ధాన్య సేకరణకు సంబంధించినది కాదు. దయచేసి సేకరణ కేంద్రాలు, స్లాట్ బుకింగ్, క్యూ టోకెన్లు, మద్దతు ధర (MSP) మరియు రైతు చెల్లింపుల గురించి మాత్రమే అడగండి."
+  },
+  hi: {
+    greetings: [
+      "नमस्कार किसान भाइयों एवं बहनों! मैं आपका फसल खरीद कृषि सहायक AI हूँ। मैं आपकी क्या मदद कर सकता हूँ?",
+      "प्रणाम! खरीद केंद्र, स्लॉट बुकिंग, लाइव कतार टोकन, एमएसपी दर और बैंक डीबीटी भुगतान के बारे में पूछें।"
+    ],
+    slotBooking: "स्लॉट बुक करने के लिए 'स्लॉट बुक करें' टैब पर जाएं और नजदीकी केंद्र, तिथि व समय चुनें। यदि स्मार्टफोन नहीं है तो टोल-फ्री 1800-890-2026 पर कॉल करें।",
+    queue: "आप 'कतार स्थिति' टैब में अपना लाइव टोकन नंबर और अनुमानित प्रतीक्षा समय देख सकते हैं।",
+    payment: "मंडी में फसल की तौल के बाद खरीद अधिकारी द्वारा स्वीकृत राशि 24 से 48 घंटे में सीधे आपके बैंक खाते में डीबीटी द्वारा भेज दी जाती है।",
+    msp: "सरकारी न्यूनतम समर्थन मूल्य (MSP): धान (सामान्य): ₹2,300/क्विंटल, धान (ग्रेड A): ₹2,320/क्विंटल, गेहूं: ₹2,275/क्विंटल, कपास: ₹7,121/क्विंटल, मक्का: ₹2,090/क्विंटल।",
+    centers: "खरीद केंद्र सुबह 8:30 से शाम 5:30 तक खुले रहते हैं। धान में नमी अधिकतम 17% होनी चाहिए।",
+    documents: "मंडी में आवश्यक दस्तावेज: 1) आधार कार्ड, 2) बैंक पासबुक, 3) भूमि रिकॉर्ड / किसान क्रेडिट पासबुक।",
+    ivrPhone: "बिना स्मार्टफोन के किसान टोल-फ्री नंबर 1800-890-2026 पर कॉल करके अपनी पसंदीदा भाषा में स्लॉट बुक कर सकते हैं।",
+    support: "किसान कॉल सेंटर हेल्पलाइन: 1800-180-1551 (टोल फ्री)।",
+    unrelated: "यह प्रश्न फसल खरीद से संबंधित नहीं है। कृपया केवल खरीद केंद्र, स्लॉट बुकिंग, कतार टोकन, एमएसपी दर और किसान भुगतान से संबंधित प्रश्न ही पूछें।"
   },
   ta: {
     greetings: [
-      "வணக்கம் விவசாய தோழரே! நான் கிருஷி சகாயக் AI உதவியாளர். உங்களுக்கு நான் எவ்வாறு உதவ முடியும்?",
-      "வணக்கம்! முன்பதிவு, வரிசை டோக்கன், குறைந்தபட்ச ஆதரவு விலை (MSP) மற்றும் வங்கி பரிவர்த்தனை தகவல்களை அறியலாம்."
+      "வணக்கம் விவசாய பெருமக்களே! நான் உங்கள் கொள்முதல் விவசாய AI உதவியாளர்.",
+      "கொள்முதல் மையங்கள், முன்பதிவு, வரிசை டோக்கன், MSP விலை மற்றும் வங்கி பரிவர்த்தனை பற்றி கேளுங்கள்."
     ],
-    slotBooking: "நேரத்தை முன்பதிவு செய்ய 'இடத்தை முன்பதிவு செய்' என்பதை கிளிக் செய்து, கொள்முதல் மையம் மற்றும் நேரத்தைத் தேர்ந்தெடுக்கவும்.",
-    queue: "உங்கள் டோக்கன் எண் மற்றும் வரிசை நிலையை 'வரிசை நிலை' பகுதியில் நேரலையாகக் காணலாம்.",
-    payment: "தானிய எடையிடல் முடிந்ததும் தொகை நேரடியாக உங்கள் வங்கிக் கணக்கில் DBT மூலம் வரவு வைக்கப்படும்.",
-    registration: "புதிய விவசாயிகள் பெயர் மற்றும் மொபைல் எண் மூலம் பதிவு செய்யலாம். பின் மொபைல் OTP மூலம் எளிதாக உள்நுழையலாம்.",
-    msp: "அரசு MSP விலை: நெல்: ₹2,300/குவிண்டால், கோதுமை: ₹2,275/குவிண்டால், பருத்தி: ₹7,121/குவிண்டால், மக்காச்சோளம்: ₹2,090/குவிண்டால்.",
-    support: "உதவி எண்: 1800-180-1551 (விவசாயி அழைப்பு மையம்). கொள்முதல் மையங்கள் காலை 8 முதல் மாலை 6 வரை இயங்கும்."
+    slotBooking: "முன்பதிவு செய்ய 'இடத்தை முன்பதிவு செய்' பகுதிக்கு செல்லவும். ஸ்மார்ட்போன் இல்லையெனில் 1800-890-2026 என்ற எண்ணை அழைக்கவும்.",
+    queue: "உங்கள் டோக்கன் நிலையை 'வரிசை நிலை' பகுதியில் நேரலையாக பார்க்கலாம்.",
+    payment: "தானிய எடை மற்றும் தர பரிசோதனைக்கு பிறகு தொகை நேரடியாக உங்கள் வங்கி கணக்கில் DBT மூலம் வரவு வைக்கப்படும்.",
+    msp: "அரசு MSP விலை: நெல்: ₹2,300/குவிண்டால், பருத்தி: ₹7,121/குவிண்டால், கோதுமை: ₹2,275/குவிண்டால்.",
+    centers: "மையங்கள் காலை 8:30 முதல் மாலை 5:30 வரை செயல்படும்.",
+    documents: "தேவையான ஆவணங்கள்: ஆதார் அட்டை, வங்கி கணக்கு புத்தகம், நில ஆவணம்.",
+    ivrPhone: "1800-890-2026 என்ற இலவச தொலைபேசி எண்ணை அழைத்து முன்பதிவு செய்யலாம்.",
+    support: "விவசாயி உதவி எண்: 1800-180-1551.",
+    unrelated: "இந்த கேள்வி தானிய கொள்முதலுடன் தொடர்புடையது அல்ல. கொள்முதல் மையம், முன்பதிவு, வரிசை டோக்கன், MSP விலை மற்றும் பணம் செலுத்துதல் பற்றிய கேள்விகளை மட்டும் கேட்கவும்."
   },
   kn: {
     greetings: [
-      "ನಮಸ್ಕಾರ ರೈತ ಬಾಂಧವರೇ! ನಾನು ಕೃಷಿ ಸಹಾಯಕ AI. ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?",
-      "ನಮಸ್ಕಾರ! ಸ್ಲಾಟ್ ಬುಕಿಂಗ್, ಸರದಿ ಟೋಕನ್, ಬೆಂಬಲ ಬೆಲೆ (MSP) ಮತ್ತು ಬ್ಯಾಂಕ್ ಜಮೆ ಬಗ್ಗೆ ಮಾಹಿತಿ ಪಡೆಯಿರಿ."
+      "ನಮಸ್ಕಾರ ರೈತ ಬಾಂಧವರೇ! ನಾನು ಧಾನ್ಯ ಖರೀದಿ ಕೃಷಿ ಸಹಾಯಕ AI.",
+      "ಖರೀದಿ ಕೇಂದ್ರ, ಸ್ಲಾಟ್ ಕಾಯ್ದಿರಿಸುವಿಕೆ, ಸರದಿ ಟೋಕನ್ ಮತ್ತು ಬೆಂಬಲ ಬೆಲೆ ಬಗ್ಗೆ ಕೇಳಿ."
     ],
-    slotBooking: "ಸ್ಲಾಟ್ ಕಾಯ್ದಿರಿಸಲು 'ಸ್ಲಾಟ್ ಕಾಯ್ದಿರಿಸಿ' ಮೆನುಗೆ ಹೋಗಿ ಕೇಂದ್ರ, ದಿನಾಂಕ ಮತ್ತು ಸಮಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
-    queue: "ನಿಮ್ಮ ಟೋಕನ್ ಸಂಖ್ಯೆ ಮತ್ತು ಸರದಿ ಸಾಲಿನ ವಿವರಗಳನ್ನು 'ಸರದಿ ಸಾಲಿನ ಸ್ಥಿತಿ'ಯಲ್ಲಿ ನೇರವಾಗಿ ಪರಿಶೀಲಿಸಿ.",
-    payment: "ಧಾನ್ಯ ಪರಿಶೀಲನೆ ನಂತರ ನಿಮ್ಮ ಹಣ ನೇರವಾಗಿ ಬ್ಯಾಂಕ್ ಖಾತೆಗೆ DBT ಮೂಲಕ ಜಮೆಯಾಗುತ್ತದೆ.",
-    registration: "ಹೊಸ ರೈತರು ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯೊಂದಿಗೆ ನೋಂದಾಯಿಸಿಕೊಳ್ಳಬಹುದು. ನಂತರ ಮೊಬೈಲ್ OTP ಮೂಲಕ ನೇರವಾಗಿ ಲಾಗಿನ್ ಆಗಬಹುದು.",
-    msp: "ಸರ್ಕಾರದ ಬೆಂಬಲ ಬೆಲೆ: ಭತ್ತ: ₹2,300/ಕ್ವಿಂಟಾಲ್, ಗೋಧಿ: ₹2,275/ಕ್ವಿಂಟಾಲ್, ಹತ್ತಿ: ₹7,121/ಕ್ವಿಂಟಾಲ್, ಮೆಕ್ಕೆಜೋಳ: ₹2,090/ಕ್ವಿಂಟಾಲ್.",
-    support: "ರೈತ ಸಹಾಯವಾಣಿ: 1800-180-1551. ಕೇಂದ್ರಗಳು ಬೆಳಿಗ್ಗೆ 8 ರಿಂದ ಸಂಜೆ 6 ರವರೆಗೆ ತೆರೆದಿರುತ್ತವೆ."
+    slotBooking: "ಸ್ಲಾಟ್ ಬುಕ್ ಮಾಡಲು 'ಸ್ಲಾಟ್ ಕಾಯ್ದಿರಿಸಿ' ಮೆನುವಿಗೆ ಹೋಗಿ. ಫೋನ್ ಇಲ್ಲದಿದ್ದರೆ 1800-890-2026 ಗೆ ಕರೆ ಮಾಡಿ.",
+    queue: "ನಿಮ್ಮ ಲೈವ್ ಟೋಕನ್ ಸಂಖ್ಯೆಯನ್ನು 'ಸರದಿ ಸಾಲಿನ ಸ್ಥಿತಿ'ಯಲ್ಲಿ ಪರಿಶೀಲಿಸಿ.",
+    payment: "ತೂಕದ ನಂತರ ಹಣವು ನೇರವಾಗಿ DBT ಮೂಲಕ ನಿಮ್ಮ ಬ್ಯಾಂಕ್ ಖಾತೆಗೆ ಜಮೆಯಾಗುತ್ತದೆ.",
+    msp: "ಸರ್ಕಾರಿ ಬೆಂಬಲ ಬೆಲೆ: ಭತ್ತ: ₹2,300/ಕ್ವಿಂಟಾಲ್, ಹತ್ತಿ: ₹7,121/ಕ್ವಿಂಟಾಲ್, ಮೆಕ್ಕೆಜೋಳ: ₹2,090/ಕ್ವಿಂಟಾಲ್.",
+    centers: "ಖರೀದಿ ಕೇಂದ್ರಗಳು ಬೆಳಗ್ಗೆ 8:30 ರಿಂದ ಸಂಜೆ 5:30 ರವರೆಗೆ ತೆರೆದಿರುತ್ತವೆ.",
+    documents: "ಅಗತ್ಯ ದಾಖಲೆಗಳು: ಆಧಾರ್ ಕಾರ್ಡ್, ಬ್ಯಾಂಕ್ ಪಾಸ್‌ಬುಕ್, ಪಹಣಿ ಪತ್ರ.",
+    ivrPhone: "ಸ್ಮಾರ್ಟ್‌ಫೋನ್ ಇಲ್ಲದಿದ್ದರೆ 1800-890-2026 ಗೆ ಕರೆ ಮಾಡಿ ಧ್ವನಿ ಮೂಲಕ ಸ್ಲಾಟ್ ಬುಕ್ ಮಾಡಿ.",
+    support: "ಕಿಸಾನ್ ಸಹಾಯವಾಣಿ: 1800-180-1551.",
+    unrelated: "ಈ ಪ್ರಶ್ನೆಯು ಧಾನ್ಯ ಖರೀದಿಗೆ ಸಂಬಂಧಿಸಿಲ್ಲ. ದಯವಿಟ್ಟು ಖರೀದಿ ಕೇಂದ್ರ, ಸ್ಲಾಟ್ ಬುಕಿಂಗ್, ಸರದಿ ಟೋಕನ್, ಬೆಂಬಲ ಬೆಲೆ (MSP) ಮತ್ತು ಪಾವತಿಗಳ ಬಗ್ಗೆ ಮಾತ್ರ ಕೇಳಿ."
   },
   ml: {
     greetings: [
-      "നമസ്കാരം കർഷക സുഹൃത്തേ! ഞാൻ കൃഷി സഹായക് AI അസിസ്റ്റന്റ്. ഞാൻ എന്ത് സഹായമാണ് ചെയ്യേണ്ടത്?",
-      "നമസ്കാരം! സ്ലാറ്റ് ബുക്കിംഗ്, ക്യൂ ടോക്കൺ, താങ്ങുവില (MSP), പേയ്‌മെന്റ് എന്നിവയിൽ ഞാൻ സഹായിക്കാം."
+      "നമസ്കാരം കർഷക സുഹൃത്തുക്കളെ! ഞാൻ സംഭരണ കൃഷി സഹായക് AI ആണ്.",
+      "സംഭരണ കേന്ദ്രം, സ്ലാറ്റ് ബുക്കിംഗ്, ക്യൂ ടോക്കൺ, താങ്ങുവില എന്നിവയെക്കുറിച്ച് ചോദിക്കുക."
     ],
-    slotBooking: "ധാന്യ സംഭരണ സ്ലാറ്റ് ബുക്ക് ചെയ്യാൻ 'സ്ലാറ്റ് ബുക്ക് ചെയ്യുക' ടാബിൽ പോയി തീയതിയും സമയവും തിരഞ്ഞെടുക്കുക.",
-    queue: "'ക്യൂ നില' ടാബിൽ നിങ്ങളുടെ ലൈവ് ടോക്കൺ നമ്പറും നിലവിലെ ക്യൂ സ്ഥിതിയും പരിശോധിക്കാം.",
-    payment: "ധാന്യം സംഭരിച്ച ശേഷം തുക നിങ്ങളുടെ ബാങ്ക് അക്കൗണ്ടിലേക്ക് DBT വഴി നേരിട്ട് ലഭ്യമാകും.",
-    registration: "പുതിയ കർഷകർക്ക് മൊബൈൽ നമ്പർ ഉപയോഗിച്ച് രജിസ്റ്റർ ചെയ്യാം. തുടർന്ന് മൊബൈൽ OTP ഉപയോഗിച്ച് ലോഗിన్ ചെയ്യാം.",
-    msp: "സർക്കാർ താങ്ങുവില: നെല്ല്: ₹2,300/ക്വിന്റൽ, ഗോതമ്പ്: ₹2,275/ക്വിന്റൽ, പരുത്തി: ₹7,121/ക്വിന്റൽ.",
-    support: "കിസാൻ കോൾ സെന്റർ: 1800-180-1551 (ടോൾ ഫ്രീ)."
+    slotBooking: "'സ്ലാറ്റ് ബുക്ക് ചെയ്യുക' എന്നതിൽ ക്ലിക്ക് ചെയ്ത് ബുക്ക് ചെയ്യാം. ഫോൺ ഇല്ലെങ്കിൽ 1800-890-2026 വിളിക്കുക.",
+    queue: "നിങ്ങളുടെ ടോക്കൺ നമ്പർ 'ക്യൂ നില' യിൽ തത്സമയം കാണാം.",
+    payment: "തൂക്കത്തിന് ശേഷം തുക ബാങ്ക് അക്കൗണ്ടിലേക്ക് നേരിട്ട് DBT വഴി എത്തും.",
+    msp: "താങ്ങുവില: നെല്ല്: ₹2,300/ക്വിന്റൽ, പരുത്തി: ₹7,121/ക്വിന്റൽ.",
+    centers: "രാവിലെ 8:30 മുതൽ വൈകുന്നേരം 5:30 വരെ കേന്ദ്രങ്ങൾ പ്രവർത്തിക്കും.",
+    documents: "ആവശ്യമായ രേഖകൾ: ആധാർ, ബാങ്ക് പാസ്ബുക്ക്, കരം രസീത്.",
+    ivrPhone: "1800-890-2026 ലേക്ക് വിളിച്ചു ഫോൺ വഴി ബുക്ക് ചെയ്യാം.",
+    support: "ഹെൽപ്പ്‌ലൈൻ: 1800-180-1551.",
+    unrelated: "ഈ ചോദ്യം ധാന്യ സംഭരണവുമായി ബന്ധപ്പെട്ടതല്ല. സംഭരണ കേന്ദ്രങ്ങൾ, സ്ലാറ്റ് ബുക്കിംഗ്, ക്യൂ ടോക്കൺ, താങ്ങുവില, പേയ്‌മെന്റ് എന്നിവയെക്കുറിച്ച് മാത്രം ചോദിക്കുക."
   },
   mr: {
     greetings: [
-      "नमस्कार शेतकरी बांधवांनो! मी कृषी सहाय्यक AI आहे. मी तुम्हाला कशी मदत करू शकतो?",
-      "प्रणाम! स्लॉट बुकिंग, थेट रांग टोकन, हमीभाव आणि डीबीटी पेमेंट माहितीसाठी मी सदैव तत्पर आहे."
+      "नमस्कार शेतकरी बांधवांनो! मी धान्य खरेदी कृषी सहाय्यक AI आहे.",
+      "खरेदी केंद्र, स्लॉट बुकिंग, थेट रांग टोकन आणि हमीभाव माहितीसाठी विचारा."
     ],
-    slotBooking: "स्लॉट बुक करण्यासाठी 'स्लॉट बुक करा' पर्यायावर जा आणि केंद्र, तारीख व वेळ निवडून आरक्षित करा.",
-    queue: "तुमचा टोकन क्रमांक आणि थेट रांग 'रांग स्थिती' विभागात तपासू शकता.",
-    payment: "धान्य मोजणीनंतर रक्कम थेट तुमच्या बँक खात्यात डीबीटीद्वारे जमा केली जाते.",
-    registration: "नवीन शेतकरी मोबाईल नंबर व बँकेच्या तपशीलासह नोंदणी करू शकतात आणि नंतर OTP द्वारे थेट लॉगिन करू शकतात.",
-    msp: "हमीभाव (MSP): धान/भात: ₹२,३००/क्विंटल, गहू: ₹२,२७५/क्विंटल, कापूस: ₹७,१२१/क्विंटल, मका: ₹२,०९०/क्विंटल.",
-    support: "किसान कॉल सेंटर हेल्पलाईन: १८००-१८०-१५५१ (टोल फ्री)."
+    slotBooking: "'स्लॉट बुक करा' विभागात जाऊन वेळ निवडा किंवा १८००-८९०-२०२६ वर कॉल करा.",
+    queue: "तुमचा टोकन क्रमांक 'रांग स्थिती' विभागात थेट पाहू शकता.",
+    payment: "तौल झाल्यानंतर रक्कम थेट तुमच्या बँक खात्यात डीबीटीद्वारे जमा होते.",
+    msp: "हमीभाव (MSP): धान: ₹२,३००/क्विंटल, कापूस: ₹७,१२१/क्विंटल, मका: ₹२,०९०/क्विंटल.",
+    centers: "केंद्रे सकाळी ८:३० ते संध्याकाळी ५:३० पर्यंत सुरू असतात.",
+    documents: "आवश्यक कागदपत्रे: आधार कार्ड, बँक पासबुक, ७/१२ उतारा.",
+    ivrPhone: "स्मार्टफोन नसल्यास १८००-८९०-२०२६ वर फोन करून स्लॉट बुक करा.",
+    support: "किसान कॉल सेंटर: १८००-१८०-१५५१.",
+    unrelated: "हा प्रश्न धान्य खरेदीशी संबंधित नाही. कृपया खरेदी केंद्र, स्लॉट बुकिंग, रांग टोकन, हमीभाव आणि पेमेंट संबंधीच प्रश्न विचारा."
   },
   bn: {
     greetings: [
-      "নমস্কার কৃষক ভাই ও বোনেরা! আমি কৃষি সহায়ক AI। আমি কীভাবে আপনাকে সাহায্য করতে পারি?",
-      "প্রণাম! স্লট বুকিং, লাইভ কিউ টোকেন, সহায়ক মূল্য (MSP) ও ব্যাঙ্ক পেমেন্ট তথ্য জানতে পারেন।"
+      "নমস্কার কৃষক ভাই ও বোনেরা! আমি শস্য সংগ্রহ কৃষি সহায়ক AI।",
+      "সংগ্রহ কেন্দ্র, স্লট বুকিং, কিউ টোকেন এবং সহায়ক মূল্য (MSP) সম্পর্কে জিজ্ঞাসা করুন।"
     ],
-    slotBooking: "স্লট বুক করতে 'স্লট বুক করুন' ট্যাবে গিয়ে সংগ্রহের কেন্দ্র, তারিখ ও সময় নির্বাচন করুন।",
-    queue: "'সারির অবস্থা' অংশে আপনার বর্তমান টোকেন নম্বর এবং লাইভ কিউ ট্র্যাক করতে পারবেন।",
-    payment: "শস্য পরীক্ষার পর সম্পূর্ণ অর্থ সরাসরি আপনার লিঙ্ক করা ব্যাঙ্ক অ্যাকাউন্টে DBT মারফত পৌঁছে যাবে।",
-    registration: "নতুন কৃষকরা মোবাইল নম্বর ও ব্যাঙ্ক তথ্য দিয়ে নিবন্ধন করতে পারেন এবং পরে মোবাইল OTP দিয়ে লগইন করতে পারেন।",
-    msp: "সরকারি সহায়ক মূল্য (MSP): ধান: ₹২,৩০০/কুইন্টাল, গম: ₹২,২৭৫/কুইন্টাল, তুলা: ₹৭,১২১/কুইন্টাল, ভুট্টা: ₹২,০৯০/কুইন্টাল।",
-    support: "কৃষক হেল্পলাইন: ১৮০০-১৮০-১৫৫১ (টোল ফ্রি)। কেন্দ্রগুলি সকাল ৮টা থেকে সন্ধ্যা ৬টা পর্যন্ত খোলা থাকে।"
+    slotBooking: "'স্লট বুক করুন' অংশে যান বা ১৮০০-৮৯০-২০২৬ নম্বরে কল করে বুক করুন।",
+    queue: "'সারির অবস্থা' অংশে লাইভ টোকেন দেখতে পারেন।",
+    payment: "শস্য পরীক্ষার পর সম্পূর্ণ অর্থ সরাসরি DBT মাধ্যমে ব্যাঙ্ক অ্যাকাউন্টে জমা হবে।",
+    msp: "সহায়ক মূল্য: ধান: ₹২,৩০০/কুইন্টাল, গম: ₹২,২৭৫/কুইন্টাল, তুলা: ₹৭,১২১/কুইন্টাল।",
+    centers: "কেন্দ্রগুলি সকাল ৮:৩০ থেকে বিকাল ৫:৩০ পর্যন্ত খোলা থাকে।",
+    documents: "প্রয়োজনীয় নথি: আধার কার্ড, ব্যাঙ্ক পাসবই, জমির খতিয়ান।",
+    ivrPhone: "১৮০০-৮৯০-২০২৬ টোল-ফ্রি নম্বরে কল করে স্লট বুক করতে পারেন।",
+    support: "কৃষক হেল্পলাইন: ১৮০০-১৮০-১৫৫১।",
+    unrelated: "এই প্রশ্নটি শস্য ক্রয়ের সাথে সম্পর্কিত নয়। অনুগ্রহ করে শুধুমাত্র সংগ্রহ কেন্দ্র, স্লট বুকিং, কিউ টোকেন, সহায়ক মূল্য (MSP) এবং পেমেন্ট সংক্রান্ত প্রশ্ন জিজ্ঞাসা করুন।"
   },
   gu: {
     greetings: [
-      "નમસ્તે ખેડૂત મિત્રો! હું કૃષિ સહાયક AI છું. હું તમને કેવી રીતે મદદ કરી શકું?",
-      "નમસ્તે! સ્લોટ બુકિંગ, લાઈવ લાઇન ટોકન, ટેકાના ભાવ અને બેંક ખાતામાં ચુકવણી માહિતી મેળવો."
+      "નમસ્તે ખેડૂત મિત્રો! હું અનાજ ખરીદ સહાયક AI છું.",
+      "ખરીદ કેન્દ્ર, સ્લોટ બુકિંગ, લાઇન ટોકન અને ટેકાના ભાવ વિશે પૂછો."
     ],
-    slotBooking: "સ્લોટ બુક કરવા માટે 'સ્લોટ બુક કરો' મેનુમાં જાઓ અને મનપસંદ કેન્દ્ર, તારીખ અને સમય પસંદ કરો.",
-    queue: "તમારો ટોકન નંબર અને લાઈવ લાઇન સ્થિતિ 'લાઇન સ્થિતિ' વિભાગમાં તપાસો.",
-    payment: "અનાજ તોલણી પછી રકમ સીધી તમારા બેંક ખાતામાં DBT દ્વારા જમા કરવામાં આવે છે.",
-    registration: "નવા ખેડૂતો મોબાઇલ નંબરથી નોંધણી કરી શકે છે અને પછી મોબાઇલ OTP દ્વારા સરળતાથી લોગિન કરી શકે છે.",
-    msp: "ટેકાના ભાવ (MSP): ડાંગર: ₹૨,૩૦૦/ક્વિન્ટલ, ઘઉં: ₹૨,૨૭૫/ક્વિન્ટલ, કપાસ: ₹૭,૧૨૧/ક્વિન્ટલ.",
-    support: "કિસાન કોલ સેન્ટર: ૧૮૦૦-૧૮૦-૧૫૫૧ (ટોલ ફ્રી)."
+    slotBooking: "'સ્લોટ બુક કરો' માં જઈને બુક કરો અથવા ૧૮૦૦-૮૯૦-૨૦૨૬ પર કોલ કરો.",
+    queue: "'લાઇન સ્થિતિ' માં તમારો ટોકન નંબર તપાસો.",
+    payment: "તોલણી પછી રકમ સીધી બેંક ખાતામાં DBT દ્વારા જમા થાય છે.",
+    msp: "ટેકાના ભાવ: ડાંગર: ₹૨,૩૦૦/ક્વિન્ટલ, કપાસ: ₹૭,૧૨૧/ક્વિન્ટલ.",
+    centers: "કેન્દ્રો સવારે ૮:૩০ થી સાંજે ૫:૩૦ સુધી ચાલુ રહે છે.",
+    documents: "જરૂરી દસ્તાવેજો: આધાર કાર્ડ, બેંક પાસબુક, ૭/૧૨ નો દાખલો.",
+    ivrPhone: "૧૮૦૦-૮૯૦-૨૦૨૬ પર કોલ કરીને સ્લોટ બુક કરી શકાય છે.",
+    support: "કિસાન કોલ સેન્ટર: ૧૮૦૦-૧૮૦-૧૫૫૧.",
+    unrelated: "આ પ્રશ્ન અનાજ ખરીદી સાથે સંબંધિત નથી. કૃપા કરીને માત્ર ખરીદ કેન્દ્ર, સ્લોટ બુકિંગ, લાઇન ટોકન, ટેકાના ભાવ (MSP) અને ચુકવણી અંગેના પ્રશ્નો પૂછો."
   },
   pa: {
     greetings: [
-      "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਕਿਸਾਨ ਵੀਰੋ ਅਤੇ ਭੈਣੋ! ਮੈਂ ਕ੍ਰਿਸ਼ੀ ਸਹਾਇਕ AI ਹਾਂ। ਮੈਂ ਤੁਹਾਡੀ ਕੀ ਮਦਦ ਕਰ ਸਕਦਾ ਹਾਂ?",
-      "ਜੀ ਆਇਆਂ ਨੂੰ! ਸਲਾਟ ਬੁਕਿੰਗ, ਲਾਈਵ ਟੋਕਨ, ਐਮਐਸਪੀ ਅਤੇ ਡੀਬੀਟੀ ਭੁਗਤਾਨ ਦੀ ਜਾਣਕਾਰੀ ਲਈ ਪੁੱਛੋ।"
+      "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਕਿਸਾਨ ਵੀਰੋ! ਮੈਂ ਫ਼ਸਲ ਖ਼ਰੀਦ ਕ੍ਰਿਸ਼ੀ ਸਹਾਇਕ AI ਹਾਂ।",
+      "ਖ਼ਰੀਦ ਕੇਂਦਰ, ਸਲਾਟ ਬੁਕਿੰਗ, ਕਤਾਰ ਟੋਕਨ ਅਤੇ ਐਮਐਸਪੀ ਬਾਰੇ ਪੁੱਛੋ।"
     ],
-    slotBooking: "ਸਲਾਟ ਬੁੱਕ ਕਰਨ ਲਈ 'ਸਲਾਟ ਬੁੱਕ ਕਰੋ' 'ਤੇ ਕਲਿੱਕ ਕਰੋ ਅਤੇ ਆਪਣੀ ਪਸੰਦ ਦੀ ਮੰਡੀ ਅਤੇ ਸਮਾਂ ਚੁਣੋ।",
-    queue: "ਤੁਸੀਂ 'ਕਤਾਰ ਸਥਿਤੀ' ਸੈਕਸ਼ਨ ਵਿੱਚ ਆਪਣਾ ਲਾਈਵ ਟੋਕਨ ਨੰਬਰ ਅਤੇ ਕਤਾਰ ਦੇਖ ਸਕਦੇ ਹੋ।",
-    payment: "ਫ਼ਸਲ ਤੁਲਾਈ ਤੋਂ ਬਾਅਦ ਪੈਸੇ ਸਿੱਧੇ ਤੁਹਾਡੇ ਬੈਂਕ ਖਾਤੇ ਵਿੱਚ DBT ਰਾਹੀਂ ਆ ਜਾਂਦੇ ਹਨ।",
-    registration: "ਨਵੇਂ ਕਿਸਾਨ ਮੋਬਾਈਲ ਨੰਬਰ ਨਾਲ ਰਜਿਸਟਰ ਕਰ ਸਕਦੇ ਹਨ ਅਤੇ ਬਾਅਦ ਵਿੱਚ ਮੋਬਾਈਲ OTP ਨਾਲ ਸਿੱਧਾ ਲੌਗਇਨ ਕਰ ਸਕਦੇ ਹਨ।",
-    msp: "ਸਰਕਾਰੀ ਐਮਐਸਪੀ ਦਰਾਂ: ਝੋਨਾ: ₹2,300/ਕੁਇੰਟਲ, ਕਣਕ: ₹2,275/ਕੁਇੰਟਲ, ਕਪਾਹ: ₹7,121/ਕੁਇੰਟਲ, ਮੱਕੀ: ₹2,090/ਕੁਇੰਟਲ।",
-    support: "ਕਿਸਾਨ ਹੈਲਪਲਾਈਨ: 1800-180-1551 (ਟੋਲ ਫ੍ਰੀ)।"
+    slotBooking: "'ਸਲਾਟ ਬੁੱਕ ਕਰੋ' 'ਤੇ ਕਲਿੱਕ ਕਰੋ ਜਾਂ 1800-890-2026 'ਤੇ ਕਾਲ ਕਰੋ।",
+    queue: "'ਕਤਾਰ ਸਥਿਤੀ' ਵਿੱਚ ਆਪਣਾ ਲਾਈਵ ਟੋਕਨ ਦੇਖੋ।",
+    payment: "ਤੁਲਾਈ ਤੋਂ ਬਾਅਦ ਪੈਸੇ ਸਿੱਧੇ ਤੁਹਾਡੇ ਬੈਂਕ ਖਾਤੇ ਵਿੱਚ DBT ਰਾਹੀਂ ਆਉਂਦੇ ਹਨ।",
+    msp: "ਐਮਐਸਪੀ: ਝੋਨਾ: ₹2,300/ਕੁਇੰਟਲ, ਕਣਕ: ₹2,275/ਕੁਇੰਟਲ, ਕਪਾਹ: ₹7,121/ਕੁਇੰਟਲ।",
+    centers: "ਕੇਂਦਰ ਸਵੇਰੇ 8:30 ਤੋਂ ਸ਼ਾਮ 5:30 ਤੱਕ ਖੁੱਲ੍ਹੇ ਰਹਿੰਦੇ ਹਨ।",
+    documents: "ਜ਼ਰੂਰੀ ਦਸਤਾਵੇਜ਼: ਆਧਾਰ ਕਾਰਡ, ਬੈਂਕ ਪਾਸਬੁੱਕ, ਜਮ੍ਹਾਬੰਦੀ/ਫ਼ਰਦ।",
+    ivrPhone: "1800-890-2026 'ਤੇ ਕਾਲ ਕਰਕੇ ਸਲਾਟ ਬੁੱਕ ਕਰ ਸਕਦੇ ਹੋ।",
+    support: "ਕਿਸਾਨ ਹੈਲਪਲਾਈਨ: 1800-180-1551।",
+    unrelated: "ਇਹ ਸਵਾਲ ਫ਼ਸਲ ਖ਼ਰੀਦ ਨਾਲ ਸੰਬੰਧਿਤ ਨਹੀਂ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਸਿਰਫ਼ ਖ਼ਰੀਦ ਕੇਂਦਰ, ਸਲਾਟ ਬੁਕਿੰਗ, ਕਤਾਰ ਟੋਕਨ, ਐਮਐਸਪੀ ਅਤੇ ਭੁਗਤਾਨ ਬਾਰੇ ਹੀ ਪੁੱਛੋ।"
   },
   or: {
     greetings: [
-      "ନମସ୍କାର କୃଷକ ଭାଇ ଓ ଭଉଣୀମାନେ! ମୁଁ କୃଷି ସହାୟକ AI। ମୁଁ ଆପଣଙ୍କୁ କିପରି ସାହାଯ୍ୟ କରିପାରିବି?",
-      "ନମସ୍କାର! ସ୍ଲଟ୍ ବୁକିଂ, ଲାଇଭ୍ ଟୋକନ୍, ସହାୟକ ମୂଲ୍ୟ (MSP) ଏବଂ ବ୍ୟାଙ୍କ ଦେୟ ସମ୍ପର୍କରେ ପଚାରନ୍ତୁ।"
+      "ନମସ୍କାର କୃଷକ ବନ୍ଧୁଗଣ! ମୁଁ ଶସ୍ୟ ସଂଗ୍ରହ କୃଷି ସହାୟକ AI।",
+      "କ୍ରୟ କେନ୍ଦ୍ର, ସ୍ଲଟ୍ ବୁକିଂ, ଧାଡ଼ି ଟୋକନ୍ ଏବଂ MSP ବିଷୟରେ ପଚାରନ୍ତୁ।"
     ],
-    slotBooking: "ସ୍ଲଟ୍ ବୁକ୍ କରିବାକୁ 'ସ୍ଲଟ୍ ବୁକ୍ କରନ୍ତୁ' ଉପରେ କ୍ଲିକ୍ କରି ମଣ୍ଡି ଏବଂ ସମୟ ଚୟନ କରନ୍ତୁ।",
-    queue: "ଆପଣ 'ଧାଡ଼ି ସ୍ଥିତି' ବିଭାଗରେ ଆପଣଙ୍କର ଲାଇଭ୍ ଟୋକନ୍ ନମ୍ବର ଦେଖିପାରିବେ।",
-    payment: "ଶସ୍ୟ ଯାଞ୍ଚ ପରେ ସମ୍ପୂର୍ଣ୍ଣ ଟଙ୍କା ସିଧାସଳଖ ଆପଣଙ୍କ ବ୍ୟାଙ୍କ ଖାତାକୁ DBT ମାଧ୍ୟମରେ ପଠାଯାଏ।",
-    registration: "ନୂତନ କୃଷକମାନେ ମୋବାଇਲ୍ ନମ୍ବର ଦ୍ୱାରା ପଞ୍ଜୀକରଣ କରିପାରିବେ ଏବଂ ପରେ OTP ଦ୍ୱାରା ସହଜରେ ଲଗଇନ୍ କରିପାରିବେ।",
-    msp: "ସରକାରୀ ସହାୟକ ମୂଲ୍ୟ: ଧାନ: ₹୨,୩୦୦/କ୍ୱିଣ୍ଟାଲ, ଗହମ: ₹୨,୨୭୫/କ୍ୱିଣ୍ଟାଲ, କପା: ₹୭,୧୨୧/କ୍ୱିଣ୍ଟାଲ।",
-    support: "କିସାନ କଲ୍ ସେଣ୍ଟର: ୧୮୦୦-୧୮୦-୧୫୫୧ (ଟୋଲ୍ ଫ୍ରି)।"
+    slotBooking: "'ସ୍ଲଟ୍ ବୁକ୍ କରନ୍ତୁ' ବିଭାଗକୁ ଯାଆନ୍ତୁ କିମ୍ବା ୧୮୦୦-୮୯୦-୨୦୨୬ ରେ କଲ୍ କରନ୍ତୁ।",
+    queue: "'ଧାଡ଼ି ସ୍ଥିତି' ରେ ଆପଣଙ୍କ ଟୋକନ୍ ନମ୍ବର ଦେଖନ୍ତୁ।",
+    payment: "ଶସ୍ୟ ଯାଞ୍ଚ ପରେ ଟଙ୍କା DBT ମାଧ୍ୟମରେ ସିଧାସଳଖ ବ୍ୟାଙ୍କ ଖାତାକୁ ଆସିବ।",
+    msp: "ସହାୟକ ମୂଲ୍ୟ: ଧାନ: ₹୨,୩୦୦/କ୍ୱିଣ୍ଟାଲ, କପା: ₹୭,୧୨୧/କ୍ୱିଣ୍ଟାଲ।",
+    centers: "କେନ୍ଦ୍ରଗୁଡ଼ିକ ସକାଳ ୮:୩୦ ରୁ ସନ୍ଧ୍ୟା ୫:୩০ ପର୍ଯ୍ୟନ୍ତ ଖୋଲା ରହିବ।",
+    documents: "ଆବଶ୍ୟକୀୟ କାଗଜପତ୍ର: ଆଧାର କାର୍ଡ, ବ୍ୟାଙ୍କ ପାସବୁକ୍, ଜମି ପଟ୍ଟା।",
+    ivrPhone: "୧୮୦୦-୮୯୦-୨୦୨୬ ରେ କଲ୍ କରି ସ୍ଲଟ୍ ବୁକ୍ କରିପାରିବେ।",
+    support: "କିସାନ କଲ୍ ସେଣ୍ଟର: ୧୮୦୦-୧୮୦-୧୫୫୧।",
+    unrelated: "ଏହି ପ୍ରଶ୍ନଟି ଶସ୍ୟ କ୍ରୟ ସହିତ ସମ୍ପର୍କିତ ନୁହେଁ। ଦୟାକରି କେବଳ କ୍ରୟ କେନ୍ଦ୍ର, ସ୍ଲଟ୍ ବୁକିଂ, ଧାଡ଼ି ଟୋକନ୍, MSP ମୂଲ୍ୟ ଏବଂ ଦେୟ ବିଷୟରେ ପଚାରନ୍ତୁ।"
   }
 };
 
+/**
+ * Smart and precise chatbot reply selector with strict guardrails
+ */
 export function getChatbotReply(text, lang = 'en') {
   const currentLang = chatbotResponses[lang] ? lang : 'en';
   const responses = chatbotResponses[currentLang];
   const query = (text || '').toLowerCase().trim();
 
+  if (!query) {
+    return responses.greetings[0];
+  }
+
   // 1. Greetings
-  if (query.match(/^(hi|hello|hey|namaste|namaskar|pranam|vanakkam|nomoshkar|sat sri akal|హాయ్|నమస్తే|नमस्ते|வணக்கம்|ನಮಸ್ಕಾರ)/i)) {
+  if (query.match(/^(hi|hello|hey|namaste|namaskar|pranam|vanakkam|nomoshkar|sat sri akal|హాయ్|నమస్తే|నమస్కారం|नमस्ते|வணக்கம்|ನಮಸ್ಕಾರ|ഹലോ|ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ)/i)) {
     return responses.greetings[Math.floor(Math.random() * responses.greetings.length)];
   }
 
-  // 2. Slot Booking / Mandi Timing
-  if (query.match(/(slot|book|reserve|timing|date|mandi|center|स्लॉट|बुक|సమయం|తేదీ|స్లాట్|பதிவு|நேரம்|ಕಾಯ್ದಿರಿಸಿ|ਸਲਾਟ|সময়)/i)) {
+  // 2. Slot Booking / Appointment / Dates
+  if (query.match(/(slot|book|booking|reserve|appointment|schedule|date|tomorrow|today|स्लॉट|बुक|స్లాట్|బుకింగ్|తేదీ|ಕಾಯ್ದಿರಿಸಿ|ਸਲਾਟ|সময়|তারিখ|స్లాట్ బుక్)/i)) {
     return responses.slotBooking;
   }
 
-  // 3. Queue / Token / Live Status
-  if (query.match(/(queue|token|position|wait|line|status|कतार|टोकन|క్యూ|టోకెన్|வரிசை|ಸರದಿ|ਕਤਾਰ|সারি|ଧାଡ଼ି)/i)) {
+  // 3. Queue / Live Token / Position / Wait time
+  if (query.match(/(queue|token|position|wait|waiting|line|कतार|टोकन|క్యూ|టోకెన్|வரிசை|ಸರದಿ|ਕਤਾਰ|সারি|ଧାଡ଼ି|లైవ్ టోకెన్)/i)) {
     return responses.queue;
   }
 
-  // 4. Payment / DBT / Bank Account
-  if (query.match(/(pay|payment|money|bank|dbt|account|upi|rupee|पैसा|भुगतान|బ్యాంక్|డబ్బులు|చెల్లింపు|பணம்|ವಹಿವಾਟು|পেমেন্ট|টাকা|ଦେୟ)/i)) {
+  // 4. Payment / DBT / Bank Account / Sanction / Money transfer
+  if (query.match(/(pay|payment|dbt|pfms|money|bank|amount|rupee|account|sanction|पैसा|भुगतान|బ్యాంక్|డబ్బులు|చెల్లింపు|ఖాతా|பணம்|ವಹಿವಾਟು|পেমেন্ট|টাকা|ଦେୟ|मंजूरी)/i)) {
     return responses.payment;
   }
 
-  // 5. MSP / Price / Rates / Paddy / Wheat / Cotton
-  if (query.match(/(msp|price|rate|cost|paddy|wheat|cotton|grain|crop|धान|गेहूं|मूल्य|ధర|మద్దతు|பயிர்|ಬೆಲೆ|ਕੀਮਤ|দাম|ମୂଲ୍ୟ)/i)) {
+  // 5. MSP / Price / Rates / Paddy / Wheat / Cotton / Maize / Soyabean / Pulses
+  if (query.match(/(msp|price|rate|cost|paddy|wheat|cotton|maize|soyabean|pulse|grain|crop|धान|गेहूं|कपास|मूल्य|రేట్|ధర|మద్దతు|వరి|పత్తి|ಬೆಲೆ|ਕੀਮਤ|দাম|ମୂଲ୍ୟ|క్వింటా)/i)) {
     return responses.msp;
   }
 
-  // 6. Registration / Login / OTP / Aadhar
-  if (query.match(/(register|signup|login|otp|aadhar|mobile|phone|नंबर|पंजीकरण|నమోదు|లాగిన్|பதிவு|ನೋಂದಣಿ|ਰਜਿਸਟਰ|নিবন্ধন|ପଞ୍ଜୀକରଣ)/i)) {
-    return responses.registration;
+  // 6. Procurement Center Timings / Location / Moisture / Weighing
+  if (query.match(/(center|centre|mandi|yard|timing|open|close|time|moisture|weigh|quality|grade|मंडी|केंद्र|సమయం|తేమ|కేంద్రం|மையம்|ಕೇಂದ್ರ|ਸਮਾਂ)/i)) {
+    return responses.centers;
   }
 
-  // 7. Helpline / Support / Contact
-  if (query.match(/(help|support|contact|helpline|call|phone|मदद|సహాయం|உதவி|ಸಹಾಯ|ਮਦਦ|সাহায্য|ସହାୟତା)/i)) {
+  // 7. Documents Required / Aadhaar / Pattadar Passbook
+  if (query.match(/(document|paper|aadhaar|aadhar|passbook|land|record|pattadar|दस्तावेज|कागजात|పత్రాలు|ఆధార్|ಪಾಸ್‌ಬುಕ್|ದಾಖಲೆ|নথি)/i)) {
+    return responses.documents;
+  }
+
+  // 8. Offline / Non-smartphone / IVR Telephone / Call booking
+  if (query.match(/(phone|telephone|call|dial|toll free|offline|ivr|smartphone|no phone|कॉल|फोन|ఫోన్|కాల్|టోల్‌ఫ్రీ|ಕರೆ|কল)/i)) {
+    return responses.ivrPhone;
+  }
+
+  // 9. Helpline / Grievance / Complaint / Contact
+  if (query.match(/(help|helpline|support|contact|complaint|grievance|officer|number|मदद|हेल्पलाइन|సహాయం|నెంబర్|உதவி|ಸಹಾಯ|ਮਦਦ|সাহায্য)/i)) {
     return responses.support;
   }
 
-  // Fallback helpful response
-  return responses.greetings[0] + " " + responses.slotBooking;
+  // ==========================================================
+  // STRICT GUARDRAIL: If query is out of scope / unrelated
+  // ==========================================================
+  return responses.unrelated;
 }
-

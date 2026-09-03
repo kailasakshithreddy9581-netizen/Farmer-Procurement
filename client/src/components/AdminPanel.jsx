@@ -19,7 +19,12 @@ import {
   RotateCw,
   LogOut,
   Landmark,
-  Info
+  Info,
+  User,
+  MapPin,
+  Edit3,
+  Save,
+  X
 } from 'lucide-react';
 import { translations } from '../languages';
 import '../styles/AdminPanel.css';
@@ -36,21 +41,56 @@ const MSP_RATES = {
   'Pulses': 8682
 };
 
+const REGIONS_MANDALS = {
+  // Kerala Regions (Major Agricultural & Paddy Procurement Hubs)
+  'Palakkad (Nellara / Rice Bowl)': ['Alathur', 'Chittur', 'Palakkad', 'Ottapalam', 'Pattambi', 'Mannarkkad', 'Kuzhalmannam'],
+  'Alappuzha (Kuttanad)': ['Kuttanad', 'Ambalappuzha', 'Chengannur', 'Cherthala', 'Karthikappally', 'Mavelikkara'],
+  'Thrissur': ['Thrissur', 'Chalakudy', 'Chavakkad', 'Kodungallur', 'Mukundapuram', 'Thalapilly'],
+  'Wayanad': ['Mananthavady', 'Sulthan Bathery', 'Vythiri', 'Kalpetta'],
+  'Kozhikode': ['Kozhikode', 'Koyilandy', 'Vadakara', 'Thamarassery'],
+  'Ernakulam / Kochi': ['Aluva', 'Kochi', 'Kanayannur', 'Kunnathunad', 'Muvattupuzha', 'North Paravur', 'Angamaly'],
+  'Thiruvananthapuram': ['Thiruvananthapuram', 'Neyyattinkara', 'Nedumangad', 'Chirayinkeezhu', 'Varkala', 'Kattakada'],
+  'Kottayam': ['Kottayam', 'Changanassery', 'Vaikom', 'Meenachil', 'Kanjirappally'],
+  'Kannur': ['Kannur', 'Thalassery', 'Taliparamba', 'Payyanur', 'Iritty'],
+  'Idukki': ['Thodupuzha', 'Devikulam', 'Peerumade', 'Udumbanchola', 'Idukki'],
+
+  // Telangana Regions
+  'Sangareddy / Medak': ['Patancheru', 'Sangareddy', 'Zaheerabad', 'Narayankhed', 'Andole', 'Kandi', 'Ameenpur'],
+  'Nizamabad': ['Nizamabad North', 'Nizamabad South', 'Bodhan', 'Armoor', 'Banswada', 'Dichpally'],
+  'Karimnagar': ['Karimnagar Urban', 'Huzurabad', 'Choppadandi', 'Manakondur', 'Thimmapur'],
+  'Warangal / Hanamkonda': ['Warangal Urban', 'Hanamkonda', 'Narsampet', 'Parkal', 'Wardhannapet'],
+  'Nalgonda': ['Nalgonda Urban', 'Miryalaguda', 'Devarakonda', 'Nakrekal']
+};
+
 function AdminPanel({ language = 'en' }) {
   // eslint-disable-next-line no-unused-vars
   const t = translations[language] || translations.en;
 
-  // Authentication State for Procurement Center Admin (Mobile + OTP)
+  // Authentication State for Procurement Center Admin (Mobile + OTP + Name + Address)
   const [adminUser, setAdminUser] = useState(
     JSON.parse(localStorage.getItem('procurementAdmin') || 'null')
   );
+  const [authMode, setAuthMode] = useState('login'); // 'login' | 'register'
   const [authPhone, setAuthPhone] = useState('');
   const [authOtp, setAuthOtp] = useState('');
-  const [authStep, setAuthStep] = useState(1); // 1: Phone, 2: OTP
+  const [authStep, setAuthStep] = useState(1); // 1: Form, 2: OTP, 3: Address Check
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState('');
   const [demoOtp, setDemoOtp] = useState(null);
   const [resendTimer, setResendTimer] = useState(0);
+
+  // Admin Registration & Details State (Name, Address, Kerala & Telangana Regions)
+  const [adminNameInput, setAdminNameInput] = useState('');
+  const [adminAddressInput, setAdminAddressInput] = useState('');
+  const [adminDistrictInput, setAdminDistrictInput] = useState('Palakkad (Nellara / Rice Bowl)');
+  const [adminMandalInput, setAdminMandalInput] = useState('Alathur');
+  const [adminCenterNameInput, setAdminCenterNameInput] = useState('');
+
+  // Profile Edit Modal State
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [editName, setEditName] = useState(adminUser?.name || '');
+  const [editAddress, setEditAddress] = useState(adminUser?.address || '');
+  const [profileSaving, setProfileSaving] = useState(false);
 
   // Portal State
   const [centers, setCenters] = useState([]);
@@ -138,7 +178,7 @@ function AdminPanel({ language = 'en' }) {
     }
   };
 
-  // Auth Handlers (Mobile + OTP)
+  // Auth Handlers (Mobile + OTP + Name + Address)
   const handleSendAdminOtp = async (e) => {
     if (e) e.preventDefault();
     setAuthError('');
@@ -149,11 +189,22 @@ function AdminPanel({ language = 'en' }) {
       return;
     }
 
+    if (authMode === 'register') {
+      if (!adminNameInput.trim()) {
+        setAuthError('Please enter Admin Full Name');
+        return;
+      }
+      if (!adminAddressInput.trim()) {
+        setAuthError('Please enter Admin Office / Mandi Address');
+        return;
+      }
+    }
+
     setAuthLoading(true);
     try {
       const res = await axios.post(`${API_BASE}/auth/send-otp`, {
         phone: cleanPhone,
-        purpose: 'admin_login'
+        purpose: authMode === 'register' ? 'admin_register' : 'admin_login'
       });
 
       if (res.data.success) {
@@ -180,16 +231,40 @@ function AdminPanel({ language = 'en' }) {
 
     setAuthLoading(true);
     try {
+      if (authMode === 'register') {
+        const regRes = await axios.post(`${API_BASE}/admin/register`, {
+          name: adminNameInput.trim(),
+          phone: authPhone.trim(),
+          address: adminAddressInput.trim(),
+          district: adminDistrictInput,
+          mandal: adminMandalInput,
+          centerName: adminCenterNameInput.trim() || `${adminMandalInput} Primary Procurement Hub`
+        });
+
+        if (regRes.data.success) {
+          const adminData = regRes.data.admin;
+          setAdminUser(adminData);
+          setSelectedCenterCode(regRes.data.centerCode || 'CENT-KER-PLK-01');
+          localStorage.setItem('procurementAdmin', JSON.stringify(adminData));
+          fetchCenters();
+          return;
+        }
+      }
+
+      // Login verification
       const res = await axios.post(`${API_BASE}/auth/verify-otp`, {
         phone: authPhone.trim(),
         otp: cleanOtp,
-        purpose: 'admin'
+        purpose: 'admin',
+        name: adminNameInput.trim() || undefined,
+        address: adminAddressInput.trim() || undefined
       });
 
       if (res.data.success) {
         const adminData = res.data.admin || {
           phone: authPhone.trim(),
           name: res.data.center?.adminName || 'Procurement Admin',
+          address: res.data.center?.adminAddress || '',
           centerCode: res.data.centerCode || 'CENT-PAT-01'
         };
         setAdminUser(adminData);
@@ -202,6 +277,42 @@ function AdminPanel({ language = 'en' }) {
       setAuthError(err.response?.data?.message || 'Invalid or expired OTP code.');
     } finally {
       setAuthLoading(false);
+    }
+  };
+
+  const handleSaveProfile = async (e) => {
+    if (e) e.preventDefault();
+    if (!editName.trim() || !editAddress.trim()) {
+      alert('Name and Address are required');
+      return;
+    }
+
+    setProfileSaving(true);
+    try {
+      const res = await axios.put(`${API_BASE}/admin/profile`, {
+        phone: adminUser.phone,
+        name: editName.trim(),
+        address: editAddress.trim(),
+        centerCode: selectedCenterCode
+      });
+
+      if (res.data.success) {
+        const updated = {
+          ...adminUser,
+          name: editName.trim(),
+          address: editAddress.trim()
+        };
+        setAdminUser(updated);
+        localStorage.setItem('procurementAdmin', JSON.stringify(updated));
+        setIsEditProfileOpen(false);
+        setActionSuccess('Admin profile (Name & Address) updated successfully!');
+        fetchCenters();
+        setTimeout(() => setActionSuccess(''), 3000);
+      }
+    } catch (err) {
+      alert('Failed to update profile: ' + err.message);
+    } finally {
+      setProfileSaving(false);
     }
   };
 
@@ -292,7 +403,7 @@ function AdminPanel({ language = 'en' }) {
   const currentCenter = centers.find((c) => c.centerCode === selectedCenterCode);
 
   // ==========================================================
-  // VIEW 1: AUTHENTICATION WINDOW (MOBILE + OTP) FOR ADMIN
+  // VIEW 1: AUTHENTICATION WINDOW (MOBILE + OTP + NAME + ADDRESS) FOR ADMIN
   // ==========================================================
   if (!adminUser) {
     return (
@@ -302,8 +413,34 @@ function AdminPanel({ language = 'en' }) {
             <div className="admin-auth-badge">
               <Building2 size={24} />
             </div>
-            <h2>🏢 Procurement Centre Admin Login</h2>
-            <p>Access your Mandi Operations Portal with Mobile Number & OTP</p>
+            <h2>🏢 Procurement Centre Admin Portal</h2>
+            <p>Direct login or register your Admin profile with Name and Address</p>
+          </div>
+
+          {/* Mode Switcher: Login vs Register Admin */}
+          <div className="admin-auth-mode-switch">
+            <button
+              type="button"
+              className={`mode-tab-btn ${authMode === 'login' ? 'active' : ''}`}
+              onClick={() => {
+                setAuthMode('login');
+                setAuthStep(1);
+                setAuthError('');
+              }}
+            >
+              🏢 Admin Login
+            </button>
+            <button
+              type="button"
+              className={`mode-tab-btn ${authMode === 'register' ? 'active' : ''}`}
+              onClick={() => {
+                setAuthMode('register');
+                setAuthStep(1);
+                setAuthError('');
+              }}
+            >
+              📝 Register Admin Profile
+            </button>
           </div>
 
           {authError && (
@@ -332,25 +469,134 @@ function AdminPanel({ language = 'en' }) {
                 onSubmit={handleSendAdminOtp}
                 className="admin-login-form"
               >
+                {authMode === 'register' && (
+                  <>
+                    {/* Admin Full Name */}
+                    <div className="form-group">
+                      <label>
+                        <User size={15} /> Admin Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. K. Balakrishnan Nair / R. K. Sharma"
+                        value={adminNameInput}
+                        onChange={(e) => setAdminNameInput(e.target.value)}
+                        required
+                        autoFocus
+                      />
+                    </div>
+
+                    {/* Admin Official Address */}
+                    <div className="form-group">
+                      <label>
+                        <MapPin size={15} /> Admin Office / Mandi Address *
+                      </label>
+                      <textarea
+                        rows={2}
+                        placeholder="e.g. Civil Station Road, Alathur Post, Palakkad, Kerala - 678541"
+                        value={adminAddressInput}
+                        onChange={(e) => setAdminAddressInput(e.target.value)}
+                        required
+                        className="admin-textarea"
+                      />
+                      <span className="field-hint">
+                        Official correspondence & verification address
+                      </span>
+                    </div>
+
+                    {/* Region Selection including Kerala Regions */}
+                    <div className="form-grid-2">
+                      <div className="form-group">
+                        <label>
+                          <Landmark size={15} /> State / District *
+                        </label>
+                        <select
+                          value={adminDistrictInput}
+                          onChange={(e) => {
+                            const newDist = e.target.value;
+                            setAdminDistrictInput(newDist);
+                            const mandals = REGIONS_MANDALS[newDist] || [];
+                            if (mandals.length > 0) setAdminMandalInput(mandals[0]);
+                          }}
+                          className="admin-select"
+                          required
+                        >
+                          <optgroup label="🌴 Kerala Regions">
+                            <option value="Palakkad (Nellara / Rice Bowl)">Palakkad (Nellara / Rice Bowl)</option>
+                            <option value="Alappuzha (Kuttanad)">Alappuzha (Kuttanad)</option>
+                            <option value="Thrissur">Thrissur</option>
+                            <option value="Wayanad">Wayanad</option>
+                            <option value="Kozhikode">Kozhikode</option>
+                            <option value="Ernakulam / Kochi">Ernakulam / Kochi</option>
+                            <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                            <option value="Kottayam">Kottayam</option>
+                            <option value="Kannur">Kannur</option>
+                            <option value="Idukki">Idukki</option>
+                          </optgroup>
+                          <optgroup label="🌾 Telangana Regions">
+                            <option value="Sangareddy / Medak">Sangareddy / Medak</option>
+                            <option value="Nizamabad">Nizamabad</option>
+                            <option value="Karimnagar">Karimnagar</option>
+                            <option value="Warangal / Hanamkonda">Warangal / Hanamkonda</option>
+                            <option value="Nalgonda">Nalgonda</option>
+                          </optgroup>
+                        </select>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Mandal / Taluk *</label>
+                        <select
+                          value={adminMandalInput}
+                          onChange={(e) => setAdminMandalInput(e.target.value)}
+                          className="admin-select"
+                          required
+                        >
+                          {(REGIONS_MANDALS[adminDistrictInput] || []).map((m) => (
+                            <option key={m} value={m}>
+                              {m}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* Center Name */}
+                    <div className="form-group">
+                      <label>
+                        <Building2 size={15} /> Procurement Center Name
+                      </label>
+                      <input
+                        type="text"
+                        placeholder={`e.g. ${adminMandalInput} Primary Procurement Yard`}
+                        value={adminCenterNameInput}
+                        onChange={(e) => setAdminCenterNameInput(e.target.value)}
+                      />
+                    </div>
+                  </>
+                )}
+
+                {/* Mobile Number */}
                 <div className="form-group">
                   <label>
-                    <Phone size={15} /> Registered Admin Mobile Number *
+                    <Phone size={15} /> {authMode === 'register' ? 'Official Mobile Number *' : 'Registered Admin Mobile Number *'}
                   </label>
                   <div className="input-with-prefix">
                     <span className="prefix">+91</span>
                     <input
                       type="tel"
                       maxLength={10}
-                      placeholder="e.g. 9848012345"
+                      placeholder={authMode === 'register' ? '9447012345' : 'e.g. 9447012345 or 9848012345'}
                       value={authPhone}
                       onChange={(e) => setAuthPhone(e.target.value.replace(/\D/g, ''))}
-                      autoFocus
+                      autoFocus={authMode === 'login'}
                       required
                     />
                   </div>
-                  <span className="field-hint">
-                    Demo Mandi Incharge Phones: <strong>9848012345</strong> or <strong>9849056789</strong>
-                  </span>
+                  {authMode === 'login' && (
+                    <span className="field-hint">
+                      Demo Admins: <strong>9447012345</strong> (Palakkad, Kerala) | <strong>9447054321</strong> (Alappuzha, Kerala) | <strong>9848012345</strong> (Telangana)
+                    </span>
+                  )}
                 </div>
 
                 <button
@@ -358,7 +604,11 @@ function AdminPanel({ language = 'en' }) {
                   disabled={authLoading || authPhone.length < 10}
                   className="admin-submit-btn"
                 >
-                  {authLoading ? 'Sending OTP...' : 'Send Login OTP →'}
+                  {authLoading
+                    ? 'Sending OTP...'
+                    : authMode === 'register'
+                    ? 'Register Admin & Send OTP →'
+                    : 'Send Login OTP →'}
                 </button>
               </motion.form>
             ) : (
@@ -370,10 +620,15 @@ function AdminPanel({ language = 'en' }) {
                 className="admin-login-form"
               >
                 <div className="phone-verified-badge">
-                  <span>OTP sent to: <strong>+91 {authPhone}</strong></span>
+                  <span>
+                    OTP sent to: <strong>+91 {authPhone}</strong>
+                  </span>
                   <button
                     type="button"
-                    onClick={() => { setAuthStep(1); setAuthOtp(''); }}
+                    onClick={() => {
+                      setAuthStep(1);
+                      setAuthOtp('');
+                    }}
                     className="edit-phone-link"
                   >
                     Change
@@ -439,9 +694,28 @@ function AdminPanel({ language = 'en' }) {
           </div>
           <h2>🏢 {currentCenter?.name || 'APMC Procurement Center'}</h2>
           <div className="admin-meta-info">
-            <span>👤 Incharge: <strong>{adminUser.name || currentCenter?.adminName}</strong></span>
+            <span>
+              👤 Incharge: <strong>{adminUser.name || currentCenter?.adminName || 'Procurement Admin'}</strong>
+            </span>
             <span>📱 +91 {adminUser.phone}</span>
-            <span>📍 {currentCenter?.mandal} Mandal ({currentCenter?.district})</span>
+            <span>
+              📍 {currentCenter?.mandal || adminUser.mandal || 'Alathur'} Mandal ({currentCenter?.district || adminUser.district || 'Palakkad'})
+            </span>
+            <span className="admin-address-tag">
+              🏠 Office: <strong>{adminUser.address || currentCenter?.adminAddress || 'Mandi Complex, Civil Road'}</strong>
+            </span>
+            <button
+              type="button"
+              className="edit-profile-badge-btn"
+              onClick={() => {
+                setEditName(adminUser.name || currentCenter?.adminName || '');
+                setEditAddress(adminUser.address || currentCenter?.adminAddress || '');
+                setIsEditProfileOpen(true);
+              }}
+              title="Update Admin Name and Address"
+            >
+              <Edit3 size={13} /> Edit Name & Address
+            </button>
           </div>
         </div>
 
@@ -474,6 +748,84 @@ function AdminPanel({ language = 'en' }) {
           </button>
         </div>
       </div>
+
+      {/* Edit Admin Profile Modal (Name & Address) */}
+      <AnimatePresence>
+        {isEditProfileOpen && (
+          <div className="admin-modal-overlay">
+            <motion.div
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.92, opacity: 0 }}
+              className="admin-modal-card"
+            >
+              <div className="modal-header">
+                <div className="modal-title-with-icon">
+                  <User size={22} />
+                  <div>
+                    <h3>Edit Admin Profile</h3>
+                    <p>Update Incharge Name & Official Mandi Address</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className="modal-close-btn"
+                  onClick={() => setIsEditProfileOpen(false)}
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveProfile} className="modal-form">
+                <div className="form-group">
+                  <label>
+                    <User size={15} /> Admin Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    placeholder="e.g. K. Balakrishnan Nair"
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>
+                    <MapPin size={15} /> Official Procurement Center / Office Address *
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={editAddress}
+                    onChange={(e) => setEditAddress(e.target.value)}
+                    placeholder="e.g. Civil Station Road, Alathur Post, Palakkad District, Kerala - 678541"
+                    required
+                    className="admin-textarea"
+                  />
+                </div>
+
+                <div className="modal-actions">
+                  <button
+                    type="button"
+                    className="modal-btn-cancel"
+                    onClick={() => setIsEditProfileOpen(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={profileSaving}
+                    className="modal-btn-primary"
+                  >
+                    <Save size={16} />
+                    <span>{profileSaving ? 'Saving...' : 'Save Profile Changes'}</span>
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Center Editing Restricted Notice (Requirement: ONLY Government Officer edits centers) */}
       <div className="gov-only-notice">

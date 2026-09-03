@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, PhoneCall, PhoneOff, CheckCircle2, AlertCircle, Volume2, Sparkles, X } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Phone, PhoneCall, PhoneOff, CheckCircle2, AlertCircle, Volume2, X } from 'lucide-react';
 import { speakText, stopSpeech } from '../utils/speech';
-import { translations } from '../languages';
 
 const API_BASE = process.env.REACT_APP_API || 'http://localhost:5000/api';
 
 function IVRBookingModal({ isOpen, onClose, language = 'en', onBookingSuccess }) {
-  const t = translations[language] || translations.en;
 
   const [callActive, setCallActive] = useState(false);
   const [callStep, setCallStep] = useState(1); // 1: Dialing/Language, 2: Mobile Number, 3: Crop Choice, 4: Confirmed
@@ -225,6 +223,12 @@ function IVRBookingModal({ isOpen, onClose, language = 'en', onBookingSuccess })
                   </div>
                 )}
 
+                {loading && (
+                  <div className="ivr-loading-indicator" style={{ padding: '0.5rem', textAlign: 'center', color: '#16a34a', fontSize: '0.85rem', fontWeight: 600 }}>
+                    <span>⏳ Processing your booking with procurement center...</span>
+                  </div>
+                )}
+
                 {callStep === 4 && confirmedBooking && (
                   <div className="ivr-success-card">
                     <CheckCircle2 size={36} className="text-green" />
@@ -233,7 +237,7 @@ function IVRBookingModal({ isOpen, onClose, language = 'en', onBookingSuccess })
                       Token #{confirmedBooking.queuePosition}
                     </div>
                     <p className="small-text">
-                      📍 {confirmedBooking.centerName} | 🌾 {confirmedBooking.crop}
+                      📍 {confirmedBooking.centerName} | 🌾 {confirmedBooking.crop || selectedCrop}
                     </p>
                     <div className="sms-dispatched-tag">
                       📱 SMS sent to +91 {confirmedBooking.farmerPhone}

@@ -1,3 +1,13 @@
+/**
+ * Synchronized Complete Multilingual Translations Dictionary
+ * Re-exports the complete set of 11 Indian regional languages and 73+ UI keys,
+ * ensuring all components referencing languages-complete.js have full localization coverage.
+ */
+
+export { languagesList, translations, getChatbotResponse } from './languages';
+export { languagesList as languages } from './languages';
+export { translations as default };
+
 export const translations = {
   en: {
     title: "🌾 Farmer Procurement Hub",

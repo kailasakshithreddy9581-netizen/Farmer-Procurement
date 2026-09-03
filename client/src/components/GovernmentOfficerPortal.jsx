@@ -8,7 +8,6 @@ import {
   CreditCard,
   TrendingUp,
   Package,
-  Users,
   CheckCircle2,
   AlertCircle,
   Phone,
@@ -29,13 +28,27 @@ import '../styles/MandalPortal.css';
 const API_BASE = process.env.REACT_APP_API || 'http://localhost:5000/api';
 
 const ALL_DISTRICTS = [
+  // Telangana Districts
   'Sangareddy / Medak',
   'Nizamabad',
   'Karimnagar',
   'Warangal / Hanamkonda',
-  'Nalgonda'
+  'Nalgonda',
+
+  // Kerala Regions (Major Agricultural & Paddy Procurement Hubs)
+  'Palakkad (Nellara / Rice Bowl)',
+  'Alappuzha (Kuttanad)',
+  'Thrissur',
+  'Wayanad',
+  'Kozhikode',
+  'Ernakulam / Kochi',
+  'Thiruvananthapuram',
+  'Kottayam',
+  'Kannur',
+  'Idukki'
 ];
 
+// eslint-disable-next-line no-unused-vars
 const ALL_AVAILABLE_CROPS = [
   'Paddy (Common)',
   'Paddy (Grade A)',
@@ -646,6 +659,27 @@ function GovernmentOfficerPortal({ language = 'en' }) {
         </div>
 
         <div className="header-right-actions">
+          <div className="district-switch-box">
+            <select
+              value={officer.district || selectedDistrict}
+              onChange={(e) => {
+                const newDist = e.target.value;
+                setSelectedDistrict(newDist);
+                const updated = { ...officer, district: newDist };
+                setOfficer(updated);
+                localStorage.setItem('governmentOfficer', JSON.stringify(updated));
+                loadDistrictData(newDist);
+              }}
+              className="district-select-box"
+              title="Filter by Agricultural District"
+            >
+              {ALL_DISTRICTS.map((d) => (
+                <option key={d} value={d}>
+                  District: {d}
+                </option>
+              ))}
+            </select>
+          </div>
           <button
             type="button"
             onClick={() => loadDistrictData(officer.district)}

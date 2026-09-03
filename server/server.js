@@ -26,8 +26,9 @@ const MSP_RATES = {
   'Pulses': 8682
 };
 
-// Available Districts and Mandals in Telangana
+// Available Districts and Mandals in Telangana and Kerala
 const DISTRICTS_MANDALS_DATA = {
+  // --- Telangana Regions ---
   'Sangareddy / Medak': [
     'Patancheru',
     'Sangareddy',
@@ -64,6 +65,83 @@ const DISTRICTS_MANDALS_DATA = {
     'Miryalaguda',
     'Devarakonda',
     'Nakrekal'
+  ],
+
+  // --- Kerala Regions (Major Agricultural & Paddy Procurement Hubs) ---
+  'Palakkad (Nellara / Rice Bowl)': [
+    'Alathur',
+    'Chittur',
+    'Palakkad',
+    'Ottapalam',
+    'Pattambi',
+    'Mannarkkad',
+    'Kuzhalmannam'
+  ],
+  'Alappuzha (Kuttanad)': [
+    'Kuttanad',
+    'Ambalappuzha',
+    'Chengannur',
+    'Cherthala',
+    'Karthikappally',
+    'Mavelikkara'
+  ],
+  'Thrissur': [
+    'Thrissur',
+    'Chalakudy',
+    'Chavakkad',
+    'Kodungallur',
+    'Mukundapuram',
+    'Thalapilly'
+  ],
+  'Wayanad': [
+    'Mananthavady',
+    'Sulthan Bathery',
+    'Vythiri',
+    'Kalpetta'
+  ],
+  'Kozhikode': [
+    'Kozhikode',
+    'Koyilandy',
+    'Vadakara',
+    'Thamarassery'
+  ],
+  'Ernakulam / Kochi': [
+    'Aluva',
+    'Kochi',
+    'Kanayannur',
+    'Kunnathunad',
+    'Muvattupuzha',
+    'North Paravur',
+    'Angamaly'
+  ],
+  'Thiruvananthapuram': [
+    'Thiruvananthapuram',
+    'Neyyattinkara',
+    'Nedumangad',
+    'Chirayinkeezhu',
+    'Varkala',
+    'Kattakada'
+  ],
+  'Kottayam': [
+    'Kottayam',
+    'Changanassery',
+    'Vaikom',
+    'Meenachil',
+    'Kanjirappally'
+  ],
+  'Kannur': [
+    'Kannur',
+    'Thalassery',
+    'Taliparamba',
+    'Payyanur',
+    'Iritty'
+  ],
+  'Idukki': [
+    'Thodupuzha',
+    'Devikulam',
+    'Peerumade',
+    'Udumbanchola',
+    'Idukki'
   ]
 };
 
@@ -236,6 +314,110 @@ function initMemoryData() {
       currentStorageTonnes: 420,
       active: true,
       createdAt: new Date()
+    },
+    {
+      _id: 'c7',
+      centerCode: 'CENT-KER-PLK-01',
+      name: 'Palakkad Primary Paddy Procurement Hub (Nellara Mandi)',
+      mandal: 'Alathur',
+      district: 'Palakkad (Nellara / Rice Bowl)',
+      state: 'Kerala',
+      adminName: 'K. Balakrishnan Nair',
+      adminPhone: '9447012345',
+      adminAddress: 'Civil Station Road, Alathur Post, Palakkad District, Kerala - 678541',
+      adminPin: '1234',
+      bankDetails: {
+        bankName: 'State Bank of India',
+        accountNumber: '67012345890',
+        ifscCode: 'SBIN0070182',
+        branch: 'Alathur Town Branch, Palakkad',
+        accountHolderName: 'Palakkad Paddy Procurement Operations A/C'
+      },
+      allocatedBudget: 7500000,
+      disbursedToFarmers: 0,
+      acceptedCrops: ['Paddy (Common)', 'Paddy (Grade A)', 'Pulses'],
+      totalCapacityTonnes: 1800,
+      currentStorageTonnes: 320,
+      active: true,
+      createdAt: new Date()
+    },
+    {
+      _id: 'c8',
+      centerCode: 'CENT-KER-ALP-02',
+      name: 'Kuttanad Wetland Paddy Procurement Station',
+      mandal: 'Kuttanad',
+      district: 'Alappuzha (Kuttanad)',
+      state: 'Kerala',
+      adminName: 'Mathew Varghese',
+      adminPhone: '9447054321',
+      adminAddress: 'Paddy Marketing Society Yard, Nedumudy, Kuttanad, Alappuzha, Kerala - 688503',
+      adminPin: '1234',
+      bankDetails: {
+        bankName: 'Federal Bank',
+        accountNumber: '1102010048291',
+        ifscCode: 'FDRL0001102',
+        branch: 'Nedumudy Branch, Alappuzha',
+        accountHolderName: 'Kuttanad Paddy Marketing Committee A/C'
+      },
+      allocatedBudget: 6000000,
+      disbursedToFarmers: 0,
+      acceptedCrops: ['Paddy (Common)', 'Paddy (Grade A)'],
+      totalCapacityTonnes: 1400,
+      currentStorageTonnes: 210,
+      active: true,
+      createdAt: new Date()
+    },
+    {
+      _id: 'c9',
+      centerCode: 'CENT-KER-TCR-03',
+      name: 'Thrissur Kole Land Agricultural Depot',
+      mandal: 'Thrissur',
+      district: 'Thrissur',
+      state: 'Kerala',
+      adminName: 'Sujith Menoky',
+      adminPhone: '9447098765',
+      adminAddress: 'Kole Vikasana Samithi, Ayyanthole, Thrissur, Kerala - 680003',
+      adminPin: '1234',
+      bankDetails: {
+        bankName: 'South Indian Bank',
+        accountNumber: '005407300001429',
+        ifscCode: 'SIBL0000054',
+        branch: 'Ayyanthole Civil Station Branch',
+        accountHolderName: 'Thrissur Kole Land Procurement A/C'
+      },
+      allocatedBudget: 5000000,
+      disbursedToFarmers: 0,
+      acceptedCrops: ['Paddy (Common)', 'Paddy (Grade A)', 'Pulses'],
+      totalCapacityTonnes: 1200,
+      currentStorageTonnes: 190,
+      active: true,
+      createdAt: new Date()
+    },
+    {
+      _id: 'c10',
+      centerCode: 'CENT-KER-WYD-04',
+      name: 'Wayanad Hill Grain & Paddy Center',
+      mandal: 'Mananthavady',
+      district: 'Wayanad',
+      state: 'Kerala',
+      adminName: 'Anand Devadas',
+      adminPhone: '9447067890',
+      adminAddress: 'Agri Marketing Yard, Mananthavady Road, Wayanad, Kerala - 670645',
+      adminPin: '1234',
+      bankDetails: {
+        bankName: 'Kerala Gramin Bank',
+        accountNumber: '40192837461',
+        ifscCode: 'KLGB0040192',
+        branch: 'Mananthavady Town Branch',
+        accountHolderName: 'Wayanad Agro Procurement Hub A/C'
+      },
+      allocatedBudget: 4500000,
+      disbursedToFarmers: 0,
+      acceptedCrops: ['Paddy (Common)', 'Maize', 'Pulses'],
+      totalCapacityTonnes: 1000,
+      currentStorageTonnes: 150,
+      active: true,
+      createdAt: new Date()
     }
   ];
 
@@ -261,6 +443,28 @@ function initMemoryData() {
       employeeId: 'GOV-TS-AGRI-2026-104',
       department: 'Department of Agriculture & Civil Supplies, Govt of Telangana',
       createdAt: new Date()
+    },
+    {
+      _id: 'gov3',
+      name: 'Dr. Jayaprakash K. Menon',
+      phone: '9447112233',
+      district: 'Palakkad (Nellara / Rice Bowl)',
+      state: 'Kerala',
+      designation: 'Principal Agricultural Officer (PAO), Palakkad',
+      employeeId: 'GOV-KL-AGRI-2026-44',
+      department: 'Department of Agricultural Development & Farmers Welfare, Govt of Kerala',
+      createdAt: new Date()
+    },
+    {
+      _id: 'gov4',
+      name: 'Smt. Latha Kumari',
+      phone: '9447223344',
+      district: 'Alappuzha (Kuttanad)',
+      state: 'Kerala',
+      designation: 'Joint Director of Agriculture, Kuttanad Package',
+      employeeId: 'GOV-KL-AGRI-2026-82',
+      department: 'Department of Agricultural Development & Farmers Welfare, Govt of Kerala',
+      createdAt: new Date()
     }
   ];
 
@@ -269,6 +473,7 @@ function initMemoryData() {
       _id: 'adm1',
       name: 'R. K. Sharma (Mandi Supdt.)',
       phone: '9848012345',
+      address: 'APMC Market Complex, Patancheru Industrial Area, Sangareddy, Telangana - 502319',
       centerCode: 'CENT-PAT-01',
       district: 'Sangareddy / Medak',
       mandal: 'Patancheru',
@@ -278,6 +483,7 @@ function initMemoryData() {
       _id: 'adm2',
       name: 'S. Narsimha Rao',
       phone: '9849056789',
+      address: 'Gram Panchayat Office Building, Kyasaram, Patancheru, Telangana - 502300',
       centerCode: 'CENT-KYA-02',
       district: 'Sangareddy / Medak',
       mandal: 'Patancheru',
@@ -287,9 +493,54 @@ function initMemoryData() {
       _id: 'adm3',
       name: 'P. Venkat Reddy',
       phone: '9849991234',
+      address: 'Kisan Seva Kendra, Khaleelwadi, Nizamabad, Telangana - 503001',
       centerCode: 'CENT-NZB-05',
       district: 'Nizamabad',
       mandal: 'Nizamabad North',
+      adminPin: '1234'
+    },
+    {
+      _id: 'adm4',
+      name: 'K. Balakrishnan Nair',
+      phone: '9447012345',
+      address: 'Civil Station Road, Alathur Post, Palakkad District, Kerala - 678541',
+      centerCode: 'CENT-KER-PLK-01',
+      district: 'Palakkad (Nellara / Rice Bowl)',
+      mandal: 'Alathur',
+      state: 'Kerala',
+      adminPin: '1234'
+    },
+    {
+      _id: 'adm5',
+      name: 'Mathew Varghese',
+      phone: '9447054321',
+      address: 'Paddy Marketing Society Yard, Nedumudy, Kuttanad, Alappuzha, Kerala - 688503',
+      centerCode: 'CENT-KER-ALP-02',
+      district: 'Alappuzha (Kuttanad)',
+      mandal: 'Kuttanad',
+      state: 'Kerala',
+      adminPin: '1234'
+    },
+    {
+      _id: 'adm6',
+      name: 'Sujith Menoky',
+      phone: '9447098765',
+      address: 'Kole Vikasana Samithi, Ayyanthole, Thrissur, Kerala - 680003',
+      centerCode: 'CENT-KER-TCR-03',
+      district: 'Thrissur',
+      mandal: 'Thrissur',
+      state: 'Kerala',
+      adminPin: '1234'
+    },
+    {
+      _id: 'adm7',
+      name: 'Anand Devadas',
+      phone: '9447067890',
+      address: 'Agri Marketing Yard, Mananthavady Road, Wayanad, Kerala - 670645',
+      centerCode: 'CENT-KER-WYD-04',
+      district: 'Wayanad',
+      mandal: 'Mananthavady',
+      state: 'Kerala',
       adminPin: '1234'
     }
   ];
@@ -305,7 +556,11 @@ function initMemoryData() {
     { _id: 's4', centerCode: 'CENT-SNG-03', center: 'Sangareddy Central Rythu Vedika', crop: 'Cotton', date: today, time: '09:00 AM - 11:00 AM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
     { _id: 's5', centerCode: 'CENT-PAT-01', center: 'Main APMC Mandi Center - Patancheru', crop: 'Wheat', date: tomorrow, time: '09:00 AM - 11:00 AM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
     { _id: 's6', centerCode: 'CENT-NZB-05', center: 'Kisan Seva Kendra - North Nizamabad', crop: 'Soyabean', date: tomorrow, time: '09:00 AM - 11:00 AM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
-    { _id: 's7', centerCode: 'CENT-KYA-02', center: 'Kyasaram Farmer Procurement Kendra', crop: 'Maize', date: dayAfter, time: '09:00 AM - 11:00 AM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' }
+    { _id: 's7', centerCode: 'CENT-KYA-02', center: 'Kyasaram Farmer Procurement Kendra', crop: 'Maize', date: dayAfter, time: '09:00 AM - 11:00 AM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
+    { _id: 's8', centerCode: 'CENT-KER-PLK-01', center: 'Palakkad Primary Paddy Procurement Hub (Nellara Mandi)', crop: 'Paddy (Grade A)', date: today, time: '09:00 AM - 11:30 AM', capacity: 35, bookedCount: 0, bookings: [], status: 'active' },
+    { _id: 's9', centerCode: 'CENT-KER-ALP-02', center: 'Kuttanad Wetland Paddy Procurement Station', crop: 'Paddy (Common)', date: today, time: '10:00 AM - 01:00 PM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
+    { _id: 's10', centerCode: 'CENT-KER-TCR-03', center: 'Thrissur Kole Land Agricultural Depot', crop: 'Paddy (Grade A)', date: tomorrow, time: '09:30 AM - 12:30 PM', capacity: 25, bookedCount: 0, bookings: [], status: 'active' },
+    { _id: 's11', centerCode: 'CENT-KER-WYD-04', center: 'Wayanad Hill Grain & Paddy Center', crop: 'Paddy (Common)', date: dayAfter, time: '09:00 AM - 12:00 PM', capacity: 25, bookedCount: 0, bookings: [], status: 'active' }
   ];
 
   // Seed sample farmer & verified transactions
@@ -367,16 +622,11 @@ app.post('/api/auth/send-otp', async (req, res) => {
         });
       }
     }
-    // 2. Procurement Centre Admin Login
-    else if (purpose === 'admin_login') {
+    // 2. Procurement Centre Admin Login / Registration
+    else if (purpose === 'admin_login' || purpose === 'admin_register') {
       const admin = memoryStore.procurementAdmins.find(a => a.phone === cleanPhone) ||
                     memoryStore.procurementCenters.find(c => c.adminPhone === cleanPhone);
-      if (!admin) {
-        return res.status(404).json({
-          success: false,
-          message: 'No Procurement Centre Admin registered with this mobile number. Contact the Government Officer for access.'
-        });
-      }
+      // Allow sending OTP for both existing admins and new admin registrations
     }
     // 3. Farmer Login
     else if (purpose === 'login') {
@@ -417,7 +667,7 @@ app.post('/api/auth/send-otp', async (req, res) => {
 // Verify OTP
 app.post('/api/auth/verify-otp', async (req, res) => {
   try {
-    const { phone, otp, purpose } = req.body;
+    const { phone, otp, purpose, name, address, centerCode: bodyCenterCode } = req.body;
     if (!phone || !otp) {
       return res.status(400).json({ success: false, message: 'Phone number and OTP are required' });
     }
@@ -456,9 +706,18 @@ app.post('/api/auth/verify-otp', async (req, res) => {
     // 2. Procurement Admin Check
     const admin = memoryStore.procurementAdmins.find(a => a.phone === cleanPhone) ||
                   memoryStore.procurementCenters.find(c => c.adminPhone === cleanPhone);
-    if (admin || purpose === 'admin') {
-      const centerCode = admin?.centerCode || 'CENT-PAT-01';
+    if (admin || purpose === 'admin' || purpose === 'admin_login' || purpose === 'admin_register') {
+      const centerCode = bodyCenterCode || admin?.centerCode || 'CENT-PAT-01';
       const center = memoryStore.procurementCenters.find(c => c.centerCode === centerCode);
+      const adminName = name || admin?.name || center?.adminName || 'Procurement Center Admin';
+      const adminAddress = address || admin?.address || center?.adminAddress || '';
+
+      if (admin) {
+        if (name) admin.name = name;
+        if (address) admin.address = address;
+        if (bodyCenterCode) admin.centerCode = bodyCenterCode;
+      }
+
       return res.json({
         success: true,
         message: 'Procurement Centre Admin verified successfully',
@@ -467,8 +726,9 @@ app.post('/api/auth/verify-otp', async (req, res) => {
         centerCode,
         center,
         admin: admin || {
-          name: center?.adminName || 'Procurement Center Admin',
+          name: adminName,
           phone: cleanPhone,
+          address: adminAddress,
           centerCode
         }
       });
@@ -1114,6 +1374,198 @@ app.post('/api/admin/procurement/pay', (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// 7. Register New Procurement Centre Admin (asks Name and Address!)
+app.post('/api/admin/register', (req, res) => {
+  try {
+    const { name, phone, address, district, mandal, centerCode, centerName } = req.body;
+
+    if (!name || !phone || !address) {
+      return res.status(400).json({
+        success: false,
+        message: 'Admin Full Name, Mobile Number, and Official Address are required.'
+      });
+    }
+
+    const cleanPhone = phone.trim();
+    const cleanName = name.trim();
+    const cleanAddress = address.trim();
+
+    let targetCenterCode = centerCode || ('CENT-' + Math.random().toString(36).substring(2, 6).toUpperCase());
+
+    // Check if admin already exists
+    let existingAdmin = memoryStore.procurementAdmins.find(a => a.phone === cleanPhone);
+    if (existingAdmin) {
+      existingAdmin.name = cleanName;
+      existingAdmin.address = cleanAddress;
+      if (district) existingAdmin.district = district;
+      if (mandal) existingAdmin.mandal = mandal;
+      if (targetCenterCode) existingAdmin.centerCode = targetCenterCode;
+    } else {
+      existingAdmin = {
+        _id: 'adm-' + Date.now(),
+        name: cleanName,
+        phone: cleanPhone,
+        address: cleanAddress,
+        district: district || 'Palakkad (Nellara / Rice Bowl)',
+        mandal: mandal || 'Alathur',
+        centerCode: targetCenterCode,
+        adminPin: '1234',
+        createdAt: new Date()
+      };
+      memoryStore.procurementAdmins.push(existingAdmin);
+    }
+
+    // Check or create center
+    let center = memoryStore.procurementCenters.find(c => c.centerCode === targetCenterCode);
+    if (!center && centerName) {
+      const isKerala = (district && (district.includes('Kerala') || ['Palakkad (Nellara / Rice Bowl)', 'Alappuzha (Kuttanad)', 'Thrissur', 'Wayanad', 'Kozhikode', 'Ernakulam / Kochi', 'Thiruvananthapuram', 'Kottayam', 'Kannur', 'Idukki'].includes(district)));
+      center = {
+        _id: 'c-' + Date.now(),
+        centerCode: targetCenterCode,
+        name: centerName,
+        mandal: mandal || 'Central Mandi',
+        district: district || 'Palakkad (Nellara / Rice Bowl)',
+        state: isKerala ? 'Kerala' : 'Telangana',
+        adminName: cleanName,
+        adminPhone: cleanPhone,
+        adminAddress: cleanAddress,
+        adminPin: '1234',
+        allocatedBudget: 5000000,
+        disbursedToFarmers: 0,
+        acceptedCrops: ['Paddy (Common)', 'Paddy (Grade A)', 'Pulses'],
+        totalCapacityTonnes: 1500,
+        currentStorageTonnes: 100,
+        active: true,
+        createdAt: new Date()
+      };
+      memoryStore.procurementCenters.push(center);
+    } else if (center) {
+      center.adminName = cleanName;
+      center.adminPhone = cleanPhone;
+      center.adminAddress = cleanAddress;
+    }
+
+    console.log(`🏢 [ADMIN REGISTERED] Name: ${cleanName} | Address: ${cleanAddress} | Phone: ${cleanPhone} | Center: ${targetCenterCode}`);
+
+    res.json({
+      success: true,
+      message: 'Procurement Centre Admin profile registered successfully!',
+      admin: existingAdmin,
+      centerCode: targetCenterCode,
+      center
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// 8. Update Admin Profile (Name and Address)
+app.put('/api/admin/profile', (req, res) => {
+  try {
+    const { phone, name, address, centerCode } = req.body;
+    if (!phone) {
+      return res.status(400).json({ success: false, message: 'Phone number is required' });
+    }
+
+    const cleanPhone = phone.trim();
+    const admin = memoryStore.procurementAdmins.find(a => a.phone === cleanPhone);
+    const center = memoryStore.procurementCenters.find(c => c.adminPhone === cleanPhone || (centerCode && c.centerCode === centerCode));
+
+    if (name) {
+      if (admin) admin.name = name.trim();
+      if (center) center.adminName = name.trim();
+    }
+    if (address) {
+      if (admin) admin.address = address.trim();
+      if (center) center.adminAddress = address.trim();
+    }
+
+    res.json({
+      success: true,
+      message: 'Admin profile updated successfully',
+      admin: admin || { name, phone: cleanPhone, address, centerCode }
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// 9. Get Admin Profile
+app.get('/api/admin/profile/:phone', (req, res) => {
+  const cleanPhone = req.params.phone.trim();
+  const admin = memoryStore.procurementAdmins.find(a => a.phone === cleanPhone);
+  const center = memoryStore.procurementCenters.find(c => c.adminPhone === cleanPhone || c.centerCode === admin?.centerCode);
+
+  if (!admin && !center) {
+    return res.status(404).json({ success: false, message: 'Admin profile not found' });
+  }
+
+  res.json({
+    success: true,
+    admin: admin || {
+      name: center?.adminName,
+      phone: cleanPhone,
+      address: center?.adminAddress,
+      centerCode: center?.centerCode
+    },
+    center
+  });
+});
+
+// ===================================================
+// Crystal-Clear Multilingual Voice Audio Stream (AI Voice)
+// Supports Malayalam, Hindi, Telugu, Tamil, Kannada, etc.
+// ===================================================
+app.get('/api/tts', async (req, res) => {
+  try {
+    const { text, lang = 'en' } = req.query;
+    if (!text || !text.trim()) {
+      return res.status(400).send('Text parameter required');
+    }
+
+    const langMap = {
+      en: 'en-IN',
+      ml: 'ml', // Malayalam
+      hi: 'hi', // Hindi
+      te: 'te', // Telugu
+      ta: 'ta', // Tamil
+      kn: 'kn', // Kannada
+      mr: 'mr', // Marathi
+      bn: 'bn', // Bengali
+      gu: 'gu', // Gujarati
+      pa: 'pa', // Punjabi
+      or: 'or'  // Odia
+    };
+    const ttsLang = langMap[lang] || 'en-IN';
+    const cleanText = text.trim().slice(0, 300);
+
+    const googleTTSUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(cleanText)}&tl=${ttsLang}&client=tw-ob`;
+
+    const https = require('https');
+    https.get(googleTTSUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'audio/mpeg, audio/*;q=0.9',
+        'Referer': 'https://translate.google.com/'
+      }
+    }, (ttsRes) => {
+      if (ttsRes.statusCode === 200) {
+        res.setHeader('Content-Type', 'audio/mpeg');
+        res.setHeader('Cache-Control', 'public, max-age=86400');
+        ttsRes.pipe(res);
+      } else {
+        res.status(ttsRes.statusCode).send('Voice stream error');
+      }
+    }).on('error', (err) => {
+      console.warn('TTS proxy error:', err.message);
+      res.status(502).send('Error streaming TTS');
+    });
+  } catch (err) {
+    console.error('TTS endpoint error:', err);
+    res.status(500).send('Internal TTS error');
   }
 });
 

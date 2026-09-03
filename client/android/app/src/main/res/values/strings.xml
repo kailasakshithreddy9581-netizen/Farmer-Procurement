@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Farmer Procurement Centre Management</string>
-    <string name="title_activity_main">Farmer Procurement Centre Management</string>
+    <string name="app_name">Farmer Procurement Management</string>
+    <string name="title_activity_main">Farmer Procurement Management</string>
     <string name="package_name">com.farmerprocurementcentremanagement.app</string>
     <string name="custom_url_scheme">com.farmerprocurementcentremanagement.app</string>
 </resources>

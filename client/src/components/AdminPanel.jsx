@@ -245,6 +245,7 @@ function AdminPanel({ language = 'en' }) {
         const regRes = await axios.post(`${API_BASE}/admin/register`, {
           name: adminNameInput.trim(),
           phone: authPhone.trim(),
+          otp: cleanOtp,
           address: adminAddressInput.trim(),
           district: adminDistrictInput,
           mandal: adminMandalInput,
@@ -254,7 +255,7 @@ function AdminPanel({ language = 'en' }) {
         if (regRes.data.success) {
           const adminData = regRes.data.admin;
           setAdminUser(adminData);
-          setSelectedCenterCode(regRes.data.centerCode || 'CENT-KER-PLK-01');
+          setSelectedCenterCode(regRes.data.centerCode || adminData.centerCode || 'CENT-KER-PLK-01');
           localStorage.setItem('procurementAdmin', JSON.stringify(adminData));
           fetchCenters();
           return;
@@ -278,8 +279,9 @@ function AdminPanel({ language = 'en' }) {
           centerCode: res.data.centerCode || 'CENT-PAT-01'
         };
         setAdminUser(adminData);
-        setSelectedCenterCode(adminData.centerCode || 'CENT-PAT-01');
+        setSelectedCenterCode(adminData.centerCode || res.data.centerCode || 'CENT-PAT-01');
         localStorage.setItem('procurementAdmin', JSON.stringify(adminData));
+        fetchCenters();
       } else {
         setAuthError(res.data.message || 'OTP verification failed.');
       }

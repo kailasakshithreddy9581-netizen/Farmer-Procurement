@@ -44,8 +44,9 @@ const MSP_RATES = {
   'Pulses': 8682
 };
 
-// Available Districts and Mandals in Telangana
+// Available Districts and Mandals in Telangana and Kerala
 const DISTRICTS_MANDALS_DATA = {
+  // --- Telangana Regions ---
   'Sangareddy / Medak': [
     'Patancheru',
     'Sangareddy',
@@ -82,6 +83,83 @@ const DISTRICTS_MANDALS_DATA = {
     'Miryalaguda',
     'Devarakonda',
     'Nakrekal'
+  ],
+
+  // --- Kerala Regions (Major Agricultural & Paddy Procurement Hubs) ---
+  'Palakkad (Nellara / Rice Bowl)': [
+    'Alathur',
+    'Chittur',
+    'Palakkad',
+    'Ottapalam',
+    'Pattambi',
+    'Mannarkkad',
+    'Kuzhalmannam'
+  ],
+  'Alappuzha (Kuttanad)': [
+    'Kuttanad',
+    'Ambalappuzha',
+    'Chengannur',
+    'Cherthala',
+    'Karthikappally',
+    'Mavelikkara'
+  ],
+  'Thrissur': [
+    'Thrissur',
+    'Chalakudy',
+    'Chavakkad',
+    'Kodungallur',
+    'Mukundapuram',
+    'Thalapilly'
+  ],
+  'Wayanad': [
+    'Mananthavady',
+    'Sulthan Bathery',
+    'Vythiri',
+    'Kalpetta'
+  ],
+  'Kozhikode': [
+    'Kozhikode',
+    'Koyilandy',
+    'Vadakara',
+    'Thamarassery'
+  ],
+  'Ernakulam / Kochi': [
+    'Aluva',
+    'Kochi',
+    'Kanayannur',
+    'Kunnathunad',
+    'Muvattupuzha',
+    'North Paravur',
+    'Angamaly'
+  ],
+  'Thiruvananthapuram': [
+    'Thiruvananthapuram',
+    'Neyyattinkara',
+    'Nedumangad',
+    'Chirayinkeezhu',
+    'Varkala',
+    'Kattakada'
+  ],
+  'Kottayam': [
+    'Kottayam',
+    'Changanassery',
+    'Vaikom',
+    'Meenachil',
+    'Kanjirappally'
+  ],
+  'Kannur': [
+    'Kannur',
+    'Thalassery',
+    'Taliparamba',
+    'Payyanur',
+    'Iritty'
+  ],
+  'Idukki': [
+    'Thodupuzha',
+    'Devikulam',
+    'Peerumade',
+    'Udumbanchola',
+    'Idukki'
   ]
 };
 
@@ -670,7 +748,11 @@ function getInitialSlots() {
     { _id: 's4', centerCode: 'CENT-SNG-03', center: 'Sangareddy Central Rythu Vedika', crop: 'Cotton', date: today, time: '09:00 AM - 11:00 AM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
     { _id: 's5', centerCode: 'CENT-PAT-01', center: 'Main APMC Mandi Center - Patancheru', crop: 'Wheat', date: tomorrow, time: '09:00 AM - 11:00 AM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
     { _id: 's6', centerCode: 'CENT-NZB-05', center: 'Kisan Seva Kendra - North Nizamabad', crop: 'Soyabean', date: tomorrow, time: '09:00 AM - 11:00 AM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
-    { _id: 's7', centerCode: 'CENT-KYA-02', center: 'Kyasaram Farmer Procurement Kendra', crop: 'Maize', date: dayAfter, time: '09:00 AM - 11:00 AM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' }
+    { _id: 's7', centerCode: 'CENT-KYA-02', center: 'Kyasaram Farmer Procurement Kendra', crop: 'Maize', date: dayAfter, time: '09:00 AM - 11:00 AM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
+    { _id: 's8', centerCode: 'CENT-KER-PLK-01', center: 'Palakkad Primary Paddy Procurement Hub (Nellara Mandi)', crop: 'Paddy (Grade A)', date: today, time: '09:00 AM - 11:30 AM', capacity: 35, bookedCount: 0, bookings: [], status: 'active' },
+    { _id: 's9', centerCode: 'CENT-KER-ALP-02', center: 'Kuttanad Wetland Paddy Procurement Station', crop: 'Paddy (Common)', date: today, time: '10:00 AM - 01:00 PM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
+    { _id: 's10', centerCode: 'CENT-KER-TCR-03', center: 'Thrissur Kole Land Agricultural Depot', crop: 'Paddy (Grade A)', date: tomorrow, time: '09:30 AM - 12:30 PM', capacity: 25, bookedCount: 0, bookings: [], status: 'active' },
+    { _id: 's11', centerCode: 'CENT-KER-WYD-04', center: 'Wayanad Hill Grain & Paddy Center', crop: 'Paddy (Common)', date: dayAfter, time: '09:00 AM - 12:00 PM', capacity: 25, bookedCount: 0, bookings: [], status: 'active' }
   ];
 }
 
@@ -904,7 +986,7 @@ app.post('/api/auth/send-otp', async (req, res) => {
 // Verify OTP
 app.post('/api/auth/verify-otp', async (req, res) => {
   try {
-    const { phone, otp, purpose } = req.body;
+    const { phone, otp, purpose, name, address, centerCode: bodyCenterCode } = req.body;
     if (!phone || !otp) {
       return res.status(400).json({ success: false, message: 'Phone number and OTP are required' });
     }
@@ -1867,41 +1949,12 @@ app.get('/api/tts', async (req, res) => {
 // (Registration, Profile, Slot Booking, Live Queue, Payments History)
 // ===================================================
 
-// Keep phone values consistent regardless of whether the client sends a
-// number, spaces, or an Indian country-code prefix.
-function normalizePhone(value) {
-  if (value === undefined || value === null) return '';
-  const digits = String(value).replace(/\D/g, '');
-  return digits.length === 12 && digits.startsWith('91') ? digits.slice(2) : digits;
-}
-
-function cleanOptional(value) {
-  return value === undefined || value === null ? '' : String(value).trim();
-}
-
 // 1. Farmer Registration
 app.post('/api/farmers/register', async (req, res) => {
   try {
-    const {
-      name,
-      phone,
-      mobile,
-      mobileNumber,
-      aadhar,
-      aadharNumber,
-      address,
-      district,
-      mandal,
-      bankAccount,
-      accountNumber,
-      ifscCode,
-      upi
-    } = req.body || {};
+    const { name, phone, aadhar, address, district, mandal, bankAccount, ifscCode, upi } = req.body;
 
-    const cleanName = cleanOptional(name);
-    const cleanPhone = normalizePhone(phone ?? mobile ?? mobileNumber);
-
-    if (!cleanName || !cleanPhone) {
+    if (!name || !phone) {
       return res.status(400).json({ success: false, message: 'Farmer name and mobile number are required' });
     }
 
@@ -1936,7 +1989,7 @@ app.post('/api/farmers/register', async (req, res) => {
 
     const newFarmer = {
       _id: 'f-' + Date.now(),
-      name: cleanName,
+      name: name.trim(),
       phone: cleanPhone,
       aadhar: aadhar ? aadhar.trim() : '',
       address: address ? address.trim() : 'Gram Panchayat Area',

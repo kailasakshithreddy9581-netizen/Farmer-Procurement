@@ -86,6 +86,16 @@ function AdminPanel({ language = 'en' }) {
   const [adminMandalInput, setAdminMandalInput] = useState('Alathur');
   const [adminCenterNameInput, setAdminCenterNameInput] = useState('');
 
+  const handleDemoAdminFill = () => {
+    setAdminNameInput('K. Balakrishnan Nair');
+    setAdminAddressInput('Civil Station Road, Alathur Post, Palakkad District, Kerala - 678541');
+    setAdminDistrictInput('Palakkad (Nellara / Rice Bowl)');
+    setAdminMandalInput('Alathur');
+    setAdminCenterNameInput('Palakkad Primary Paddy Procurement Hub (Nellara Mandi)');
+    setAuthPhone('9447012345');
+    setAuthError('');
+  };
+
   // Profile Edit Modal State
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [editName, setEditName] = useState(adminUser?.name || '');
@@ -450,12 +460,20 @@ function AdminPanel({ language = 'en' }) {
             </div>
           )}
 
-          {demoOtp && authStep === 2 && (
-            <div className="admin-alert alert-info">
+          {authStep === 2 && (
+            <div
+              className="admin-alert alert-info"
+              style={{ cursor: 'pointer' }}
+              onClick={() => setAuthOtp(demoOtp || '123456')}
+              title="Click to auto-fill OTP"
+            >
               <CheckCircle2 size={18} />
               <div>
                 <strong>Centre Admin Login OTP: </strong>
-                <span className="otp-pill">{demoOtp}</span>
+                <span className="otp-pill">{demoOtp || '123456'}</span>
+                <span style={{ marginLeft: '0.5rem', fontSize: '0.8rem', color: '#047857', fontWeight: 'bold' }}>
+                  (👆 Click to auto-fill)
+                </span>
               </div>
             </div>
           )}
@@ -471,6 +489,28 @@ function AdminPanel({ language = 'en' }) {
               >
                 {authMode === 'register' && (
                   <>
+                    <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+                      <button
+                        type="button"
+                        onClick={handleDemoAdminFill}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.4rem',
+                          background: '#ecfdf5',
+                          border: '1.5px dashed #059669',
+                          color: '#047857',
+                          padding: '0.45rem 1rem',
+                          borderRadius: '8px',
+                          fontSize: '0.85rem',
+                          fontWeight: '700',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        ⚡ Fill Demo Admin (K. Balakrishnan Nair - 9447012345)
+                      </button>
+                    </div>
+
                     {/* Admin Full Name */}
                     <div className="form-group">
                       <label>
@@ -593,9 +633,30 @@ function AdminPanel({ language = 'en' }) {
                     />
                   </div>
                   {authMode === 'login' && (
-                    <span className="field-hint">
-                      Demo Admins: <strong>9447012345</strong> (Palakkad, Kerala) | <strong>9447054321</strong> (Alappuzha, Kerala) | <strong>9848012345</strong> (Telangana)
-                    </span>
+                    <div style={{ marginTop: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 'bold' }}>Demo Admins:</span>
+                      <button
+                        type="button"
+                        onClick={() => setAuthPhone('9447012345')}
+                        style={{ background: '#ecfdf5', border: '1px solid #10b981', color: '#047857', padding: '0.15rem 0.4rem', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer' }}
+                      >
+                        9447012345 (Palakkad)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setAuthPhone('9447054321')}
+                        style={{ background: '#ecfdf5', border: '1px solid #10b981', color: '#047857', padding: '0.15rem 0.4rem', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer' }}
+                      >
+                        9447054321 (Alappuzha)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setAuthPhone('9848012345')}
+                        style={{ background: '#ecfdf5', border: '1px solid #10b981', color: '#047857', padding: '0.15rem 0.4rem', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer' }}
+                      >
+                        9848012345 (Telangana)
+                      </button>
+                    </div>
                   )}
                 </div>
 

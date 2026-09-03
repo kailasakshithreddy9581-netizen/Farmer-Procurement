@@ -21,11 +21,21 @@ const API_BASE = process.env.REACT_APP_API || 'http://localhost:5000/api';
 
 function FarmerRegistration({ onRegistrationSuccess, onSwitchToLogin, language = 'en' }) {
   const t = translations[language] || translations.en;
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm();
 
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+
+  const handleDemoFill = () => {
+    setValue('name', 'Ramesh Goud');
+    setValue('phone', '9876543210');
+    setValue('aadhar', '5421-9876-1234');
+    setValue('address', 'Kyasaram Village, Patancheru Mandal, Sangareddy');
+    setValue('bankAccount', '987612345678');
+    setValue('upi', 'ramesh@upi');
+    setErrorMessage('');
+  };
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -39,16 +49,19 @@ function FarmerRegistration({ onRegistrationSuccess, onSwitchToLogin, language =
         reset();
         setTimeout(() => {
           onRegistrationSuccess(response.data.farmerId, response.data.farmer);
-        }, 1500);
+        }, 1000);
       }
     } catch (error) {
+      if (error.response?.data?.farmerId) {
+        setSuccessMessage('Farmer profile verified & loaded successfully!');
+        reset();
+        setTimeout(() => {
+          onRegistrationSuccess(error.response.data.farmerId, error.response.data.farmer);
+        }, 1000);
+        return;
+      }
       const msg = error.response?.data?.message || 'Registration failed. Please check your details.';
       setErrorMessage(msg);
-      if (error.response?.data?.alreadyRegistered) {
-        setTimeout(() => {
-          if (onSwitchToLogin) onSwitchToLogin(data.phone);
-        }, 2500);
-      }
     } finally {
       setLoading(false);
     }
@@ -82,6 +95,29 @@ function FarmerRegistration({ onRegistrationSuccess, onSwitchToLogin, language =
             />
           </div>
           <p className="subtitle">{t.tagline}</p>
+        </div>
+
+        {/* Demo Auto-Fill Shortcut */}
+        <div style={{ margin: '0 0 1rem 0', display: 'flex', justifyContent: 'center' }}>
+          <button
+            type="button"
+            onClick={handleDemoFill}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              background: '#ecfdf5',
+              border: '1.5px dashed #059669',
+              color: '#047857',
+              padding: '0.45rem 1rem',
+              borderRadius: '8px',
+              fontSize: '0.88rem',
+              fontWeight: '700',
+              cursor: 'pointer'
+            }}
+          >
+            <Sparkles size={16} /> ⚡ Fill Demo Farmer (Ramesh Goud - 9876543210)
+          </button>
         </div>
 
         {errorMessage && (

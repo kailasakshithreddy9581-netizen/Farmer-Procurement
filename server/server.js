@@ -612,36 +612,68 @@ app.post('/api/auth/send-otp', async (req, res) => {
 
     const cleanPhone = phone.trim();
 
-    // 1. Government Officer Login
+    // 1. Government Officer Login - ensure officer exists or auto-provision demo officer
     if (purpose === 'government_login') {
-      const officer = memoryStore.governmentOfficers.find(o => o.phone === cleanPhone);
+      let officer = memoryStore.governmentOfficers.find(o => o.phone === cleanPhone);
       if (!officer) {
-        return res.status(404).json({
-          success: false,
-          message: 'No Government Officer profile registered with this mobile number. Please register your officer profile.'
-        });
+        // Auto-provision demo government officer so testing never blocks with 404
+        officer = {
+          _id: 'gov-' + Date.now(),
+          name: 'Demo Government Officer',
+          phone: cleanPhone,
+          district: 'Sangareddy / Medak',
+          state: 'Telangana',
+          designation: 'District Agricultural Officer (DAO)',
+          employeeId: 'GOV-TS-AGRI-2026-99',
+          department: 'Department of Agriculture & Food Procurement',
+          createdAt: new Date()
+        };
+        memoryStore.governmentOfficers.push(officer);
       }
     }
     // 2. Procurement Centre Admin Login / Registration
     else if (purpose === 'admin_login' || purpose === 'admin_register') {
-      const admin = memoryStore.procurementAdmins.find(a => a.phone === cleanPhone) ||
-                    memoryStore.procurementCenters.find(c => c.adminPhone === cleanPhone);
-      // Allow sending OTP for both existing admins and new admin registrations
+      let admin = memoryStore.procurementAdmins.find(a => a.phone === cleanPhone) ||
+                  memoryStore.procurementCenters.find(c => c.adminPhone === cleanPhone);
+      if (!admin) {
+        admin = {
+          _id: 'adm-' + Date.now(),
+          name: 'Procurement Centre Admin',
+          phone: cleanPhone,
+          address: 'Main APMC Mandi Complex, Palakkad / Patancheru',
+          centerCode: 'CENT-KER-PLK-01',
+          district: 'Palakkad (Nellara / Rice Bowl)',
+          mandal: 'Alathur',
+          adminPin: '1234',
+          createdAt: new Date()
+        };
+        memoryStore.procurementAdmins.push(admin);
+      }
     }
-    // 3. Farmer Login
-    else if (purpose === 'login') {
-      const farmer = memoryStore.farmers.find(f => f.phone === cleanPhone);
+    // 3. Farmer Login - ensure farmer exists or auto-provision demo farmer
+    else if (purpose === 'login' || purpose === 'farmer') {
+      let farmer = memoryStore.farmers.find(f => f.phone === cleanPhone);
       if (!farmer) {
-        return res.status(404).json({
-          success: false,
-          message: 'No registered farmer found with this mobile number. Please register first.'
-        });
+        farmer = {
+          _id: 'f-' + Date.now(),
+          name: 'Demo Farmer (' + cleanPhone.slice(-4) + ')',
+          phone: cleanPhone,
+          aadhar: '5421-9876-' + cleanPhone.slice(-4),
+          address: 'Kyasaram Village, Patancheru Mandal',
+          district: 'Sangareddy / Medak',
+          mandal: 'Patancheru',
+          bankAccount: '987612345678',
+          ifscCode: 'SBIN0020145',
+          upi: cleanPhone + '@upi',
+          createdAt: new Date()
+        };
+        memoryStore.farmers.push(farmer);
       }
     }
 
     // Generate 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
 
     // Save to memory
     const existingOtpIdx = memoryStore.otps.findIndex(o => o.phone === cleanPhone);
@@ -657,7 +689,8 @@ app.post('/api/auth/send-otp', async (req, res) => {
       success: true,
       message: `OTP sent successfully to ${cleanPhone}`,
       phone: cleanPhone,
-      otp // for testing & display
+      otp, // for display in demo badge
+      demoOtp: '123456' // Universal demo OTP always accepted
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -673,33 +706,50 @@ app.post('/api/auth/verify-otp', async (req, res) => {
     }
 
     const cleanPhone = phone.trim();
-    const cleanOtp = otp.trim();
+    const cleanOtp = String(otp).trim();
+
+    // Universal Demo OTPs that are ALWAYS accepted for ANY mobile number, anytime
+    const isDemoOtp = ['123456', '998877', '000000', '112233', '741258'].includes(cleanOtp);
 
     const record = memoryStore.otps.find(o => o.phone === cleanPhone);
-    // Allow demo OTP 123456 or exact generated OTP
-    if (!record || (record.otp !== cleanOtp && cleanOtp !== '123456' && cleanOtp !== '998877')) {
-      return res.status(400).json({ success: false, message: 'Invalid OTP code. Please check and try again.' });
+    const isGeneratedMatch = record && String(record.otp).trim() === cleanOtp;
+
+    if (!isDemoOtp && !isGeneratedMatch) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid OTP code. Please use the generated OTP or demo OTP (123456).'
+      });
     }
 
-    if (new Date() > new Date(record.expiresAt)) {
-      return res.status(400).json({ success: false, message: 'OTP has expired. Please request a new one.' });
+    if (!isDemoOtp && record && new Date() > new Date(record.expiresAt)) {
+      return res.status(400).json({
+        success: false,
+        message: 'OTP has expired. Please request a new one (or use demo OTP 123456).'
+      });
     }
 
     // 1. Government Officer Check
     const officer = memoryStore.governmentOfficers.find(o => o.phone === cleanPhone);
-    if (officer || purpose === 'government') {
+    if (officer || purpose === 'government' || purpose === 'government_login') {
+      const officerObj = officer || {
+        _id: 'gov-' + Date.now(),
+        name: name || 'Dr. K. Sudhakar Rao',
+        phone: cleanPhone,
+        district: 'Sangareddy / Medak',
+        state: 'Telangana',
+        designation: 'District Agricultural Officer (DAO)',
+        employeeId: 'GOV-TS-AGRI-2026-99',
+        department: 'Department of Agriculture & Food Procurement',
+        createdAt: new Date()
+      };
+      if (!officer) memoryStore.governmentOfficers.push(officerObj);
+
       return res.json({
         success: true,
         message: 'Government Officer verified successfully',
         role: 'government_officer',
-        officerId: officer ? officer._id : 'gov-' + Date.now(),
-        officer: officer || {
-          _id: 'gov-' + Date.now(),
-          name: 'Government Officer',
-          phone: cleanPhone,
-          district: 'Sangareddy / Medak',
-          designation: 'District Agricultural Officer'
-        }
+        officerId: officerObj._id,
+        officer: officerObj
       });
     }
 
@@ -707,12 +757,21 @@ app.post('/api/auth/verify-otp', async (req, res) => {
     const admin = memoryStore.procurementAdmins.find(a => a.phone === cleanPhone) ||
                   memoryStore.procurementCenters.find(c => c.adminPhone === cleanPhone);
     if (admin || purpose === 'admin' || purpose === 'admin_login' || purpose === 'admin_register') {
-      const centerCode = bodyCenterCode || admin?.centerCode || 'CENT-PAT-01';
-      const center = memoryStore.procurementCenters.find(c => c.centerCode === centerCode);
+      const centerCode = bodyCenterCode || admin?.centerCode || 'CENT-KER-PLK-01';
+      const center = memoryStore.procurementCenters.find(c => c.centerCode === centerCode) || memoryStore.procurementCenters[0];
       const adminName = name || admin?.name || center?.adminName || 'Procurement Center Admin';
-      const adminAddress = address || admin?.address || center?.adminAddress || '';
+      const adminAddress = address || admin?.address || center?.adminAddress || 'Mandi Yard Complex';
 
-      if (admin) {
+      const adminObj = admin || {
+        _id: 'adm-' + Date.now(),
+        name: adminName,
+        phone: cleanPhone,
+        address: adminAddress,
+        centerCode: center?.centerCode || 'CENT-KER-PLK-01',
+        createdAt: new Date()
+      };
+      if (!admin) memoryStore.procurementAdmins.push(adminObj);
+      else {
         if (name) admin.name = name;
         if (address) admin.address = address;
         if (bodyCenterCode) admin.centerCode = bodyCenterCode;
@@ -722,35 +781,38 @@ app.post('/api/auth/verify-otp', async (req, res) => {
         success: true,
         message: 'Procurement Centre Admin verified successfully',
         role: 'procurement_admin',
-        adminId: admin ? admin._id : 'adm-' + Date.now(),
-        centerCode,
+        adminId: adminObj._id,
+        centerCode: adminObj.centerCode,
         center,
-        admin: admin || {
-          name: adminName,
-          phone: cleanPhone,
-          address: adminAddress,
-          centerCode
-        }
+        admin: adminObj
       });
     }
 
-    // 3. Farmer Check
-    const farmer = memoryStore.farmers.find(f => f.phone === cleanPhone);
-    if (farmer) {
-      return res.json({
-        success: true,
-        message: 'Farmer logged in successfully',
-        role: 'farmer',
-        farmerId: farmer._id,
-        farmer
-      });
+    // 3. Farmer Check (default fallback)
+    let farmer = memoryStore.farmers.find(f => f.phone === cleanPhone);
+    if (!farmer) {
+      farmer = {
+        _id: 'f-' + Date.now(),
+        name: name || 'Demo Farmer',
+        phone: cleanPhone,
+        aadhar: '5421-9876-1234',
+        address: address || 'Kyasaram Village, Patancheru Mandal',
+        district: 'Sangareddy / Medak',
+        mandal: 'Patancheru',
+        bankAccount: '987612345678',
+        ifscCode: 'SBIN0020145',
+        upi: cleanPhone + '@upi',
+        createdAt: new Date()
+      };
+      memoryStore.farmers.push(farmer);
     }
 
-    res.json({
+    return res.json({
       success: true,
-      verified: true,
-      phone: cleanPhone,
-      message: 'Mobile number verified successfully'
+      message: 'Farmer logged in successfully',
+      role: 'farmer',
+      farmerId: farmer._id,
+      farmer
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -787,10 +849,18 @@ app.post('/api/government/register', async (req, res) => {
 
     const existing = memoryStore.governmentOfficers.find(o => o.phone === cleanPhone);
     if (existing) {
-      return res.status(400).json({
-        success: false,
+      existing.name = name.trim();
+      existing.district = cleanDistrict;
+      if (designation) existing.designation = designation;
+      if (employeeId) existing.employeeId = employeeId;
+      if (department) existing.department = department;
+
+      console.log(`🏛️ Updated Government Officer profile: ${existing.name} for District [${existing.district}]`);
+      return res.json({
+        success: true,
         alreadyRegistered: true,
-        message: 'A Government Officer with this mobile number is already registered! Please login with OTP.'
+        message: `Government Officer profile registered & verified for District: ${existing.district}!`,
+        officer: existing
       });
     }
 
@@ -1454,6 +1524,7 @@ app.post('/api/admin/register', (req, res) => {
       success: true,
       message: 'Procurement Centre Admin profile registered successfully!',
       admin: existingAdmin,
+      adminId: existingAdmin._id,
       centerCode: targetCenterCode,
       center
     });
@@ -1586,10 +1657,20 @@ app.post('/api/farmers/register', (req, res) => {
     const cleanPhone = phone.trim();
     const existing = memoryStore.farmers.find(f => f.phone === cleanPhone);
     if (existing) {
-      return res.status(400).json({
-        success: false,
+      existing.name = name.trim();
+      if (aadhar) existing.aadhar = aadhar.trim();
+      if (address) existing.address = address.trim();
+      if (district) existing.district = district.trim();
+      if (mandal) existing.mandal = mandal.trim();
+      if (bankAccount) existing.bankAccount = bankAccount.trim();
+      if (ifscCode) existing.ifscCode = ifscCode.trim();
+      if (upi) existing.upi = upi.trim();
+
+      console.log(`🌾 Updated Farmer profile: ${existing.name} (${existing.phone})`);
+      return res.json({
+        success: true,
         alreadyRegistered: true,
-        message: 'This mobile number is already registered! Please login directly using OTP.',
+        message: 'Farmer registration verified and profile loaded successfully!',
         farmerId: existing._id,
         farmer: existing
       });

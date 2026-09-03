@@ -216,6 +216,18 @@ function GovernmentOfficerPortal({ language = 'en' }) {
     }
   };
 
+  const handleDemoOfficerFill = () => {
+    setRegisterForm({
+      name: 'Dr. K. Sudhakar Rao',
+      phone: '9848099887',
+      district: 'Sangareddy / Medak',
+      designation: 'District Agricultural Officer (DAO) & Joint Director',
+      employeeId: 'GOV-TS-AGRI-2026-99',
+      department: 'Department of Agriculture & Food Civil Supplies, Govt of Telangana'
+    });
+    setAuthError('');
+  };
+
   const handleRegisterOfficer = async (e) => {
     e.preventDefault();
     setAuthError('');
@@ -233,6 +245,11 @@ function GovernmentOfficerPortal({ language = 'en' }) {
         localStorage.setItem('governmentOfficer', JSON.stringify(res.data.officer));
       }
     } catch (err) {
+      if (err.response?.data?.officer) {
+        setOfficer(err.response.data.officer);
+        localStorage.setItem('governmentOfficer', JSON.stringify(err.response.data.officer));
+        return;
+      }
       setAuthError(err.response?.data?.message || 'Registration failed.');
     } finally {
       setLoading(false);
@@ -420,12 +437,20 @@ function GovernmentOfficerPortal({ language = 'en' }) {
               </div>
             )}
 
-            {demoOtp && authStep === 2 && (
-              <div className="auth-alert alert-info">
+            {authStep === 2 && (
+              <div
+                className="auth-alert alert-info"
+                style={{ cursor: 'pointer' }}
+                onClick={() => setOtp(demoOtp || '123456')}
+                title="Click to auto-fill OTP"
+              >
                 <CheckCircle2 size={18} />
                 <div>
                   <strong>Government Officer OTP: </strong>
-                  <span className="otp-pill">{demoOtp}</span>
+                  <span className="otp-pill">{demoOtp || '123456'}</span>
+                  <span style={{ marginLeft: '0.5rem', fontSize: '0.8rem', color: '#059669', fontWeight: 'bold' }}>
+                    (👆 Click to auto-fill)
+                  </span>
                 </div>
               </div>
             )}
@@ -456,9 +481,23 @@ function GovernmentOfficerPortal({ language = 'en' }) {
                           required
                         />
                       </div>
-                      <span className="field-hint">
-                        Demo Government Officer Phone: <strong>9848099887</strong>
-                      </span>
+                      <div style={{ marginTop: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+                        <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 'bold' }}>Demo Officers:</span>
+                        <button
+                          type="button"
+                          onClick={() => setPhone('9848099887')}
+                          style={{ background: '#ecfdf5', border: '1px solid #10b981', color: '#047857', padding: '0.15rem 0.4rem', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer' }}
+                        >
+                          9848099887 (Sangareddy)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setPhone('9447112233')}
+                          style={{ background: '#ecfdf5', border: '1px solid #10b981', color: '#047857', padding: '0.15rem 0.4rem', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer' }}
+                        >
+                          9447112233 (Palakkad)
+                        </button>
+                      </div>
                     </div>
 
                     <button
@@ -531,6 +570,27 @@ function GovernmentOfficerPortal({ language = 'en' }) {
             ) : (
               /* Register Officer Profile Form (MANDATORY DISTRICT) */
               <form onSubmit={handleRegisterOfficer} className="officer-form">
+                <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+                  <button
+                    type="button"
+                    onClick={handleDemoOfficerFill}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      background: '#ecfdf5',
+                      border: '1.5px dashed #059669',
+                      color: '#047857',
+                      padding: '0.45rem 1rem',
+                      borderRadius: '8px',
+                      fontSize: '0.85rem',
+                      fontWeight: '700',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    ⚡ Fill Demo Officer (Dr. K. Sudhakar Rao - 9848099887)
+                  </button>
+                </div>
                 <div className="form-grid-2">
                   <div className="form-group">
                     <label>Full Officer Name *</label>

@@ -141,16 +141,22 @@ function FarmerLogin({ onLoginSuccess, onSwitchToRegister, language = 'en' }) {
           </motion.div>
         )}
 
-        {demoOtp && step === 2 && (
+        {step === 2 && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className="alert alert-info demo-otp-box"
+            style={{ cursor: 'pointer' }}
+            onClick={() => setOtp(demoOtp || '123456')}
+            title="Click to auto-fill OTP"
           >
             <CheckCircle2 size={18} />
             <div>
-              <strong>{t.demoOtpBadge} </strong>
-              <span className="otp-highlight">{demoOtp}</span>
+              <strong>{t.demoOtpBadge || 'Demo OTP for Testing:'} </strong>
+              <span className="otp-highlight">{demoOtp || '123456'}</span>
+              <span style={{ marginLeft: '0.5rem', fontSize: '0.8rem', color: '#047857', fontWeight: 'bold' }}>
+                (👆 Click to auto-fill)
+              </span>
             </div>
           </motion.div>
         )}
@@ -188,9 +194,26 @@ function FarmerLogin({ onLoginSuccess, onSwitchToRegister, language = 'en' }) {
                     required
                   />
                 </div>
-                <span className="field-hint">
-                  Demo Registered Farmer: <strong>9876543210</strong>
-                </span>
+                <div style={{ marginTop: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPhone('9876543210');
+                    }}
+                    style={{
+                      background: '#ecfdf5',
+                      border: '1px solid #10b981',
+                      color: '#047857',
+                      padding: '0.2rem 0.5rem',
+                      borderRadius: '6px',
+                      fontSize: '0.78rem',
+                      fontWeight: '700',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    ⚡ Demo Farmer: <strong>9876543210</strong> (Click to fill)
+                  </button>
+                </div>
               </div>
 
               <button

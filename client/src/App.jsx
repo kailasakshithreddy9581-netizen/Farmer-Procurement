@@ -81,7 +81,7 @@ function App() {
         <div className="nav-content">
           <div className="brand-group">
             <h1 className="app-title">{t.title}</h1>
-            <span className="brand-badge">SIH 2026</span>
+            <span className="brand-badge">YIP 9.0</span>
           </div>
 
           <div className="nav-actions">

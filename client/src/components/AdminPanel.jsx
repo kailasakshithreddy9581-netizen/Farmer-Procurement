@@ -26,6 +26,8 @@ import {
   Save,
   X
 } from 'lucide-react';
+import PaymentGatewayModal from './PaymentGatewayModal';
+import PaymentSecurityModal from './PaymentSecurityModal';
 import { translations } from '../languages';
 import '../styles/AdminPanel.css';
 
@@ -76,7 +78,6 @@ function AdminPanel({ language = 'en' }) {
   const [authStep, setAuthStep] = useState(1); // 1: Form, 2: OTP, 3: Address Check
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState('');
-  const [demoOtp, setDemoOtp] = useState(null);
   const [resendTimer, setResendTimer] = useState(0);
 
   // Admin Registration & Details State (Name, Address, Kerala & Telangana Regions)
@@ -131,6 +132,10 @@ function AdminPanel({ language = 'en' }) {
     qualityGrade: 'Grade A',
     crop: 'Paddy (Common)'
   });
+
+  // Payment Gateway & Security Modals
+  const [paymentModalBooking, setPaymentModalBooking] = useState(null);
+  const [securityModalOpen, setSecurityModalOpen] = useState(false);
 
   useEffect(() => {
     let interval = null;
@@ -219,7 +224,6 @@ function AdminPanel({ language = 'en' }) {
 
       if (res.data.success) {
         setAuthStep(2);
-        setDemoOtp(res.data.otp);
         setResendTimer(30);
       }
     } catch (err) {
@@ -394,22 +398,9 @@ function AdminPanel({ language = 'en' }) {
     }
   };
 
-  // Payment Sanction to Farmer (By Procurement Admin)
-  const handleSanctionPaymentToFarmer = async (booking) => {
-    try {
-      const res = await axios.post(`${API_BASE}/admin/procurement/pay`, {
-        bookingId: booking._id,
-        amount: booking.totalAmount || 23000
-      });
-
-      if (res.data.success) {
-        setActionSuccess(res.data.message);
-        loadCenterData(selectedCenterCode);
-        setTimeout(() => setActionSuccess(''), 5000);
-      }
-    } catch (err) {
-      alert('Payment sanction failed: ' + (err.response?.data?.message || err.message));
-    }
+  // Payment Sanction to Farmer via Secure Gateway Modal
+  const handleSanctionPaymentToFarmer = (booking) => {
+    setPaymentModalBooking(booking);
   };
 
   const currentCenter = centers.find((c) => c.centerCode === selectedCenterCode);
@@ -464,18 +455,27 @@ function AdminPanel({ language = 'en' }) {
 
           {authStep === 2 && (
             <div
-              className="admin-alert alert-info"
-              style={{ cursor: 'pointer' }}
-              onClick={() => setAuthOtp(demoOtp || '123456')}
-              title="Click to auto-fill OTP"
+              className="admin-alert alert-success"
+              style={{
+                background: '#ecfdf5',
+                border: '1px solid #a7f3d0',
+                borderRadius: '8px',
+                padding: '0.85rem 1rem',
+                marginBottom: '1rem',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '0.75rem',
+                color: '#065f46'
+              }}
             >
-              <CheckCircle2 size={18} />
+              <CheckCircle2 size={20} color="#059669" style={{ flexShrink: 0, marginTop: '2px' }} />
               <div>
-                <strong>Centre Admin Login OTP: </strong>
-                <span className="otp-pill">{demoOtp || '123456'}</span>
-                <span style={{ marginLeft: '0.5rem', fontSize: '0.8rem', color: '#047857', fontWeight: 'bold' }}>
-                  (👆 Click to auto-fill)
-                </span>
+                <strong style={{ fontSize: '0.92rem', display: 'block', marginBottom: '2px' }}>
+                  📲 SMS Verification Code Dispatched!
+                </strong>
+                <div style={{ fontSize: '0.84rem', color: '#047857', lineHeight: 1.45 }}>
+                  A 6-digit administrative authorization token has been sent directly to <strong>+91 {authPhone}</strong> via mobile network.
+                </div>
               </div>
             </div>
           )}
@@ -1341,14 +1341,37 @@ function AdminPanel({ language = 'en' }) {
                 <h3>💳 Procurement Admin DBT Payment Sanctioning</h3>
                 <p>Sanction and disburse direct MSP payments from your Centre Treasury Budget to verified farmers</p>
               </div>
-              <div className="budget-capsule">
-                <span>Available Centre Budget:</span>
-                <strong className="text-green">
-                  ₹{(
-                    (stats?.allocatedBudget || currentCenter?.allocatedBudget || 2500000) -
-                    (stats?.totalDisbursedINR || currentCenter?.disbursedToFarmers || 0)
-                  ).toLocaleString('en-IN')}
-                </strong>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <button
+                  type="button"
+                  onClick={() => setSecurityModalOpen(true)}
+                  style={{
+                    background: '#047857',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '8px',
+                    padding: '0.55rem 0.95rem',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.45rem',
+                    fontSize: '0.86rem',
+                    boxShadow: '0 2px 4px rgba(4, 120, 87, 0.2)'
+                  }}
+                  title="View cryptographic security protocols & judge defense guide"
+                >
+                  <ShieldCheck size={16} /> 🔒 Payment Security (YIP 9.0)
+                </button>
+                <div className="budget-capsule">
+                  <span>Available Centre Budget:</span>
+                  <strong className="text-green">
+                    ₹{(
+                      (stats?.allocatedBudget || currentCenter?.allocatedBudget || 2500000) -
+                      (stats?.totalDisbursedINR || currentCenter?.disbursedToFarmers || 0)
+                    ).toLocaleString('en-IN')}
+                  </strong>
+                </div>
               </div>
             </div>
 
@@ -1531,6 +1554,26 @@ function AdminPanel({ language = 'en' }) {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Interactive Secure Payment Gateway Modal */}
+      <PaymentGatewayModal
+        isOpen={!!paymentModalBooking}
+        onClose={() => setPaymentModalBooking(null)}
+        booking={paymentModalBooking}
+        onPaymentSuccess={(data) => {
+          setActionSuccess(data.message || 'Payment sanctioned successfully!');
+          loadCenterData(selectedCenterCode);
+          setTimeout(() => setActionSuccess(''), 5000);
+        }}
+        language={language}
+        mode="admin_sanction"
+      />
+
+      {/* Payment Security Architecture & Judge Defense Modal */}
+      <PaymentSecurityModal
+        isOpen={securityModalOpen}
+        onClose={() => setSecurityModalOpen(false)}
+      />
     </div>
   );
 }

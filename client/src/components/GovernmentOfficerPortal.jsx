@@ -76,7 +76,6 @@ function GovernmentOfficerPortal({ language = 'en' }) {
   const [authStep, setAuthStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [authError, setAuthError] = useState('');
-  const [demoOtp, setDemoOtp] = useState(null);
   const [resendTimer, setResendTimer] = useState(0);
 
   // Register Form (MANDATORY DISTRICT!)
@@ -178,7 +177,6 @@ function GovernmentOfficerPortal({ language = 'en' }) {
 
       if (res.data.success) {
         setAuthStep(2);
-        setDemoOtp(res.data.otp);
         setResendTimer(30);
       }
     } catch (err) {
@@ -439,18 +437,27 @@ function GovernmentOfficerPortal({ language = 'en' }) {
 
             {authStep === 2 && (
               <div
-                className="auth-alert alert-info"
-                style={{ cursor: 'pointer' }}
-                onClick={() => setOtp(demoOtp || '123456')}
-                title="Click to auto-fill OTP"
+                className="auth-alert alert-success"
+                style={{
+                  background: '#ecfdf5',
+                  border: '1px solid #a7f3d0',
+                  borderRadius: '8px',
+                  padding: '0.85rem 1rem',
+                  marginBottom: '1rem',
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '0.75rem',
+                  color: '#065f46'
+                }}
               >
-                <CheckCircle2 size={18} />
+                <CheckCircle2 size={20} color="#059669" style={{ flexShrink: 0, marginTop: '2px' }} />
                 <div>
-                  <strong>Government Officer OTP: </strong>
-                  <span className="otp-pill">{demoOtp || '123456'}</span>
-                  <span style={{ marginLeft: '0.5rem', fontSize: '0.8rem', color: '#059669', fontWeight: 'bold' }}>
-                    (👆 Click to auto-fill)
-                  </span>
+                  <strong style={{ fontSize: '0.92rem', display: 'block', marginBottom: '2px' }}>
+                    📲 Official Department SMS Dispatched!
+                  </strong>
+                  <div style={{ fontSize: '0.84rem', color: '#047857', lineHeight: 1.45 }}>
+                    A 6-digit Department of Agriculture security OTP has been sent directly to <strong>+91 {phone}</strong> via cellular network.
+                  </div>
                 </div>
               </div>
             )}

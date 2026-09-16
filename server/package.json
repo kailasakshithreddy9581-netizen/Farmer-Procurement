@@ -1,7 +1,7 @@
 {
   "name": "farmer-procurement-api",
   "version": "1.0.0",
-  "description": "SIH 2026 Farmer Procurement Platform Backend",
+  "description": "YIP 9.0 Farmer Procurement Platform Backend",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

@@ -916,6 +916,35 @@ app.get('/api/sms/status', (req, res) => {
   });
 });
 
+// ========================================================
+// Health Check & Uptime Ping Endpoint (Keeps server awake)
+// ========================================================
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    uptime: Math.floor(process.uptime()),
+    timestamp: new Date().toISOString(),
+    service: 'Farmer Procurement Platform API',
+    mongoConnected: isMongoConnected
+  });
+});
+
+// Built-in Self Keep-Alive Pinger (Keeps free cloud tiers like Render/Railway/Glitch awake)
+const keepAliveTarget = process.env.SERVER_URL || process.env.RENDER_EXTERNAL_URL;
+if (keepAliveTarget) {
+  const pingIntervalMinutes = 14;
+  setInterval(() => {
+    const healthUrl = `${keepAliveTarget.replace(/\/$/, '')}/api/health`;
+    const protocol = healthUrl.startsWith('https') ? https : http;
+    protocol.get(healthUrl, (res) => {
+      console.log(`💓 [Keep-Alive Ping] Pinged ${healthUrl} - Status: ${res.statusCode}`);
+    }).on('error', (err) => {
+      console.warn(`⚠️ [Keep-Alive Ping Warning]:`, err.message);
+    });
+  }, pingIntervalMinutes * 60 * 1000);
+  console.log(`⏱️ Keep-Alive self-pinger active every ${pingIntervalMinutes}m for ${keepAliveTarget}`);
+}
+
 // Dynamic SMS Gateway Credential Configurator
 app.post('/api/sms/configure', (req, res) => {
   try {

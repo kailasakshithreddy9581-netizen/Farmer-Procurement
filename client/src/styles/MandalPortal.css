@@ -932,6 +932,15 @@
   color: #0f172a !important;
 }
 
+.otp-pill {
+  background: #059669;
+  color: white;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
 .modal-footer-btns {
   display: flex;
   gap: 0.75rem;

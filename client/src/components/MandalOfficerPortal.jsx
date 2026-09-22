@@ -41,6 +41,7 @@ function MandalOfficerPortal({ language = 'en' }) {
   const [authStep, setAuthStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [authError, setAuthError] = useState('');
+  const [demoOtp, setDemoOtp] = useState(null);
   const [resendTimer, setResendTimer] = useState(0);
 
   // Register Form
@@ -119,7 +120,10 @@ function MandalOfficerPortal({ language = 'en' }) {
       });
 
       if (res.data.success) {
+        const receivedOtp = res.data.otp || res.data.demoOtp || '123456';
         setAuthStep(2);
+        setDemoOtp(receivedOtp);
+        setOtp(receivedOtp);
         setResendTimer(30);
       }
     } catch (err) {
@@ -276,27 +280,18 @@ function MandalOfficerPortal({ language = 'en' }) {
 
             {authStep === 2 && (
               <div
-                className="auth-alert alert-success"
-                style={{
-                  background: '#ecfdf5',
-                  border: '1px solid #a7f3d0',
-                  borderRadius: '8px',
-                  padding: '0.85rem 1rem',
-                  marginBottom: '1rem',
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: '0.75rem',
-                  color: '#065f46'
-                }}
+                className="auth-alert alert-info"
+                style={{ cursor: 'pointer', marginBottom: '1rem' }}
+                onClick={() => setOtp(demoOtp || '123456')}
+                title="Click to auto-fill OTP"
               >
-                <CheckCircle2 size={20} color="#059669" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <CheckCircle2 size={18} />
                 <div>
-                  <strong style={{ fontSize: '0.92rem', display: 'block', marginBottom: '2px' }}>
-                    📲 Official Mandal SMS Dispatched!
-                  </strong>
-                  <div style={{ fontSize: '0.84rem', color: '#047857', lineHeight: 1.45 }}>
-                    A 6-digit Mandal Officer authentication code has been sent directly to <strong>+91 {phone}</strong> via cellular network.
-                  </div>
+                  <strong>Mandal Officer Login OTP: </strong>
+                  <span className="otp-pill">{demoOtp || '123456'}</span>
+                  <span style={{ marginLeft: '0.5rem', fontSize: '0.8rem', color: '#047857', fontWeight: 'bold' }}>
+                    (👆 Click to auto-fill)
+                  </span>
                 </div>
               </div>
             )}
@@ -311,6 +306,34 @@ function MandalOfficerPortal({ language = 'en' }) {
                     onSubmit={handleSendOtp}
                     className="officer-form"
                   >
+                    {/* Prototype Demo Banner */}
+                    <div
+                      className="demo-prototype-banner"
+                      style={{
+                        background: '#ecfdf5',
+                        border: '1.5px dashed #059669',
+                        borderRadius: '10px',
+                        padding: '0.75rem 1rem',
+                        marginBottom: '1rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '0.75rem',
+                        flexWrap: 'wrap'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <Sparkles size={18} style={{ color: '#059669', flexShrink: 0 }} />
+                        <div style={{ fontSize: '0.85rem', color: '#065f46' }}>
+                          <strong>Prototype Demo MAO:</strong> <strong>9848099887</strong> (Patancheru)
+                        </div>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                        <span style={{ fontSize: '0.82rem', color: '#047857', fontWeight: 'bold' }}>Demo OTP:</span>
+                        <span className="otp-pill" style={{ fontSize: '0.95rem' }}>123456</span>
+                      </div>
+                    </div>
+
                     <div className="form-group">
                       <label>
                         <Phone size={15} /> Registered Officer Mobile Number *

@@ -8,7 +8,8 @@ import {
   RotateCw,
   CheckCircle2,
   AlertCircle,
-  ShieldCheck
+  ShieldCheck,
+  Sparkles
 } from 'lucide-react';
 import VoiceSpeakerBtn from './VoiceSpeakerBtn';
 import { translations } from '../languages';
@@ -24,6 +25,7 @@ function FarmerLogin({ onLoginSuccess, onSwitchToRegister, language = 'en' }) {
   const [step, setStep] = useState(1); // 1: Enter Phone, 2: Enter OTP
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [demoOtp, setDemoOtp] = useState(null);
   const [resendTimer, setResendTimer] = useState(0);
 
   useEffect(() => {
@@ -54,7 +56,10 @@ function FarmerLogin({ onLoginSuccess, onSwitchToRegister, language = 'en' }) {
       });
 
       if (response.data.success) {
+        const receivedOtp = response.data.otp || response.data.demoOtp || '123456';
         setStep(2);
+        setDemoOtp(receivedOtp);
+        setOtp(receivedOtp);
         setResendTimer(30);
       }
     } catch (err) {
@@ -143,27 +148,18 @@ function FarmerLogin({ onLoginSuccess, onSwitchToRegister, language = 'en' }) {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="alert alert-success sms-dispatched-box"
-            style={{
-              background: '#ecfdf5',
-              border: '1px solid #a7f3d0',
-              borderRadius: '8px',
-              padding: '0.85rem 1rem',
-              marginBottom: '1.25rem',
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '0.75rem',
-              color: '#065f46'
-            }}
+            className="alert alert-info demo-otp-box"
+            style={{ cursor: 'pointer', marginBottom: '1.25rem' }}
+            onClick={() => setOtp(demoOtp || '123456')}
+            title="Click to auto-fill OTP"
           >
-            <CheckCircle2 size={20} color="#059669" style={{ flexShrink: 0, marginTop: '2px' }} />
+            <CheckCircle2 size={18} />
             <div>
-              <strong style={{ fontSize: '0.92rem', display: 'block', marginBottom: '2px' }}>
-                📲 SMS Verification Code Dispatched!
-              </strong>
-              <div style={{ fontSize: '0.84rem', color: '#047857', lineHeight: 1.45 }}>
-                A 6-digit authentication code has been sent directly via cellular SMS to <strong>+91 {phone}</strong>. Please check your mobile messages.
-              </div>
+              <strong>{t.demoOtpBadge || 'Demo OTP for Testing:'} </strong>
+              <span className="otp-highlight">{demoOtp || '123456'}</span>
+              <span style={{ marginLeft: '0.5rem', fontSize: '0.8rem', color: '#047857', fontWeight: 'bold' }}>
+                (👆 Click to auto-fill)
+              </span>
             </div>
           </motion.div>
         )}
@@ -178,6 +174,48 @@ function FarmerLogin({ onLoginSuccess, onSwitchToRegister, language = 'en' }) {
               onSubmit={handleSendOtp}
               className="form-body"
             >
+              {/* Prototype Demo Banner */}
+              <div
+                className="demo-prototype-banner"
+                style={{
+                  background: '#ecfdf5',
+                  border: '1.5px dashed #059669',
+                  borderRadius: '10px',
+                  padding: '0.75rem 1rem',
+                  marginBottom: '1rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '0.75rem',
+                  flexWrap: 'wrap'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <Sparkles size={18} style={{ color: '#059669', flexShrink: 0 }} />
+                  <div style={{ fontSize: '0.88rem', color: '#065f46' }}>
+                    <strong>Prototype Demo:</strong> <strong>9876543210</strong>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <span style={{ fontSize: '0.84rem', color: '#047857', fontWeight: 'bold' }}>Demo OTP:</span>
+                  <span
+                    className="otp-highlight"
+                    style={{
+                      background: '#047857',
+                      color: 'white',
+                      padding: '0.2rem 0.6rem',
+                      borderRadius: '6px',
+                      fontFamily: 'monospace',
+                      fontSize: '1.05rem',
+                      fontWeight: '800',
+                      letterSpacing: '2px'
+                    }}
+                  >
+                    123456
+                  </span>
+                </div>
+              </div>
+
               <div className="form-group">
                 <div className="label-row-with-voice">
                   <label>

@@ -48,11 +48,11 @@ function MandalOfficerPortal({ language = 'en' }) {
   const [registerForm, setRegisterForm] = useState({
     name: '',
     phone: '',
-    mandal: 'Patancheru',
-    district: 'Medak / Sangareddy',
-    designation: 'Mandal Agricultural Officer (MAO)',
+    mandal: 'Alathur',
+    district: 'Palakkad (Nellara / Rice Bowl)',
+    designation: 'Agricultural Officer (AO / Krishi Bhavan)',
     employeeId: '',
-    department: 'Department of Agriculture & Food Procurement'
+    department: 'Department of Agriculture Development & Farmers Welfare, Govt of Kerala'
   });
 
   // Mandal Data
@@ -67,7 +67,7 @@ function MandalOfficerPortal({ language = 'en' }) {
   const [sanctionForm, setSanctionForm] = useState({
     amount: 2500000,
     bankUsed: 'State Bank of India - Govt Treasury NetBanking',
-    netbankingUserId: 'GOV_TS_MAO_OFFICER',
+    netbankingUserId: 'GOV_KL_AGRI_OFFICER',
     authPin: '9988',
     gatewayOtp: '741258'
   });
@@ -232,8 +232,8 @@ function MandalOfficerPortal({ language = 'en' }) {
 
   const govtBanks = [
     'State Bank of India - Govt Treasury NetBanking',
-    'Telangana Grameena Bank - Corporate Portal',
-    'Andhra Pragathi Grameena Bank - Treasury Gateway',
+    'Kerala Gramin Bank - Corporate Portal',
+    'Federal Bank - Treasury Gateway',
     'Union Bank of India - Agricultural Fund Portal',
     'Punjab National Bank - e-Treasury Platform',
     'HDFC Bank - Public Sector NetBanking'
@@ -325,13 +325,25 @@ function MandalOfficerPortal({ language = 'en' }) {
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <Sparkles size={18} style={{ color: '#059669', flexShrink: 0 }} />
                         <div style={{ fontSize: '0.85rem', color: '#065f46' }}>
-                          <strong>Prototype Demo MAO:</strong> <strong>9848099887</strong> (Patancheru)
+                          <strong>Prototype Demo MAO:</strong> <strong>9447112233</strong> (Alathur)
                         </div>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                        <span style={{ fontSize: '0.82rem', color: '#047857', fontWeight: 'bold' }}>Demo OTP:</span>
-                        <span className="otp-pill" style={{ fontSize: '0.95rem' }}>123456</span>
-                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setPhone('9447112233')}
+                        style={{
+                          background: '#059669',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '6px',
+                          padding: '0.3rem 0.75rem',
+                          fontSize: '0.8rem',
+                          fontWeight: '700',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        ⚡ Auto-Fill Phone
+                      </button>
                     </div>
 
                     <div className="form-group">
@@ -343,7 +355,7 @@ function MandalOfficerPortal({ language = 'en' }) {
                         <input
                           type="tel"
                           maxLength={10}
-                          placeholder="e.g. 9848099887"
+                          placeholder="e.g. 9447112233"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
                           autoFocus
@@ -351,7 +363,7 @@ function MandalOfficerPortal({ language = 'en' }) {
                         />
                       </div>
                       <span className="field-hint">
-                        Default Demo Officer Phone: <strong>9848099887</strong>
+                        Default Demo Officer Phone: <strong>9447112233</strong>
                       </span>
                     </div>
 
@@ -430,7 +442,7 @@ function MandalOfficerPortal({ language = 'en' }) {
                     <label>Full Officer Name *</label>
                     <input
                       type="text"
-                      placeholder="e.g. Dr. K. Sudhakar Rao"
+                      placeholder="e.g. K. Radhakrishnan Nair"
                       value={registerForm.name}
                       onChange={(e) => setRegisterForm({ ...registerForm, name: e.target.value })}
                       required
@@ -457,7 +469,7 @@ function MandalOfficerPortal({ language = 'en' }) {
                     <label>Assigned Mandal *</label>
                     <input
                       type="text"
-                      placeholder="e.g. Patancheru"
+                      placeholder="e.g. Alathur"
                       value={registerForm.mandal}
                       onChange={(e) => setRegisterForm({ ...registerForm, mandal: e.target.value })}
                       required
@@ -468,7 +480,7 @@ function MandalOfficerPortal({ language = 'en' }) {
                     <label>District *</label>
                     <input
                       type="text"
-                      placeholder="e.g. Medak / Sangareddy"
+                      placeholder="e.g. Palakkad"
                       value={registerForm.district}
                       onChange={(e) => setRegisterForm({ ...registerForm, district: e.target.value })}
                       required

@@ -46,48 +46,9 @@ const MSP_RATES = {
   'Pulses': 8682
 };
 
-// Available Districts and Mandals in Telangana and Kerala
+// Available Districts and Mandals in Kerala State
 const DISTRICTS_MANDALS_DATA = {
-  // --- Telangana Regions ---
-  'Sangareddy / Medak': [
-    'Patancheru',
-    'Sangareddy',
-    'Zaheerabad',
-    'Narayankhed',
-    'Andole',
-    'Kandi',
-    'Ameenpur'
-  ],
-  'Nizamabad': [
-    'Nizamabad North',
-    'Nizamabad South',
-    'Bodhan',
-    'Armoor',
-    'Banswada',
-    'Dichpally'
-  ],
-  'Karimnagar': [
-    'Karimnagar Urban',
-    'Huzurabad',
-    'Choppadandi',
-    'Manakondur',
-    'Thimmapur'
-  ],
-  'Warangal / Hanamkonda': [
-    'Warangal Urban',
-    'Hanamkonda',
-    'Narsampet',
-    'Parkal',
-    'Wardhannapet'
-  ],
-  'Nalgonda': [
-    'Nalgonda Urban',
-    'Miryalaguda',
-    'Devarakonda',
-    'Nakrekal'
-  ],
-
-  // --- Kerala Regions (Major Agricultural & Paddy Procurement Hubs) ---
+  // --- Kerala Districts (Major Agricultural & Paddy Procurement Hubs) ---
   'Palakkad (Nellara / Rice Bowl)': [
     'Alathur',
     'Chittur',
@@ -162,6 +123,36 @@ const DISTRICTS_MANDALS_DATA = {
     'Peerumade',
     'Udumbanchola',
     'Idukki'
+  ],
+  'Malappuram': [
+    'Eranad',
+    'Tirur',
+    'Ponnani',
+    'Perinthalmanna',
+    'Nilambur',
+    'Kondotty'
+  ],
+  'Kasaragod': [
+    'Kasaragod',
+    'Hosdurg',
+    'Manjeshwaram',
+    'Vellarikundu'
+  ],
+  'Kollam': [
+    'Kollam',
+    'Karunagappally',
+    'Kunnathur',
+    'Kottarakkara',
+    'Punalur',
+    'Pathanapuram'
+  ],
+  'Pathanamthitta': [
+    'Adoor',
+    'Konni',
+    'Kozhencherry',
+    'Ranni',
+    'Mallappally',
+    'Thiruvalla'
   ]
 };
 
@@ -174,10 +165,10 @@ const FarmerSchema = new mongoose.Schema({
   phone: { type: String, required: true, unique: true },
   aadhar: { type: String, default: '' },
   address: { type: String, default: '' },
-  district: { type: String, default: 'Sangareddy / Medak' },
-  mandal: { type: String, default: 'Patancheru' },
+  district: { type: String, default: 'Palakkad (Nellara / Rice Bowl)' },
+  mandal: { type: String, default: 'Alathur' },
   bankAccount: { type: String, default: '' },
-  ifscCode: { type: String, default: 'SBIN0020145' },
+  ifscCode: { type: String, default: 'KLGB0040188' },
   upi: { type: String, default: '' },
   createdAt: { type: Date, default: Date.now }
 }, { strict: false, collection: 'farmers' });
@@ -187,10 +178,10 @@ const OfficerSchema = new mongoose.Schema({
   name: { type: String, required: true },
   phone: { type: String, required: true, unique: true },
   district: { type: String, required: true },
-  state: { type: String, default: 'Telangana' },
+  state: { type: String, default: 'Kerala' },
   designation: { type: String, default: 'District Agricultural Officer' },
   employeeId: { type: String, default: '' },
-  department: { type: String, default: 'Department of Agriculture' },
+  department: { type: String, default: 'Department of Agriculture Development & Farmers Welfare, Govt of Kerala' },
   createdAt: { type: Date, default: Date.now }
 }, { strict: false, collection: 'mandalofficers' });
 
@@ -199,9 +190,9 @@ const AdminSchema = new mongoose.Schema({
   name: { type: String, required: true },
   phone: { type: String, required: true, unique: true },
   address: { type: String, default: '' },
-  district: { type: String, default: 'Sangareddy / Medak' },
-  mandal: { type: String, default: 'Patancheru' },
-  centerCode: { type: String, default: 'CENT-PAT-01' },
+  district: { type: String, default: 'Palakkad (Nellara / Rice Bowl)' },
+  mandal: { type: String, default: 'Alathur' },
+  centerCode: { type: String, default: 'CENT-KER-PLK-01' },
   adminPin: { type: String, default: '1234' },
   createdAt: { type: Date, default: Date.now }
 }, { strict: false, collection: 'procurementadmins' });
@@ -211,8 +202,8 @@ const CenterSchema = new mongoose.Schema({
   centerCode: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   mandal: { type: String, default: '' },
-  district: { type: String, default: '' },
-  state: { type: String, default: 'Telangana' },
+  district: { type: String, default: 'Palakkad (Nellara / Rice Bowl)' },
+  state: { type: String, default: 'Kerala' },
   adminName: { type: String, default: '' },
   adminPhone: { type: String, default: '' },
   adminAddress: { type: String, default: '' },
@@ -338,162 +329,6 @@ const memoryStore = {
 const INITIAL_CENTERS = [
   {
     _id: 'c1',
-    centerCode: 'CENT-PAT-01',
-    name: 'Main APMC Mandi Center - Patancheru',
-    mandal: 'Patancheru',
-    district: 'Sangareddy / Medak',
-    state: 'Telangana',
-    adminName: 'R. K. Sharma (Mandi Supdt.)',
-    adminPhone: '9848012345',
-    adminAddress: 'APMC Market Complex, Patancheru Industrial Area, Sangareddy, Telangana - 502319',
-    adminPin: '1234',
-    bankDetails: {
-      bankName: 'State Bank of India',
-      accountNumber: '38920192831',
-      ifscCode: 'SBIN0020145',
-      branch: 'Patancheru APMC Branch',
-      accountHolderName: 'Patancheru Mandi Operations A/C'
-    },
-    allocatedBudget: 5000000,
-    disbursedToFarmers: 0,
-    acceptedCrops: ['Paddy (Common)', 'Wheat', 'Cotton', 'Maize'],
-    totalCapacityTonnes: 1000,
-    currentStorageTonnes: 280,
-    active: true,
-    createdAt: new Date()
-  },
-  {
-    _id: 'c2',
-    centerCode: 'CENT-KYA-02',
-    name: 'Kyasaram Farmer Procurement Kendra',
-    mandal: 'Patancheru',
-    district: 'Sangareddy / Medak',
-    state: 'Telangana',
-    adminName: 'S. Narsimha Rao',
-    adminPhone: '9849056789',
-    adminAddress: 'Gram Panchayat Office Building, Kyasaram, Patancheru, Telangana - 502300',
-    adminPin: '1234',
-    bankDetails: {
-      bankName: 'Telangana Grameena Bank',
-      accountNumber: '62149872110',
-      ifscCode: 'TGB0001092',
-      branch: 'Kyasaram Gram Panchayat Branch',
-      accountHolderName: 'Kyasaram Procurement Center A/C'
-    },
-    allocatedBudget: 3500000,
-    disbursedToFarmers: 0,
-    acceptedCrops: ['Paddy (Common)', 'Maize', 'Pulses'],
-    totalCapacityTonnes: 800,
-    currentStorageTonnes: 140,
-    active: true,
-    createdAt: new Date()
-  },
-  {
-    _id: 'c3',
-    centerCode: 'CENT-SNG-03',
-    name: 'Sangareddy Central Rythu Vedika',
-    mandal: 'Sangareddy',
-    district: 'Sangareddy / Medak',
-    state: 'Telangana',
-    adminName: 'M. Prabhakar Reddy',
-    adminPhone: '9848077665',
-    adminAddress: 'Central Rythu Vedika Yard, Sangareddy, Telangana - 502001',
-    adminPin: '1234',
-    bankDetails: {
-      bankName: 'State Bank of India',
-      accountNumber: '39485728192',
-      ifscCode: 'SBIN0020188',
-      branch: 'Sangareddy Main Branch',
-      accountHolderName: 'Sangareddy Central Procurement A/C'
-    },
-    allocatedBudget: 4500000,
-    disbursedToFarmers: 0,
-    acceptedCrops: ['Paddy (Common)', 'Cotton', 'Soyabean'],
-    totalCapacityTonnes: 1200,
-    currentStorageTonnes: 310,
-    active: true,
-    createdAt: new Date()
-  },
-  {
-    _id: 'c4',
-    centerCode: 'CENT-ZHB-04',
-    name: 'Zaheerabad Cotton & Pulse Depot',
-    mandal: 'Zaheerabad',
-    district: 'Sangareddy / Medak',
-    state: 'Telangana',
-    adminName: 'G. Veeranna',
-    adminPhone: '9848033221',
-    adminAddress: 'Zaheerabad Market Yard, Zaheerabad, Telangana - 502220',
-    adminPin: '1234',
-    bankDetails: {
-      bankName: 'Andhra Pragathi Grameena Bank',
-      accountNumber: '44910293812',
-      ifscCode: 'APGB0001142',
-      branch: 'Zaheerabad Market Yard',
-      accountHolderName: 'Zaheerabad Agri Center A/C'
-    },
-    allocatedBudget: 3000000,
-    disbursedToFarmers: 0,
-    acceptedCrops: ['Cotton', 'Pulses', 'Soyabean'],
-    totalCapacityTonnes: 900,
-    currentStorageTonnes: 180,
-    active: true,
-    createdAt: new Date()
-  },
-  {
-    _id: 'c5',
-    centerCode: 'CENT-NZB-05',
-    name: 'Kisan Seva Kendra - North Nizamabad',
-    mandal: 'Nizamabad North',
-    district: 'Nizamabad',
-    state: 'Telangana',
-    adminName: 'P. Venkat Reddy',
-    adminPhone: '9849991234',
-    adminAddress: 'Kisan Seva Kendra, Khaleelwadi, Nizamabad, Telangana - 503001',
-    adminPin: '1234',
-    bankDetails: {
-      bankName: 'Union Bank of India',
-      accountNumber: '5102010098451',
-      ifscCode: 'UBIN0551020',
-      branch: 'Nizamabad Market Yard',
-      accountHolderName: 'North Nizamabad Procurement A/C'
-    },
-    allocatedBudget: 4000000,
-    disbursedToFarmers: 0,
-    acceptedCrops: ['Paddy (Common)', 'Soyabean', 'Cotton'],
-    totalCapacityTonnes: 600,
-    currentStorageTonnes: 145,
-    active: true,
-    createdAt: new Date()
-  },
-  {
-    _id: 'c6',
-    centerCode: 'CENT-KRN-06',
-    name: 'Karimnagar APMC Model Mandi',
-    mandal: 'Karimnagar Urban',
-    district: 'Karimnagar',
-    state: 'Telangana',
-    adminName: 'T. Srinivas',
-    adminPhone: '9848055443',
-    adminAddress: 'APMC Market Yard, Collectorate Road, Karimnagar, Telangana - 505001',
-    adminPin: '1234',
-    bankDetails: {
-      bankName: 'Canara Bank',
-      accountNumber: '298101009283',
-      ifscCode: 'CNRB0002981',
-      branch: 'Karimnagar APMC Branch',
-      accountHolderName: 'Karimnagar Procurement A/C'
-    },
-    allocatedBudget: 6000000,
-    disbursedToFarmers: 0,
-    acceptedCrops: ['Paddy (Common)', 'Wheat', 'Maize', 'Cotton'],
-    totalCapacityTonnes: 1500,
-    currentStorageTonnes: 420,
-    active: true,
-    createdAt: new Date()
-  },
-  {
-    _id: 'c7',
     centerCode: 'CENT-KER-PLK-01',
     name: 'Palakkad Primary Paddy Procurement Hub (Nellara Mandi)',
     mandal: 'Alathur',
@@ -519,7 +354,7 @@ const INITIAL_CENTERS = [
     createdAt: new Date()
   },
   {
-    _id: 'c8',
+    _id: 'c2',
     centerCode: 'CENT-KER-ALP-02',
     name: 'Kuttanad Wetland Paddy Procurement Station',
     mandal: 'Kuttanad',
@@ -545,7 +380,7 @@ const INITIAL_CENTERS = [
     createdAt: new Date()
   },
   {
-    _id: 'c9',
+    _id: 'c3',
     centerCode: 'CENT-KER-TCR-03',
     name: 'Thrissur Kole Land Agricultural Depot',
     mandal: 'Thrissur',
@@ -571,7 +406,7 @@ const INITIAL_CENTERS = [
     createdAt: new Date()
   },
   {
-    _id: 'c10',
+    _id: 'c4',
     centerCode: 'CENT-KER-WYD-04',
     name: 'Wayanad Hill Grain & Paddy Center',
     mandal: 'Mananthavady',
@@ -595,34 +430,64 @@ const INITIAL_CENTERS = [
     currentStorageTonnes: 110,
     active: true,
     createdAt: new Date()
+  },
+  {
+    _id: 'c5',
+    centerCode: 'CENT-KER-KKD-05',
+    name: 'Kozhikode Krishi Bhavan Procurement Center',
+    mandal: 'Kozhikode',
+    district: 'Kozhikode',
+    state: 'Kerala',
+    adminName: 'P. Suresh Babu',
+    adminPhone: '9447123456',
+    adminAddress: 'Krishi Bhavan Building, Civil Station, Kozhikode, Kerala - 673020',
+    adminPin: '1234',
+    bankDetails: {
+      bankName: 'Canara Bank',
+      accountNumber: '12093810293',
+      ifscCode: 'CNRB0001209',
+      branch: 'Kozhikode Civil Station Branch',
+      accountHolderName: 'Kozhikode Agri Center Operations A/C'
+    },
+    allocatedBudget: 4500000,
+    disbursedToFarmers: 0,
+    acceptedCrops: ['Paddy (Common)', 'Paddy (Grade A)', 'Pulses'],
+    totalCapacityTonnes: 1000,
+    currentStorageTonnes: 120,
+    active: true,
+    createdAt: new Date()
+  },
+  {
+    _id: 'c6',
+    centerCode: 'CENT-KER-KTM-06',
+    name: 'Kottayam Meenachil Paddy Depot',
+    mandal: 'Meenachil',
+    district: 'Kottayam',
+    state: 'Kerala',
+    adminName: 'Jose K. Thomas',
+    adminPhone: '9447654321',
+    adminAddress: 'Paddy Marketing Kendra, Pala, Meenachil, Kottayam, Kerala - 686575',
+    adminPin: '1234',
+    bankDetails: {
+      bankName: 'Federal Bank',
+      accountNumber: '29384710293',
+      ifscCode: 'FDRL0002938',
+      branch: 'Pala Town Branch, Kottayam',
+      accountHolderName: 'Meenachil Paddy Operations A/C'
+    },
+    allocatedBudget: 4000000,
+    disbursedToFarmers: 0,
+    acceptedCrops: ['Paddy (Common)', 'Paddy (Grade A)'],
+    totalCapacityTonnes: 900,
+    currentStorageTonnes: 95,
+    active: true,
+    createdAt: new Date()
   }
 ];
 
 const INITIAL_OFFICERS = [
   {
     _id: 'gov1',
-    name: 'Dr. K. Sudhakar Rao',
-    phone: '9848099887',
-    district: 'Sangareddy / Medak',
-    state: 'Telangana',
-    designation: 'District Agricultural Officer (DAO) & Joint Director',
-    employeeId: 'GOV-TS-AGRI-2026-99',
-    department: 'Department of Agriculture & Civil Supplies, Govt of Telangana',
-    createdAt: new Date()
-  },
-  {
-    _id: 'gov2',
-    name: 'P. Rajeshwar Reddy',
-    phone: '9849988776',
-    district: 'Nizamabad',
-    state: 'Telangana',
-    designation: 'District Procurement Officer (DPO)',
-    employeeId: 'GOV-TS-AGRI-2026-104',
-    department: 'Department of Agriculture & Civil Supplies, Govt of Telangana',
-    createdAt: new Date()
-  },
-  {
-    _id: 'gov3',
     name: 'Dr. Jayaprakash K. Menon',
     phone: '9447112233',
     district: 'Palakkad (Nellara / Rice Bowl)',
@@ -633,7 +498,7 @@ const INITIAL_OFFICERS = [
     createdAt: new Date()
   },
   {
-    _id: 'gov4',
+    _id: 'gov2',
     name: 'Smt. Latha Kumari',
     phone: '9447223344',
     district: 'Alappuzha (Kuttanad)',
@@ -642,42 +507,23 @@ const INITIAL_OFFICERS = [
     employeeId: 'GOV-KL-AGRI-2026-82',
     department: 'Department of Agricultural Development & Farmers Welfare, Govt of Kerala',
     createdAt: new Date()
+  },
+  {
+    _id: 'gov3',
+    name: 'Shri. P. K. Vijayan',
+    phone: '9447334455',
+    district: 'Thrissur',
+    state: 'Kerala',
+    designation: 'Joint Director of Agriculture, Kole Lands',
+    employeeId: 'GOV-KL-AGRI-2026-91',
+    department: 'Department of Agricultural Development & Farmers Welfare, Govt of Kerala',
+    createdAt: new Date()
   }
 ];
 
 const INITIAL_ADMINS = [
   {
     _id: 'adm1',
-    name: 'R. K. Sharma (Mandi Supdt.)',
-    phone: '9848012345',
-    address: 'APMC Market Complex, Patancheru Industrial Area, Sangareddy, Telangana - 502319',
-    centerCode: 'CENT-PAT-01',
-    district: 'Sangareddy / Medak',
-    mandal: 'Patancheru',
-    adminPin: '1234'
-  },
-  {
-    _id: 'adm2',
-    name: 'S. Narsimha Rao',
-    phone: '9849056789',
-    address: 'Gram Panchayat Office Building, Kyasaram, Patancheru, Telangana - 502300',
-    centerCode: 'CENT-KYA-02',
-    district: 'Sangareddy / Medak',
-    mandal: 'Patancheru',
-    adminPin: '1234'
-  },
-  {
-    _id: 'adm3',
-    name: 'P. Venkat Reddy',
-    phone: '9849991234',
-    address: 'Kisan Seva Kendra, Khaleelwadi, Nizamabad, Telangana - 503001',
-    centerCode: 'CENT-NZB-05',
-    district: 'Nizamabad',
-    mandal: 'Nizamabad North',
-    adminPin: '1234'
-  },
-  {
-    _id: 'adm4',
     name: 'K. Balakrishnan Nair',
     phone: '9447012345',
     address: 'Civil Station Road, Alathur Post, Palakkad District, Kerala - 678541',
@@ -688,7 +534,7 @@ const INITIAL_ADMINS = [
     adminPin: '1234'
   },
   {
-    _id: 'adm5',
+    _id: 'adm2',
     name: 'Mathew Varghese',
     phone: '9447054321',
     address: 'Paddy Marketing Society Yard, Nedumudy, Kuttanad, Alappuzha, Kerala - 688503',
@@ -699,7 +545,7 @@ const INITIAL_ADMINS = [
     adminPin: '1234'
   },
   {
-    _id: 'adm6',
+    _id: 'adm3',
     name: 'Sujith Menoky',
     phone: '9447098765',
     address: 'Kole Vikasana Samithi, Ayyanthole, Thrissur, Kerala - 680003',
@@ -710,7 +556,7 @@ const INITIAL_ADMINS = [
     adminPin: '1234'
   },
   {
-    _id: 'adm7',
+    _id: 'adm4',
     name: 'Anand Devadas',
     phone: '9447067890',
     address: 'Agri Marketing Yard, Mananthavady Road, Wayanad, Kerala - 670645',
@@ -725,14 +571,14 @@ const INITIAL_ADMINS = [
 const INITIAL_FARMERS = [
   {
     _id: 'f1',
-    name: 'Ramesh Goud',
+    name: 'Ramesh Nair',
     phone: '9876543210',
     aadhar: '5421-9876-1234',
-    address: 'Kyasaram Village, Patancheru Mandal',
-    district: 'Sangareddy / Medak',
-    mandal: 'Patancheru',
+    address: 'Alathur Gramam, Palakkad District, Kerala - 678541',
+    district: 'Palakkad (Nellara / Rice Bowl)',
+    mandal: 'Alathur',
     bankAccount: '987612345678',
-    ifscCode: 'SBIN0020145',
+    ifscCode: 'KLGB0040188',
     upi: 'ramesh@upi',
     createdAt: new Date()
   }
@@ -744,17 +590,13 @@ function getInitialSlots() {
   const dayAfter = new Date(Date.now() + 172800000).toISOString().split('T')[0];
 
   return [
-    { _id: 's1', centerCode: 'CENT-PAT-01', center: 'Main APMC Mandi Center - Patancheru', crop: 'Paddy (Common)', date: today, time: '09:00 AM - 11:00 AM', capacity: 25, bookedCount: 0, bookings: [], status: 'active' },
-    { _id: 's2', centerCode: 'CENT-PAT-01', center: 'Main APMC Mandi Center - Patancheru', crop: 'Cotton', date: today, time: '11:30 AM - 01:30 PM', capacity: 25, bookedCount: 0, bookings: [], status: 'active' },
-    { _id: 's3', centerCode: 'CENT-KYA-02', center: 'Kyasaram Farmer Procurement Kendra', crop: 'Paddy (Common)', date: today, time: '02:30 PM - 04:30 PM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
-    { _id: 's4', centerCode: 'CENT-SNG-03', center: 'Sangareddy Central Rythu Vedika', crop: 'Cotton', date: today, time: '09:00 AM - 11:00 AM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
-    { _id: 's5', centerCode: 'CENT-PAT-01', center: 'Main APMC Mandi Center - Patancheru', crop: 'Wheat', date: tomorrow, time: '09:00 AM - 11:00 AM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
-    { _id: 's6', centerCode: 'CENT-NZB-05', center: 'Kisan Seva Kendra - North Nizamabad', crop: 'Soyabean', date: tomorrow, time: '09:00 AM - 11:00 AM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
-    { _id: 's7', centerCode: 'CENT-KYA-02', center: 'Kyasaram Farmer Procurement Kendra', crop: 'Maize', date: dayAfter, time: '09:00 AM - 11:00 AM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
-    { _id: 's8', centerCode: 'CENT-KER-PLK-01', center: 'Palakkad Primary Paddy Procurement Hub (Nellara Mandi)', crop: 'Paddy (Grade A)', date: today, time: '09:00 AM - 11:30 AM', capacity: 35, bookedCount: 0, bookings: [], status: 'active' },
-    { _id: 's9', centerCode: 'CENT-KER-ALP-02', center: 'Kuttanad Wetland Paddy Procurement Station', crop: 'Paddy (Common)', date: today, time: '10:00 AM - 01:00 PM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
-    { _id: 's10', centerCode: 'CENT-KER-TCR-03', center: 'Thrissur Kole Land Agricultural Depot', crop: 'Paddy (Grade A)', date: tomorrow, time: '09:30 AM - 12:30 PM', capacity: 25, bookedCount: 0, bookings: [], status: 'active' },
-    { _id: 's11', centerCode: 'CENT-KER-WYD-04', center: 'Wayanad Hill Grain & Paddy Center', crop: 'Paddy (Common)', date: dayAfter, time: '09:00 AM - 12:00 PM', capacity: 25, bookedCount: 0, bookings: [], status: 'active' }
+    { _id: 's1', centerCode: 'CENT-KER-PLK-01', center: 'Palakkad Primary Paddy Procurement Hub (Nellara Mandi)', crop: 'Paddy (Grade A)', date: today, time: '09:00 AM - 11:30 AM', capacity: 35, bookedCount: 0, bookings: [], status: 'active' },
+    { _id: 's2', centerCode: 'CENT-KER-PLK-01', center: 'Palakkad Primary Paddy Procurement Hub (Nellara Mandi)', crop: 'Paddy (Common)', date: today, time: '12:00 PM - 02:30 PM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
+    { _id: 's3', centerCode: 'CENT-KER-ALP-02', center: 'Kuttanad Wetland Paddy Procurement Station', crop: 'Paddy (Common)', date: today, time: '10:00 AM - 01:00 PM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
+    { _id: 's4', centerCode: 'CENT-KER-ALP-02', center: 'Kuttanad Wetland Paddy Procurement Station', crop: 'Paddy (Grade A)', date: tomorrow, time: '09:00 AM - 12:00 PM', capacity: 30, bookedCount: 0, bookings: [], status: 'active' },
+    { _id: 's5', centerCode: 'CENT-KER-TCR-03', center: 'Thrissur Kole Land Agricultural Depot', crop: 'Paddy (Grade A)', date: tomorrow, time: '09:30 AM - 12:30 PM', capacity: 25, bookedCount: 0, bookings: [], status: 'active' },
+    { _id: 's6', centerCode: 'CENT-KER-WYD-04', center: 'Wayanad Hill Grain & Paddy Center', crop: 'Paddy (Common)', date: dayAfter, time: '09:00 AM - 12:00 PM', capacity: 25, bookedCount: 0, bookings: [], status: 'active' },
+    { _id: 's7', centerCode: 'CENT-KER-PLK-01', center: 'Palakkad Primary Paddy Procurement Hub (Nellara Mandi)', crop: 'Pulses', date: tomorrow, time: '02:00 PM - 04:30 PM', capacity: 25, bookedCount: 0, bookings: [], status: 'active' }
   ];
 }
 
@@ -1163,11 +1005,11 @@ app.post('/api/auth/send-otp', async (req, res) => {
           _id: 'gov-' + Date.now(),
           name: 'Government Officer (' + cleanPhone.slice(-4) + ')',
           phone: cleanPhone,
-          district: 'Sangareddy / Medak',
-          state: 'Telangana',
-          designation: 'District Agricultural Officer (DAO)',
-          employeeId: 'GOV-DAO-' + cleanPhone.slice(-4),
-          department: 'Department of Agriculture & Food Procurement',
+          district: 'Palakkad (Nellara / Rice Bowl)',
+          state: 'Kerala',
+          designation: 'Principal Agricultural Officer (PAO)',
+          employeeId: 'GOV-KL-DAO-' + cleanPhone.slice(-4),
+          department: 'Department of Agriculture Development & Farmers Welfare, Govt of Kerala',
           createdAt: new Date()
         };
         memoryStore.governmentOfficers.push(officer);
@@ -1183,15 +1025,15 @@ app.post('/api/auth/send-otp', async (req, res) => {
         if (admin) memoryStore.procurementAdmins.push(admin);
       }
       if (!admin) {
-        const defaultCenter = memoryStore.procurementCenters[0] || { centerCode: 'CENT-PAT-01' };
+        const defaultCenter = memoryStore.procurementCenters[0] || { centerCode: 'CENT-KER-PLK-01' };
         admin = {
           _id: 'adm-' + Date.now(),
           name: 'Procurement Centre Admin (' + cleanPhone.slice(-4) + ')',
           phone: cleanPhone,
-          address: 'APMC Mandi Yard Complex',
+          address: 'Civil Station Road, Alathur Post, Palakkad District, Kerala - 678541',
           centerCode: defaultCenter.centerCode,
-          district: defaultCenter.district || 'Sangareddy / Medak',
-          mandal: defaultCenter.mandal || 'Patancheru',
+          district: defaultCenter.district || 'Palakkad (Nellara / Rice Bowl)',
+          mandal: defaultCenter.mandal || 'Alathur',
           adminPin: '1234',
           createdAt: new Date()
         };
@@ -1212,11 +1054,11 @@ app.post('/api/auth/send-otp', async (req, res) => {
           name: 'Farmer (' + cleanPhone.slice(-4) + ')',
           phone: cleanPhone,
           aadhar: '5421-9876-' + cleanPhone.slice(-4),
-          address: 'Kyasaram Village, Patancheru Mandal',
-          district: 'Sangareddy / Medak',
-          mandal: 'Patancheru',
+          address: 'Alathur Gramam, Palakkad District, Kerala - 678541',
+          district: 'Palakkad (Nellara / Rice Bowl)',
+          mandal: 'Alathur',
           bankAccount: '987612345678',
-          ifscCode: 'SBIN0020145',
+          ifscCode: 'KLGB0040188',
           upi: cleanPhone + '@upi',
           createdAt: new Date()
         };
@@ -1306,13 +1148,13 @@ app.post('/api/auth/verify-otp', async (req, res) => {
     if (officer || purpose === 'government' || purpose === 'government_login' || purpose === 'mandal' || purpose === 'mandal_login') {
       const officerObj = officer || {
         _id: 'gov-' + Date.now(),
-        name: name || 'Dr. K. Sudhakar Rao',
+        name: name || 'Dr. Jayaprakash K. Menon',
         phone: cleanPhone,
-        district: 'Sangareddy / Medak',
-        state: 'Telangana',
-        designation: 'District Agricultural Officer (DAO)',
-        employeeId: 'GOV-TS-AGRI-2026-99',
-        department: 'Department of Agriculture & Food Procurement',
+        district: 'Palakkad (Nellara / Rice Bowl)',
+        state: 'Kerala',
+        designation: 'Principal Agricultural Officer (PAO)',
+        employeeId: 'GOV-KL-AGRI-2026-44',
+        department: 'Department of Agricultural Development & Farmers Welfare, Govt of Kerala',
         createdAt: new Date()
       };
       if (!officer) {
@@ -1340,7 +1182,7 @@ app.post('/api/auth/verify-otp', async (req, res) => {
       const centerCode = bodyCenterCode || admin?.centerCode || (memoryStore.procurementCenters[0]?.centerCode || 'CENT-KER-PLK-01');
       const center = memoryStore.procurementCenters.find(c => c.centerCode === centerCode) || memoryStore.procurementCenters[0];
       const adminName = name || admin?.name || center?.adminName || 'Procurement Center Admin';
-      const adminAddress = address || admin?.address || center?.adminAddress || 'Mandi Yard Complex';
+      const adminAddress = address || admin?.address || center?.adminAddress || 'Civil Station Road, Alathur Post, Palakkad District, Kerala - 678541';
 
       const adminObj = admin || {
         _id: 'adm-' + Date.now(),
@@ -1382,11 +1224,11 @@ app.post('/api/auth/verify-otp', async (req, res) => {
         name: name || ('Farmer (' + cleanPhone.slice(-4) + ')'),
         phone: cleanPhone,
         aadhar: '5421-9876-1234',
-        address: address || 'Kyasaram Village, Patancheru Mandal',
-        district: 'Sangareddy / Medak',
-        mandal: 'Patancheru',
+        address: address || 'Alathur Gramam, Palakkad District, Kerala - 678541',
+        district: 'Palakkad (Nellara / Rice Bowl)',
+        mandal: 'Alathur',
         bankAccount: '987612345678',
-        ifscCode: 'SBIN0020145',
+        ifscCode: 'KLGB0040188',
         upi: cleanPhone + '@upi',
         createdAt: new Date()
       };
@@ -1457,12 +1299,10 @@ app.post('/api/government/register', async (req, res) => {
       if (existing) memoryStore.governmentOfficers.push(existing);
     }
 
-    const isKerala = cleanDistrict.includes('Kerala') || ['Palakkad (Nellara / Rice Bowl)', 'Alappuzha (Kuttanad)', 'Thrissur', 'Wayanad', 'Kozhikode', 'Ernakulam / Kochi', 'Thiruvananthapuram', 'Kottayam', 'Kannur', 'Idukki'].includes(cleanDistrict);
-
     if (existing) {
       existing.name = name.trim();
       existing.district = cleanDistrict;
-      existing.state = isKerala ? 'Kerala' : 'Telangana';
+      existing.state = 'Kerala';
       if (designation) existing.designation = designation;
       if (employeeId) existing.employeeId = employeeId;
       if (department) existing.department = department;
@@ -1483,10 +1323,10 @@ app.post('/api/government/register', async (req, res) => {
       name: name.trim(),
       phone: cleanPhone,
       district: cleanDistrict,
-      state: isKerala ? 'Kerala' : 'Telangana',
-      designation: designation || 'District Agricultural Officer (DAO)',
-      employeeId: employeeId || ('GOV-OFFICER-' + cleanPhone.slice(-4)),
-      department: department || (isKerala ? 'Department of Agriculture, Govt of Kerala' : 'Department of Agriculture, Govt of Telangana'),
+      state: 'Kerala',
+      designation: designation || 'Principal Agricultural Officer (PAO)',
+      employeeId: employeeId || ('GOV-KL-OFFICER-' + cleanPhone.slice(-4)),
+      department: department || 'Department of Agriculture Development & Farmers Welfare, Govt of Kerala',
       createdAt: new Date()
     };
 
@@ -1708,7 +1548,7 @@ app.post('/api/government/centers/create', async (req, res) => {
       name: name.trim(),
       mandal: mandal.trim(),
       district: district.trim(),
-      state: state || 'Telangana',
+      state: state || 'Kerala',
       adminName: adminName || 'Mandi Incharge',
       adminPhone: adminPhone ? normalizePhone(adminPhone) : '',
       adminPin: adminPin || '1234',
@@ -2242,14 +2082,13 @@ app.post('/api/admin/register', async (req, res) => {
     // Check or create center
     let center = memoryStore.procurementCenters.find(c => c.centerCode === targetCenterCode);
     if (!center) {
-      const isKerala = (district && (district.includes('Kerala') || ['Palakkad (Nellara / Rice Bowl)', 'Alappuzha (Kuttanad)', 'Thrissur', 'Wayanad', 'Kozhikode', 'Ernakulam / Kochi', 'Thiruvananthapuram', 'Kottayam', 'Kannur', 'Idukki'].includes(district)));
       center = {
         _id: 'c-' + Date.now(),
         centerCode: targetCenterCode,
         name: centerName || `${mandal || 'Primary'} Mandi Procurement Center`,
         mandal: mandal || 'Central Mandi',
         district: district || 'Palakkad (Nellara / Rice Bowl)',
-        state: isKerala ? 'Kerala' : 'Telangana',
+        state: 'Kerala',
         adminName: cleanName,
         adminPhone: cleanPhone,
         adminAddress: cleanAddress,
@@ -2479,11 +2318,11 @@ app.post('/api/farmers/register', async (req, res) => {
       name: name.trim(),
       phone: cleanPhone,
       aadhar: aadhar ? aadhar.trim() : '',
-      address: address ? address.trim() : 'Gram Panchayat Area',
-      district: district ? district.trim() : 'Sangareddy / Medak',
-      mandal: mandal ? mandal.trim() : 'Patancheru',
+      address: address ? address.trim() : 'Alathur Gramam, Palakkad District, Kerala - 678541',
+      district: district ? district.trim() : 'Palakkad (Nellara / Rice Bowl)',
+      mandal: mandal ? mandal.trim() : 'Alathur',
       bankAccount: bankAccount ? bankAccount.trim() : '',
-      ifscCode: ifscCode ? ifscCode.trim() : 'SBIN0020145',
+      ifscCode: ifscCode ? ifscCode.trim() : 'KLGB0040188',
       upi: upi ? upi.trim() : (cleanPhone + '@upi'),
       createdAt: new Date()
     };
@@ -2748,11 +2587,11 @@ app.post('/api/ivr/book-slot', (req, res) => {
         name: `IVR Kisan (${cleanPhone.slice(-4)})`,
         phone: cleanPhone,
         aadhar: 'Aadhaar Verified on Mandi Gate',
-        address: 'Kisan Village Area',
-        district: 'Sangareddy / Medak',
-        mandal: 'Patancheru',
+        address: 'Alathur Gramam, Palakkad District, Kerala - 678541',
+        district: 'Palakkad (Nellara / Rice Bowl)',
+        mandal: 'Alathur',
         bankAccount: 'Direct Cash / Aadhaar Pay',
-        ifscCode: 'SBIN0020145',
+        ifscCode: 'KLGB0040188',
         upi: cleanPhone + '@ivr',
         createdAt: new Date()
       };
@@ -2769,14 +2608,14 @@ app.post('/api/ivr/book-slot', (req, res) => {
 
     // Find active slot
     let slot = memoryStore.slots.find(s =>
-      s.centerCode === (targetCenter ? targetCenter.centerCode : 'CENT-PAT-01') &&
+      s.centerCode === (targetCenter ? targetCenter.centerCode : 'CENT-KER-PLK-01') &&
       s.crop === selectedCrop &&
       s.bookedCount < s.capacity
     );
 
     if (!slot) {
       slot = memoryStore.slots.find(s =>
-        s.centerCode === (targetCenter ? targetCenter.centerCode : 'CENT-PAT-01') &&
+        s.centerCode === (targetCenter ? targetCenter.centerCode : 'CENT-KER-PLK-01') &&
         s.bookedCount < s.capacity
       );
     }
@@ -2785,8 +2624,8 @@ app.post('/api/ivr/book-slot', (req, res) => {
       const today = new Date().toISOString().split('T')[0];
       slot = {
         _id: 's-ivr-' + Date.now(),
-        centerCode: targetCenter ? targetCenter.centerCode : 'CENT-PAT-01',
-        center: targetCenter ? targetCenter.name : 'Main APMC Mandi Center - Patancheru',
+        centerCode: targetCenter ? targetCenter.centerCode : 'CENT-KER-PLK-01',
+        center: targetCenter ? targetCenter.name : 'Palakkad Primary Paddy Procurement Hub (Nellara Mandi)',
         crop: selectedCrop,
         date: preferredDate || today,
         time: '10:00 AM - 12:00 PM',

@@ -45,7 +45,7 @@ const MSP_RATES = {
 };
 
 const REGIONS_MANDALS = {
-  // Kerala Regions (Major Agricultural & Paddy Procurement Hubs)
+  // Kerala Districts (Major Agricultural & Paddy Procurement Hubs)
   'Palakkad (Nellara / Rice Bowl)': ['Alathur', 'Chittur', 'Palakkad', 'Ottapalam', 'Pattambi', 'Mannarkkad', 'Kuzhalmannam'],
   'Alappuzha (Kuttanad)': ['Kuttanad', 'Ambalappuzha', 'Chengannur', 'Cherthala', 'Karthikappally', 'Mavelikkara'],
   'Thrissur': ['Thrissur', 'Chalakudy', 'Chavakkad', 'Kodungallur', 'Mukundapuram', 'Thalapilly'],
@@ -56,13 +56,10 @@ const REGIONS_MANDALS = {
   'Kottayam': ['Kottayam', 'Changanassery', 'Vaikom', 'Meenachil', 'Kanjirappally'],
   'Kannur': ['Kannur', 'Thalassery', 'Taliparamba', 'Payyanur', 'Iritty'],
   'Idukki': ['Thodupuzha', 'Devikulam', 'Peerumade', 'Udumbanchola', 'Idukki'],
-
-  // Telangana Regions
-  'Sangareddy / Medak': ['Patancheru', 'Sangareddy', 'Zaheerabad', 'Narayankhed', 'Andole', 'Kandi', 'Ameenpur'],
-  'Nizamabad': ['Nizamabad North', 'Nizamabad South', 'Bodhan', 'Armoor', 'Banswada', 'Dichpally'],
-  'Karimnagar': ['Karimnagar Urban', 'Huzurabad', 'Choppadandi', 'Manakondur', 'Thimmapur'],
-  'Warangal / Hanamkonda': ['Warangal Urban', 'Hanamkonda', 'Narsampet', 'Parkal', 'Wardhannapet'],
-  'Nalgonda': ['Nalgonda Urban', 'Miryalaguda', 'Devarakonda', 'Nakrekal']
+  'Malappuram': ['Eranad', 'Tirur', 'Ponnani', 'Perinthalmanna', 'Nilambur', 'Kondotty'],
+  'Kasaragod': ['Kasaragod', 'Hosdurg', 'Manjeshwaram', 'Vellarikundu'],
+  'Kollam': ['Kollam', 'Karunagappally', 'Kunnathur', 'Kottarakkara', 'Punalur', 'Pathanapuram'],
+  'Pathanamthitta': ['Adoor', 'Konni', 'Kozhencherry', 'Ranni', 'Mallappally', 'Thiruvalla']
 };
 
 function AdminPanel({ language = 'en' }) {
@@ -82,7 +79,7 @@ function AdminPanel({ language = 'en' }) {
   const [demoOtp, setDemoOtp] = useState(null);
   const [resendTimer, setResendTimer] = useState(0);
 
-  // Admin Registration & Details State (Name, Address, Kerala & Telangana Regions)
+  // Admin Registration & Details State (Name, Address, Kerala Districts)
   const [adminNameInput, setAdminNameInput] = useState('');
   const [adminAddressInput, setAdminAddressInput] = useState('');
   const [adminDistrictInput, setAdminDistrictInput] = useState('Palakkad (Nellara / Rice Bowl)');
@@ -507,10 +504,22 @@ function AdminPanel({ language = 'en' }) {
                       <strong>Prototype Demo Admin:</strong> <strong>9447012345</strong> (Palakkad)
                     </div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                    <span style={{ fontSize: '0.82rem', color: '#047857', fontWeight: 'bold' }}>Demo OTP:</span>
-                    <span className="otp-pill" style={{ fontSize: '0.95rem' }}>123456</span>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setAuthPhone('9447012345')}
+                    style={{
+                      background: '#059669',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '6px',
+                      padding: '0.3rem 0.75rem',
+                      fontSize: '0.8rem',
+                      fontWeight: '700',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    ⚡ Auto-Fill Phone
+                  </button>
                 </div>
                 {authMode === 'register' && (
                   <>
@@ -586,7 +595,7 @@ function AdminPanel({ language = 'en' }) {
                           className="admin-select"
                           required
                         >
-                          <optgroup label="🌴 Kerala Regions">
+                          <optgroup label="🌴 Kerala Districts">
                             <option value="Palakkad (Nellara / Rice Bowl)">Palakkad (Nellara / Rice Bowl)</option>
                             <option value="Alappuzha (Kuttanad)">Alappuzha (Kuttanad)</option>
                             <option value="Thrissur">Thrissur</option>
@@ -597,13 +606,10 @@ function AdminPanel({ language = 'en' }) {
                             <option value="Kottayam">Kottayam</option>
                             <option value="Kannur">Kannur</option>
                             <option value="Idukki">Idukki</option>
-                          </optgroup>
-                          <optgroup label="🌾 Telangana Regions">
-                            <option value="Sangareddy / Medak">Sangareddy / Medak</option>
-                            <option value="Nizamabad">Nizamabad</option>
-                            <option value="Karimnagar">Karimnagar</option>
-                            <option value="Warangal / Hanamkonda">Warangal / Hanamkonda</option>
-                            <option value="Nalgonda">Nalgonda</option>
+                            <option value="Malappuram">Malappuram</option>
+                            <option value="Kasaragod">Kasaragod</option>
+                            <option value="Kollam">Kollam</option>
+                            <option value="Pathanamthitta">Pathanamthitta</option>
                           </optgroup>
                         </select>
                       </div>
@@ -676,10 +682,10 @@ function AdminPanel({ language = 'en' }) {
                       </button>
                       <button
                         type="button"
-                        onClick={() => setAuthPhone('9848012345')}
+                        onClick={() => setAuthPhone('9447098765')}
                         style={{ background: '#ecfdf5', border: '1px solid #10b981', color: '#047857', padding: '0.15rem 0.4rem', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer' }}
                       >
-                        9848012345 (Telangana)
+                        9447098765 (Thrissur)
                       </button>
                     </div>
                   )}

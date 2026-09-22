@@ -47,10 +47,10 @@ function FarmerRegistration({ onRegistrationSuccess, onSwitchToLogin, language =
   }, [resendTimer]);
 
   const handleDemoFill = () => {
-    setValue('name', 'Ramesh Goud');
+    setValue('name', 'Ramesh Nair');
     setValue('phone', '9876543210');
     setValue('aadhar', '5421-9876-1234');
-    setValue('address', 'Kyasaram Village, Patancheru Mandal, Sangareddy');
+    setValue('address', 'Alathur Gramam, Palakkad District, Kerala - 678541');
     setValue('bankAccount', '987612345678');
     setValue('upi', 'ramesh@upi');
     setErrorMessage('');
@@ -214,10 +214,6 @@ function FarmerRegistration({ onRegistrationSuccess, onSwitchToLogin, language =
             >
               <Sparkles size={16} /> ⚡ Fill Demo Farmer (9876543210)
             </button>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <span style={{ fontSize: '0.82rem', color: '#047857', fontWeight: 'bold' }}>Demo OTP:</span>
-              <span className="otp-highlight" style={{ fontSize: '0.95rem' }}>123456</span>
-            </div>
           </div>
         )}
 

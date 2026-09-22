@@ -193,27 +193,25 @@ function FarmerLogin({ onLoginSuccess, onSwitchToRegister, language = 'en' }) {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <Sparkles size={18} style={{ color: '#059669', flexShrink: 0 }} />
                   <div style={{ fontSize: '0.88rem', color: '#065f46' }}>
-                    <strong>Prototype Demo:</strong> <strong>9876543210</strong>
+                    <strong>Prototype Demo Farmer:</strong> <strong>9876543210</strong>
                   </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <span style={{ fontSize: '0.84rem', color: '#047857', fontWeight: 'bold' }}>Demo OTP:</span>
-                  <span
-                    className="otp-highlight"
-                    style={{
-                      background: '#047857',
-                      color: 'white',
-                      padding: '0.2rem 0.6rem',
-                      borderRadius: '6px',
-                      fontFamily: 'monospace',
-                      fontSize: '1.05rem',
-                      fontWeight: '800',
-                      letterSpacing: '2px'
-                    }}
-                  >
-                    123456
-                  </span>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setPhone('9876543210')}
+                  style={{
+                    background: '#059669',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '0.3rem 0.75rem',
+                    fontSize: '0.8rem',
+                    fontWeight: '700',
+                    cursor: 'pointer'
+                  }}
+                >
+                  ⚡ Auto-Fill Phone
+                </button>
               </div>
 
               <div className="form-group">

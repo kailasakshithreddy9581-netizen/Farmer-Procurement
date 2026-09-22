@@ -29,14 +29,7 @@ import '../styles/MandalPortal.css';
 const API_BASE = process.env.REACT_APP_API || 'http://localhost:5000/api';
 
 const ALL_DISTRICTS = [
-  // Telangana Districts
-  'Sangareddy / Medak',
-  'Nizamabad',
-  'Karimnagar',
-  'Warangal / Hanamkonda',
-  'Nalgonda',
-
-  // Kerala Regions (Major Agricultural & Paddy Procurement Hubs)
+  // Kerala Districts (Major Agricultural & Paddy Procurement Hubs)
   'Palakkad (Nellara / Rice Bowl)',
   'Alappuzha (Kuttanad)',
   'Thrissur',
@@ -46,7 +39,11 @@ const ALL_DISTRICTS = [
   'Thiruvananthapuram',
   'Kottayam',
   'Kannur',
-  'Idukki'
+  'Idukki',
+  'Malappuram',
+  'Kasaragod',
+  'Kollam',
+  'Pathanamthitta'
 ];
 
 // eslint-disable-next-line no-unused-vars
@@ -73,7 +70,7 @@ function GovernmentOfficerPortal({ language = 'en' }) {
   // Auth States
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
-  const [selectedDistrict, setSelectedDistrict] = useState('Sangareddy / Medak');
+  const [selectedDistrict, setSelectedDistrict] = useState('Palakkad (Nellara / Rice Bowl)');
   const [authStep, setAuthStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [authError, setAuthError] = useState('');
@@ -84,10 +81,10 @@ function GovernmentOfficerPortal({ language = 'en' }) {
   const [registerForm, setRegisterForm] = useState({
     name: '',
     phone: '',
-    district: 'Sangareddy / Medak', // Mandatory!
-    designation: 'District Agricultural Officer (DAO) / Joint Director',
+    district: 'Palakkad (Nellara / Rice Bowl)', // Mandatory!
+    designation: 'Principal Agricultural Officer (PAO) / Joint Director',
     employeeId: '',
-    department: 'Department of Agriculture & Food Procurement, Govt of Telangana'
+    department: 'Department of Agriculture Development & Farmers Welfare, Govt of Kerala'
   });
 
   // District & Mandal Data
@@ -116,18 +113,18 @@ function GovernmentOfficerPortal({ language = 'en' }) {
   const [centerForm, setCenterForm] = useState({
     centerCode: '',
     name: '',
-    mandal: 'Patancheru',
-    district: 'Sangareddy / Medak',
+    mandal: 'Alathur',
+    district: 'Palakkad (Nellara / Rice Bowl)',
     adminName: '',
     adminPhone: '',
     adminPin: '1234',
     totalCapacityTonnes: 1000,
-    acceptedCrops: ['Paddy (Common)', 'Wheat', 'Cotton', 'Maize'],
+    acceptedCrops: ['Paddy (Common)', 'Paddy (Grade A)', 'Wheat', 'Maize', 'Pulses'],
     bankDetails: {
-      bankName: 'State Bank of India',
-      accountNumber: '38920192831',
-      ifscCode: 'SBIN0020145',
-      branch: 'APMC Market Yard Branch',
+      bankName: 'Kerala Gramin Bank',
+      accountNumber: '40812984712',
+      ifscCode: 'KLGB0040188',
+      branch: 'Alathur Main Branch',
       accountHolderName: 'Procurement Center Operations A/C'
     }
   });
@@ -221,12 +218,12 @@ function GovernmentOfficerPortal({ language = 'en' }) {
 
   const handleDemoOfficerFill = () => {
     setRegisterForm({
-      name: 'Dr. K. Sudhakar Rao',
-      phone: '9848099887',
-      district: 'Sangareddy / Medak',
-      designation: 'District Agricultural Officer (DAO) & Joint Director',
-      employeeId: 'GOV-TS-AGRI-2026-99',
-      department: 'Department of Agriculture & Food Civil Supplies, Govt of Telangana'
+      name: 'Dr. Jayaprakash K. Menon',
+      phone: '9447112233',
+      district: 'Palakkad (Nellara / Rice Bowl)',
+      designation: 'Principal Agricultural Officer (PAO) & Joint Director',
+      employeeId: 'GOV-KL-AGRI-2026-44',
+      department: 'Department of Agriculture Development & Farmers Welfare, Govt of Kerala'
     });
     setAuthError('');
   };
@@ -273,8 +270,8 @@ function GovernmentOfficerPortal({ language = 'en' }) {
     setCenterForm({
       centerCode: '',
       name: '',
-      mandal: 'Patancheru',
-      district: officer?.district || 'Sangareddy / Medak',
+      mandal: 'Alathur',
+      district: officer?.district || 'Palakkad (Nellara / Rice Bowl)',
       adminName: '',
       adminPhone: '',
       adminPin: '1234',
@@ -394,8 +391,8 @@ function GovernmentOfficerPortal({ language = 'en' }) {
 
   const govtBanks = [
     'State Bank of India - Govt Treasury NetBanking Gateway',
-    'Telangana Grameena Bank - Corporate Treasury Portal',
-    'Andhra Pragathi Grameena Bank - Treasury Gateway',
+    'Kerala Gramin Bank - Corporate Treasury Portal',
+    'Federal Bank - Agri Treasury Gateway',
     'Union Bank of India - Agricultural Fund Portal',
     'Canara Bank - Public Sector NetBanking',
     'Punjab National Bank - e-Treasury Platform'
@@ -487,13 +484,25 @@ function GovernmentOfficerPortal({ language = 'en' }) {
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <Sparkles size={18} style={{ color: '#059669', flexShrink: 0 }} />
                         <div style={{ fontSize: '0.85rem', color: '#065f46' }}>
-                          <strong>Prototype Demo Officer:</strong> <strong>9848099887</strong> (Sangareddy)
+                          <strong>Prototype Demo Officer:</strong> <strong>9447112233</strong> (Palakkad)
                         </div>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                        <span style={{ fontSize: '0.82rem', color: '#047857', fontWeight: 'bold' }}>Demo OTP:</span>
-                        <span className="otp-pill" style={{ fontSize: '0.95rem' }}>123456</span>
-                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setPhone('9447112233')}
+                        style={{
+                          background: '#059669',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '6px',
+                          padding: '0.3rem 0.75rem',
+                          fontSize: '0.8rem',
+                          fontWeight: '700',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        ⚡ Auto-Fill Phone
+                      </button>
                     </div>
 
                     <div className="form-group">
@@ -505,7 +514,7 @@ function GovernmentOfficerPortal({ language = 'en' }) {
                         <input
                           type="tel"
                           maxLength={10}
-                          placeholder="e.g. 9848099887"
+                          placeholder="e.g. 9447112233"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
                           autoFocus
@@ -516,17 +525,17 @@ function GovernmentOfficerPortal({ language = 'en' }) {
                         <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 'bold' }}>Demo Officers:</span>
                         <button
                           type="button"
-                          onClick={() => setPhone('9848099887')}
-                          style={{ background: '#ecfdf5', border: '1px solid #10b981', color: '#047857', padding: '0.15rem 0.4rem', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer' }}
-                        >
-                          9848099887 (Sangareddy)
-                        </button>
-                        <button
-                          type="button"
                           onClick={() => setPhone('9447112233')}
                           style={{ background: '#ecfdf5', border: '1px solid #10b981', color: '#047857', padding: '0.15rem 0.4rem', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer' }}
                         >
                           9447112233 (Palakkad)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setPhone('9447223344')}
+                          style={{ background: '#ecfdf5', border: '1px solid #10b981', color: '#047857', padding: '0.15rem 0.4rem', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer' }}
+                        >
+                          9447223344 (Alappuzha)
                         </button>
                       </div>
                     </div>
@@ -619,7 +628,7 @@ function GovernmentOfficerPortal({ language = 'en' }) {
                       cursor: 'pointer'
                     }}
                   >
-                    ⚡ Fill Demo Officer (Dr. K. Sudhakar Rao - 9848099887)
+                    ⚡ Fill Demo Officer (Dr. Jayaprakash K. Menon - 9447112233)
                   </button>
                 </div>
                 <div className="form-grid-2">
@@ -627,7 +636,7 @@ function GovernmentOfficerPortal({ language = 'en' }) {
                     <label>Full Officer Name *</label>
                     <input
                       type="text"
-                      placeholder="e.g. Dr. K. Sudhakar Rao"
+                      placeholder="e.g. Dr. Jayaprakash K. Menon"
                       value={registerForm.name}
                       onChange={(e) => setRegisterForm({ ...registerForm, name: e.target.value })}
                       required
@@ -1312,7 +1321,7 @@ function GovernmentOfficerPortal({ language = 'en' }) {
                     <label>Procurement Center Name *</label>
                     <input
                       type="text"
-                      placeholder="e.g. Sangareddy Central Rythu Vedika"
+                      placeholder="e.g. Palakkad Krishi Bhavan Center"
                       value={centerForm.name}
                       onChange={(e) => setCenterForm({ ...centerForm, name: e.target.value })}
                       required
@@ -1325,7 +1334,7 @@ function GovernmentOfficerPortal({ language = 'en' }) {
                     <label>Assigned Mandal *</label>
                     <input
                       type="text"
-                      placeholder="e.g. Patancheru"
+                      placeholder="e.g. Alathur"
                       value={centerForm.mandal}
                       onChange={(e) => setCenterForm({ ...centerForm, mandal: e.target.value })}
                       required
@@ -1348,7 +1357,7 @@ function GovernmentOfficerPortal({ language = 'en' }) {
                     <label>Mandi Admin Incharge Name *</label>
                     <input
                       type="text"
-                      placeholder="e.g. R. K. Sharma"
+                      placeholder="e.g. K. Balakrishnan Nair"
                       value={centerForm.adminName}
                       onChange={(e) => setCenterForm({ ...centerForm, adminName: e.target.value })}
                       required

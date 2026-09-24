@@ -1,20 +1,31 @@
 // Weather Service with Google Weather API support & high-reliability satellite fallback (Open-Meteo)
 // Specially formatted for Farmer Procurement & Mandi Harvest Advisories
 
-// Default agricultural mandi hubs in Telangana / Andhra Pradesh & major procurement zones
+// Exclusively Kerala State Agricultural Mandis, Paddy Procurement Centers & Mandals
 export const DEFAULT_MANDI_LOCATIONS = [
-  { name: 'Warangal (Enumamula Mandi)', lat: 17.9689, lon: 79.5941, state: 'Telangana' },
-  { name: 'Nizamabad (APMC Yard)', lat: 18.6725, lon: 78.0941, state: 'Telangana' },
-  { name: 'Karimnagar (Agricultural Market)', lat: 18.4386, lon: 79.1288, state: 'Telangana' },
-  { name: 'Khammam (Cotton & Grain Yard)', lat: 17.2473, lon: 80.1514, state: 'Telangana' },
-  { name: 'Nalgonda (Paddy Procurement)', lat: 17.0575, lon: 79.2684, state: 'Telangana' },
-  { name: 'Mahabubnagar (Grain Center)', lat: 16.7488, lon: 77.9856, state: 'Telangana' },
-  { name: 'Suryapet (Paddy Market)', lat: 17.1439, lon: 79.6239, state: 'Telangana' },
-  { name: 'Guntur (Mirchi & Grain Mandi)', lat: 16.3067, lon: 80.4365, state: 'Andhra Pradesh' },
-  { name: 'Kurnool (APMC Market)', lat: 15.8281, lon: 78.0373, state: 'Andhra Pradesh' },
-  { name: 'Ludhiana (Grain Market)', lat: 30.9010, lon: 75.8573, state: 'Punjab' },
-  { name: 'Karnal (Basmati Mandi)', lat: 29.6857, lon: 76.9905, state: 'Haryana' },
-  { name: 'Indore (Chaupal Mandi)', lat: 22.7196, lon: 75.8577, state: 'Madhya Pradesh' }
+  { name: 'Palakkad - Alathur Mandi (Nellara / Rice Bowl)', mandal: 'Alathur', district: 'Palakkad', lat: 10.6480, lon: 76.5446, state: 'Kerala' },
+  { name: 'Palakkad - Chittur Regulated Market', mandal: 'Chittur', district: 'Palakkad', lat: 10.7025, lon: 76.7196, state: 'Kerala' },
+  { name: 'Alappuzha - Kuttanad Wetland Paddy Center (Nedumudy)', mandal: 'Kuttanad', district: 'Alappuzha', lat: 9.4344, lon: 76.4023, state: 'Kerala' },
+  { name: 'Alappuzha - Ambalappuzha Agro Yard', mandal: 'Ambalappuzha', district: 'Alappuzha', lat: 9.3833, lon: 76.3578, state: 'Kerala' },
+  { name: 'Thrissur - Kole Land Procurement Depot (Ayyanthole)', mandal: 'Ayyanthole', district: 'Thrissur', lat: 10.5312, lon: 76.1950, state: 'Kerala' },
+  { name: 'Thrissur - Chalakudy Spices & Grain Center', mandal: 'Chalakudy', district: 'Thrissur', lat: 10.3070, lon: 76.3330, state: 'Kerala' },
+  { name: 'Wayanad - Mananthavady Hill Grain Yard', mandal: 'Mananthavady', district: 'Wayanad', lat: 11.8026, lon: 76.0034, state: 'Kerala' },
+  { name: 'Wayanad - Sulthan Bathery Agri Hub', mandal: 'Sulthan Bathery', district: 'Wayanad', lat: 11.6644, lon: 76.2573, state: 'Kerala' },
+  { name: 'Kottayam - Vaikom Paddy Procurement Depot', mandal: 'Vaikom', district: 'Kottayam', lat: 9.7500, lon: 76.3958, state: 'Kerala' },
+  { name: 'Kottayam - Changanassery Market Yard', mandal: 'Changanassery', district: 'Kottayam', lat: 9.4444, lon: 76.5383, state: 'Kerala' },
+  { name: 'Ernakulam - Angamaly Paddy & Spice Mandi', mandal: 'Angamaly', district: 'Ernakulam', lat: 10.1947, lon: 76.3860, state: 'Kerala' },
+  { name: 'Ernakulam - Perumbavoor Agricultural Depot', mandal: 'Perumbavoor', district: 'Ernakulam', lat: 10.1114, lon: 76.4786, state: 'Kerala' },
+  { name: 'Kozhikode - Krishi Bhavan Center (Civil Station)', mandal: 'Kozhikode', district: 'Kozhikode', lat: 11.2826, lon: 75.8016, state: 'Kerala' },
+  { name: 'Kozhikode - Vadakara Coconut & Grain Hub', mandal: 'Vadakara', district: 'Kozhikode', lat: 11.6084, lon: 75.5917, state: 'Kerala' },
+  { name: 'Malappuram - Perinthalmanna Valluvanad Market', mandal: 'Perinthalmanna', district: 'Malappuram', lat: 10.9760, lon: 76.2255, state: 'Kerala' },
+  { name: 'Malappuram - Tirur Coastal Agro Center', mandal: 'Tirur', district: 'Malappuram', lat: 10.9146, lon: 75.9224, state: 'Kerala' },
+  { name: 'Kannur - Taliparamba North Malabar Depot', mandal: 'Taliparamba', district: 'Kannur', lat: 12.0437, lon: 75.3577, state: 'Kerala' },
+  { name: 'Kannur - Thalassery Commercial Yard', mandal: 'Thalassery', district: 'Kannur', lat: 11.7480, lon: 75.4894, state: 'Kerala' },
+  { name: 'Kasaragod - Hosdurg / Kanhangad Mandi', mandal: 'Hosdurg', district: 'Kasaragod', lat: 12.3090, lon: 75.0911, state: 'Kerala' },
+  { name: 'Idukki - Nedumkandam High Range Spices Hub', mandal: 'Nedumkandam', district: 'Idukki', lat: 9.8333, lon: 77.1667, state: 'Kerala' },
+  { name: 'Kollam - Kottarakkara Agricultural Depot', mandal: 'Kottarakkara', district: 'Kollam', lat: 9.0006, lon: 76.7725, state: 'Kerala' },
+  { name: 'Pathanamthitta - Thiruvalla Grain Market', mandal: 'Thiruvalla', district: 'Pathanamthitta', lat: 9.3835, lon: 76.5741, state: 'Kerala' },
+  { name: 'Thiruvananthapuram - Nedumangad Agri Wholesale Mandi', mandal: 'Nedumangad', district: 'Thiruvananthapuram', lat: 8.6047, lon: 76.9997, state: 'Kerala' }
 ];
 
 // Helper to decode WMO weather codes into conditions and UI icon names
@@ -119,6 +130,12 @@ export function computeAgriAdvisories(current, daily, language = 'en') {
       moistureRisk === 'High'
         ? 'తేమ శాతం ఎక్కువ ఉండే అవకాశం ఉంది. ధాన్యాన్ని బాగా ఆరబెట్టి, టార్పాలిన్ కప్పి ఉంచండి.'
         : 'ధాన్యం తరలింపుకు వాతావరణం అనుకూలంగా ఉంది. మద్దతు ధర కోసం స్లాట్ బుక్ చేసుకోండి.'
+    }`;
+  } else if (language === 'ml') {
+    voicePrompt = `നിലവിലെ താപനില ${currentTemp} ഡിഗ്രി, അന്തരീക്ഷ ഈർപ്പം ${currentHumidity} ശതമാനം. നെല്ല് സംഭരണ ഉപദേശം: ${
+      moistureRisk === 'High'
+        ? 'ധാന്യത്തിൽ ഈർപ്പത്തിന്റെ അളവ് കൂടുതലാകാൻ സാധ്യതയുണ്ട്. നെല്ല് നല്ലവണ്ണം ഉണക്കി സൂക്ഷിക്കുക, ടാർപോളിൻ കൊണ്ട് മൂടുക.'
+        : 'നെല്ല് സംഭരണ കേന്ദ്രത്തിലേക്ക് എത്തിക്കാൻ കാലാവസ്ഥ തികച്ചും അനുകൂലമാണ്. ഉടൻ സ്ലാറ്റ് ബുക്ക് ചെയ്യുക.'
     }`;
   } else if (language === 'hi') {
     voicePrompt = `वर्तमान तापमान ${currentTemp} डिग्री और नमी ${currentHumidity} प्रतिशत है। मंडी खरीद सलाह: ${

@@ -2384,9 +2384,9 @@ const weatherCache = new Map();
 // Farmer Procurement Weather & Advisory Endpoint
 app.get('/api/weather', async (req, res) => {
   try {
-    const lat = parseFloat(req.query.lat) || 17.9689;
-    const lon = parseFloat(req.query.lon) || 79.5941;
-    const locationName = req.query.name || 'Mandi Center';
+    const lat = parseFloat(req.query.lat) || 10.6480;
+    const lon = parseFloat(req.query.lon) || 76.5446;
+    const locationName = req.query.name || 'Palakkad Procurement Hub (Nellara)';
     const cacheKey = `${lat.toFixed(2)}_${lon.toFixed(2)}`;
     const now = Date.now();
 

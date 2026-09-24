@@ -10,7 +10,7 @@ This document outlines the real-time weather and 7-day agricultural forecast int
    - Real-time temperature (°C), "Feels Like" temperature, and weather condition badges.
    - Key agricultural metrics: Relative Humidity (%), Precipitation (mm), Wind Speed (km/h), and Today's High/Low temperatures.
    - One-click farm GPS detection using HTML5 Geolocation (`Use My GPS`).
-   - Quick-select dropdown for major regional agricultural mandis (Warangal, Nizamabad, Karimnagar, Nalgonda, Guntur, Ludhiana, etc.).
+   - Quick-select dropdown for Kerala's 14 districts and agricultural mandis/mandals (Palakkad Alathur, Kuttanad, Thrissur Kole, Wayanad, Kottayam, Kozhikode, Kannur, etc.).
 
 2. **Whole Week (7-Day) Agricultural Outlook**:
    - Day-by-day forecast table with weather icons, high/low temperatures, precipitation probability (%), and wind speeds.
@@ -24,7 +24,7 @@ This document outlines the real-time weather and 7-day agricultural forecast int
 
 4. **Actionable Mandi Procurement & Harvest Advisories**:
    - **🌾 Grain Moisture Content Risk**:
-     - Evaluates humidity and rain risk against the standard **&le;14% APMC moisture threshold**.
+     - Evaluates humidity and rain risk against the standard **≤14% APMC moisture threshold**.
      - Provides clear warnings to sun-dry crop or cover grain bags to avoid moisture price deductions or rejection.
    - **🚜 Mandi Transport Safety Window**:
      - Alerts farmers whether open trolleys can travel safely or waterproof tarpaulins must be lashed down.
@@ -32,7 +32,7 @@ This document outlines the real-time weather and 7-day agricultural forecast int
      - Guides farmers whether the next 3 days are safe for combine harvesters.
 
 5. **Integrated Voice Broadcast (Multilingual / Illiterate Farmers)**:
-   - Built-in `VoiceSpeakerBtn` support in **Telugu (తెలుగు)**, **Hindi (हिन्दी)**, and **English**.
+   - Built-in `VoiceSpeakerBtn` support in **Malayalam (മലയാളം)**, **Telugu (తెలుగు)**, **Hindi (हिन्दी)**, and **English**.
    - Farmers can tap the speaker icon to hear the live weather and harvest recommendations read aloud.
 
 6. **Dedicated to the Farmer Portal**:

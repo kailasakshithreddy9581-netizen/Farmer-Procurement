@@ -2372,6 +2372,74 @@ app.post('/api/farmers/register', async (req, res) => {
   }
 });
 
+// Weather Cache (TTL 30 minutes)
+const weatherCache = new Map();
+
+// Farmer Procurement Weather & Advisory Endpoint
+app.get('/api/weather', async (req, res) => {
+  try {
+    const lat = parseFloat(req.query.lat) || 17.9689;
+    const lon = parseFloat(req.query.lon) || 79.5941;
+    const locationName = req.query.name || 'Mandi Center';
+    const cacheKey = `${lat.toFixed(2)}_${lon.toFixed(2)}`;
+    const now = Date.now();
+
+    if (weatherCache.has(cacheKey)) {
+      const cached = weatherCache.get(cacheKey);
+      if (now - cached.timestamp < 30 * 60 * 1000) {
+        return res.json({ ...cached.data, cached: true });
+      }
+    }
+
+    const googleKey = process.env.GOOGLE_WEATHER_API_KEY;
+    let provider = 'Open-Meteo Meteorological Satellite Feed';
+
+    if (googleKey) {
+      try {
+        const googleRes = await fetch(
+          `https://weather.googleapis.com/v1/currentConditions:lookup?key=${googleKey}&location.latitude=${lat}&location.longitude=${lon}`
+        );
+        if (googleRes.ok) {
+          const googleData = await googleRes.json();
+          provider = 'Google Maps Weather API (Live)';
+        }
+      } catch (err) {
+        console.warn('Google Weather API request error, falling back:', err.message);
+      }
+    }
+
+    const meteoUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,wind_speed_10m_max&timezone=auto&forecast_days=7`;
+    const response = await fetch(meteoUrl);
+    const data = await response.json();
+
+    const result = {
+      location: { name: locationName, lat, lon },
+      provider,
+      current: {
+        temperature: Math.round(data.current?.temperature_2m || 28),
+        humidity: data.current?.relative_humidity_2m || 60,
+        feelsLike: Math.round(data.current?.apparent_temperature || 28),
+        rain: data.current?.rain || 0,
+        windSpeed: Math.round(data.current?.wind_speed_10m || 10),
+        weatherCode: data.current?.weather_code || 0
+      },
+      daily: data.daily?.time?.map((t, idx) => ({
+        date: t,
+        tempMax: Math.round(data.daily.temperature_2m_max[idx]),
+        tempMin: Math.round(data.daily.temperature_2m_min[idx]),
+        rainProb: data.daily.precipitation_probability_max?.[idx] || 0,
+        rainSum: data.daily.precipitation_sum?.[idx] || 0
+      })) || [],
+      updatedAt: new Date().toISOString()
+    };
+
+    weatherCache.set(cacheKey, { timestamp: now, data: result });
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // 2. Get Farmer Profile
 app.get('/api/farmers/:id', async (req, res) => {
   let farmer = memoryStore.farmers.find(f => f._id === req.params.id);

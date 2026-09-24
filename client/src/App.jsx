@@ -13,13 +13,16 @@ import {
   Building2,
   Wheat,
   Landmark,
-  PhoneCall
+  PhoneCall,
+  CloudSun
 } from 'lucide-react';
 import FarmerRegistration from './components/FarmerRegistration';
 import FarmerLogin from './components/FarmerLogin';
 import SlotBooking from './components/SlotBooking';
 import QueueDashboard from './components/QueueDashboard';
 import PaymentStatus from './components/PaymentStatus';
+import WeatherForecast from './components/WeatherForecast';
+import WeatherMiniWidget from './components/WeatherMiniWidget';
 import AdminPanel from './components/AdminPanel';
 import GovernmentOfficerPortal from './components/GovernmentOfficerPortal';
 import IVRBookingModal from './components/IVRBookingModal';
@@ -138,6 +141,13 @@ function App() {
                 >
                   <LayoutDashboard size={16} />
                   <span>Dashboard</span>
+                </button>
+                <button
+                  onClick={() => setCurrentScreen('weather')}
+                  className={`nav-btn ${currentScreen === 'weather' ? 'active' : ''}`}
+                >
+                  <CloudSun size={16} />
+                  <span>{t.weather || 'Weather'}</span>
                 </button>
                 <button
                   onClick={() => setCurrentScreen('booking')}
@@ -269,6 +279,13 @@ function App() {
                   language={language}
                 />
               )}
+              {currentScreen === 'weather' && (
+                <WeatherForecast
+                  language={language}
+                  farmerData={farmerData}
+                  onNavigateBooking={() => setCurrentScreen('booking')}
+                />
+              )}
               {currentScreen === 'booking' && (
                 <SlotBooking farmerId={farmerId} language={language} />
               )}
@@ -355,8 +372,29 @@ function Dashboard({ farmerData, setCurrentScreen, onOpenAdmin, onOpenGov, onOpe
         </div>
       </div>
 
+      {/* Live Weather Forecast & Moisture Advisory Mini-Widget */}
+      <WeatherMiniWidget
+        language={language}
+        onOpenFullForecast={() => setCurrentScreen('weather')}
+      />
+
       {/* Quick Action Navigation Cards */}
       <div className="quick-actions-grid">
+        <ActionCard
+          icon="🌦️"
+          title={t.weather || "Weather Forecast"}
+          description="Live hyper-local weather & 7-day mandi harvest advisories"
+          badge="7-Day Live"
+          onClick={() => setCurrentScreen('weather')}
+          speakTextPrompt={
+            language === 'te'
+              ? 'వాతావరణ సమాచారం. లైవ్ వాతావరణం మరియు 7 రోజుల పంట కోత సలహాలను చూడండి.'
+              : language === 'hi'
+              ? 'मौसम पूर्वानुमान। लाइव मौसम एवं 7-दिवसीय मंडी कटाई सलाह देखें।'
+              : 'Live hyper-local weather and 7-day mandi harvest advisories.'
+          }
+          language={language}
+        />
         <ActionCard
           icon="📅"
           title={t.bookSlot}

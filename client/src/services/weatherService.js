@@ -28,6 +28,45 @@ export const DEFAULT_MANDI_LOCATIONS = [
   { name: 'Thiruvananthapuram - Nedumangad Agri Wholesale Mandi', mandal: 'Nedumangad', district: 'Thiruvananthapuram', lat: 8.6047, lon: 76.9997, state: 'Kerala' }
 ];
 
+// Reverse geocode coordinates to get exact village, taluk, and Kerala district
+export async function reverseGeocodeCoords(lat, lon) {
+  try {
+    const res = await fetch(
+      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`
+    );
+    if (res.ok) {
+      const data = await res.json();
+      const place =
+        data.locality ||
+        data.city ||
+        data.localityInfo?.administrative?.find((a) => a.adminLevel === 6 || a.adminLevel === 7)?.name ||
+        'Farm';
+      const district =
+        data.localityInfo?.administrative?.find((a) => a.name?.toLowerCase().includes('district'))?.name ||
+        data.principalSubdivision ||
+        'Kerala';
+      return `📍 ${place}, ${district}`;
+    }
+  } catch (err) {
+    console.warn('Reverse geocoding error:', err);
+  }
+  return `📍 Live Farm GPS (${lat.toFixed(3)}°N, ${lon.toFixed(3)}°E)`;
+}
+
+// Request device GPS coordinates with high accuracy
+export function getLiveGpsCoordinates() {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      return reject(new Error('Geolocation not supported by this browser'));
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+      (err) => reject(err),
+      { timeout: 8000, enableHighAccuracy: true, maximumAge: 60000 }
+    );
+  });
+}
+
 // Helper to decode WMO weather codes into conditions and UI icon names
 export function decodeWeatherCode(code, isDay = 1) {
   switch (code) {

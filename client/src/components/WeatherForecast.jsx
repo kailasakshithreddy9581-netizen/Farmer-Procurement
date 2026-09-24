@@ -22,7 +22,12 @@ import {
   Navigation,
   Thermometer
 } from 'lucide-react';
-import { fetchWeatherData, DEFAULT_MANDI_LOCATIONS } from '../services/weatherService';
+import {
+  fetchWeatherData,
+  DEFAULT_MANDI_LOCATIONS,
+  reverseGeocodeCoords,
+  getLiveGpsCoordinates
+} from '../services/weatherService';
 import VoiceSpeakerBtn from './VoiceSpeakerBtn';
 import { translations } from '../languages';
 import '../styles/WeatherForecast.css';
@@ -57,6 +62,7 @@ export default function WeatherForecast({ language = 'en', farmerData, onNavigat
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isGpsActive, setIsGpsActive] = useState(false);
+  const [locatingStatus, setLocatingStatus] = useState('Accessing your farm GPS location...');
 
   // Load weather for location
   const loadWeather = useCallback(async (lat, lon, name) => {
@@ -70,13 +76,51 @@ export default function WeatherForecast({ language = 'en', farmerData, onNavigat
       setError(err.message || 'Unable to load real-time weather information.');
     } finally {
       setLoading(false);
+      setLocatingStatus('');
     }
   }, [language]);
 
-  // Initial load
+  // Automatic Location Detection on Component Mount
   useEffect(() => {
-    loadWeather(selectedLocation.lat, selectedLocation.lon, selectedLocation.name);
-  }, [selectedLocation, loadWeather]);
+    let isMounted = true;
+
+    async function autoDetectFarmerLocation() {
+      try {
+        setLoading(true);
+        setLocatingStatus('Accessing your farm GPS location for exact forecast...');
+        const coords = await getLiveGpsCoordinates();
+        if (!isMounted) return;
+
+        setLocatingStatus('Locating your village, taluk & district...');
+        const placeName = await reverseGeocodeCoords(coords.lat, coords.lon);
+        const gpsLoc = {
+          name: placeName,
+          lat: coords.lat,
+          lon: coords.lon,
+          state: 'Kerala (Live GPS)'
+        };
+
+        if (isMounted) {
+          setSelectedLocation(gpsLoc);
+          setIsGpsActive(true);
+          await loadWeather(coords.lat, coords.lon, placeName);
+        }
+      } catch (err) {
+        console.log('Auto GPS not granted or unavailable, defaulting to Kerala primary hub:', err.message);
+        if (isMounted) {
+          setIsGpsActive(false);
+          const def = DEFAULT_MANDI_LOCATIONS[0];
+          setSelectedLocation(def);
+          await loadWeather(def.lat, def.lon, def.name);
+        }
+      }
+    }
+
+    autoDetectFarmerLocation();
+    return () => {
+      isMounted = false;
+    };
+  }, [loadWeather]);
 
   // Handle Location Dropdown Change
   const handleSelectLocation = (e) => {
@@ -84,36 +128,33 @@ export default function WeatherForecast({ language = 'en', farmerData, onNavigat
     if (found) {
       setSelectedLocation(found);
       setIsGpsActive(false);
+      loadWeather(found.lat, found.lon, found.name);
     }
   };
 
-  // Handle GPS Detect
-  const handleDetectGps = () => {
-    if (!navigator.geolocation) {
-      alert('Geolocation is not supported by your browser.');
-      return;
+  // Handle Manual GPS Detect Button
+  const handleDetectGps = async () => {
+    try {
+      setLoading(true);
+      setLocatingStatus('Detecting high-precision farm GPS coordinates...');
+      const coords = await getLiveGpsCoordinates();
+      setLocatingStatus('Resolving location details...');
+      const placeName = await reverseGeocodeCoords(coords.lat, coords.lon);
+      const gpsLoc = {
+        name: placeName,
+        lat: coords.lat,
+        lon: coords.lon,
+        state: 'Kerala (Live GPS)'
+      };
+      setSelectedLocation(gpsLoc);
+      setIsGpsActive(true);
+      await loadWeather(coords.lat, coords.lon, placeName);
+    } catch (err) {
+      console.warn('Geolocation access denied or failed:', err);
+      alert('Could not access device GPS. Please allow browser location permissions or choose your Kerala district from the list below.');
+      setLoading(false);
+      setLocatingStatus('');
     }
-
-    setLoading(true);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const { latitude, longitude } = pos.coords;
-        const gpsLoc = {
-          name: '📍 My Current Farm Location',
-          lat: latitude,
-          lon: longitude,
-          state: 'GPS Detected'
-        };
-        setSelectedLocation(gpsLoc);
-        setIsGpsActive(true);
-      },
-      (err) => {
-        console.warn('Geolocation access denied or failed:', err);
-        alert('Could not retrieve GPS location. Using default Mandi center.');
-        setLoading(false);
-      },
-      { timeout: 10000 }
-    );
   };
 
   return (
@@ -158,15 +199,17 @@ export default function WeatherForecast({ language = 'en', farmerData, onNavigat
           <div className="location-dropdown-wrap">
             <MapPin size={18} color="#0284c7" />
             <select
-              value={isGpsActive ? '📍 My Current Farm Location' : selectedLocation.name}
+              value={selectedLocation.name}
               onChange={handleSelectLocation}
             >
               {isGpsActive && (
-                <option value="📍 My Current Farm Location">📍 My Current Farm Location (GPS Active)</option>
+                <option value={selectedLocation.name}>
+                  🟢 {selectedLocation.name} (Live Farm GPS Active)
+                </option>
               )}
               {DEFAULT_MANDI_LOCATIONS.map((loc) => (
                 <option key={loc.name} value={loc.name}>
-                  {loc.name} ({loc.state})
+                  {loc.name}
                 </option>
               ))}
             </select>
@@ -198,7 +241,7 @@ export default function WeatherForecast({ language = 'en', farmerData, onNavigat
       {loading && !weatherData && (
         <div className="weather-loading-box">
           <div className="weather-loading-spinner"></div>
-          <p>Syncing live meteorological data and harvest advisories...</p>
+          <p>{locatingStatus || 'Syncing live meteorological data and harvest advisories...'}</p>
         </div>
       )}
 

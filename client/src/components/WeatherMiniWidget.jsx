@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { CloudSun, CloudRain, Sun, ArrowRight, ShieldCheck, AlertTriangle } from 'lucide-react';
-import { fetchWeatherData, DEFAULT_MANDI_LOCATIONS } from '../services/weatherService';
+import {
+  fetchWeatherData,
+  DEFAULT_MANDI_LOCATIONS,
+  reverseGeocodeCoords,
+  getLiveGpsCoordinates
+} from '../services/weatherService';
 import VoiceSpeakerBtn from './VoiceSpeakerBtn';
 
 export default function WeatherMiniWidget({ language = 'en', onOpenFullForecast }) {
@@ -11,6 +16,18 @@ export default function WeatherMiniWidget({ language = 'en', onOpenFullForecast 
     let isMounted = true;
     async function load() {
       try {
+        if (navigator.geolocation) {
+          try {
+            const coords = await getLiveGpsCoordinates();
+            if (!isMounted) return;
+            const placeName = await reverseGeocodeCoords(coords.lat, coords.lon);
+            const res = await fetchWeatherData(coords.lat, coords.lon, placeName, language);
+            if (isMounted) setData(res);
+            return;
+          } catch (gpsErr) {
+            console.log('Mini widget GPS fallback to default Kerala hub:', gpsErr.message);
+          }
+        }
         const def = DEFAULT_MANDI_LOCATIONS[0];
         const res = await fetchWeatherData(def.lat, def.lon, def.name, language);
         if (isMounted) setData(res);
